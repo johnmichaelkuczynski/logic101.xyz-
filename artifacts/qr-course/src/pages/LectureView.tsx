@@ -350,7 +350,14 @@ function TutorPane({
                       question={q}
                       pending={ask.isPending}
                       onSubmitAttempt={(attempt) => submitAttempt(q, attempt)}
-                      onShowAnswer={() => sendMessage(q)}
+                      onShowAnswer={() =>
+                        sendMessage(
+                          `The student clicked "Just show me the answer" — they do NOT want Socratic hints. ` +
+                            `Provide the complete, direct, factually correct answer to the question below, ` +
+                            `in 3–6 sentences, with a one-line worked example or formula where it helps. ` +
+                            `Use $...$ for any math.\n\nQUESTION: ${q}`,
+                        )
+                      }
                       onDismiss={() =>
                         setDismissed((d) => {
                           const n = new Set(d);
