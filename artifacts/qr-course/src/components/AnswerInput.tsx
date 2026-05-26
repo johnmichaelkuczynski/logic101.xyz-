@@ -164,7 +164,7 @@ export function AnswerInput({ value, onChange, placeholder, disabled, promptSour
         onDrop={handleDrop}
         placeholder={placeholder || "Type your answer here..."}
         disabled={disabled}
-        className="w-full min-h-[140px] p-4 bg-card border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary font-mono text-3xl leading-relaxed resize-y"
+        className="w-full min-h-[180px] p-5 bg-card border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary font-mono text-3xl leading-relaxed resize-y"
       />
       <span className="text-xs text-muted-foreground px-1">Pasting is disabled.</span>
       {!disabled && (

@@ -519,7 +519,7 @@ function PracticePane({
           </div>
         )}
 
-        <div className="bg-card border rounded-lg p-4 min-h-[120px]">
+        <div className="bg-card border rounded-lg p-5 min-h-[160px] text-lg leading-relaxed">
           {next.isPending || !problem ? (
             <div className="flex flex-col gap-2">
               <Skeleton className="h-4 w-full" />
