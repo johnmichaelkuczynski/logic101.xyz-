@@ -18,6 +18,41 @@ import { gradeAnswer } from "../lib/grading";
 
 const router: IRouter = Router();
 
+// Keep the Replit dev preview proxy from idle-timing-out long-running
+// OpenAI-heavy diagnostics. We send the JSON Content-Type and start writing
+// whitespace heartbeats every few seconds; the route eventually `res.end()`s
+// with the full JSON payload. Leading whitespace is valid JSON, so the client
+// can still call `r.json()` unchanged.
+router.use("/diagnostics", (_req, res, next) => {
+  res.setHeader("Cache-Control", "no-store");
+  // Don't flush a first byte immediately — that would lock in status 200 and
+  // break fast-path 400/404 responses (e.g. validation errors in
+  // /diagnostics/expand-lectures). Instead, schedule heartbeats; the first one
+  // fires at 4s, well before the ~10s Replit dev proxy idle timeout, but after
+  // any synchronous validation has had a chance to set a real status code.
+  const heartbeat = setInterval(() => {
+    if (!res.headersSent) {
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+    }
+    if (!res.writableEnded) {
+      res.write(" ");
+    }
+  }, 4000);
+  res.on("close", () => clearInterval(heartbeat));
+  res.on("finish", () => clearInterval(heartbeat));
+  next();
+});
+
+// Use this instead of `res.json(...)` for the long-running diagnostic routes:
+// once a heartbeat has flushed, `res.json` cannot reset the Content-Type and
+// would double-write headers.
+function sendJson(res: import("express").Response, payload: unknown): void {
+  if (!res.headersSent) {
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+  }
+  res.end(JSON.stringify(payload));
+}
+
 type Step = {
   name: string;
   ok: boolean;
@@ -123,7 +158,7 @@ router.get("/diagnostics/system", async (_req, res) => {
   );
 
   const ok = steps.every((s) => s.ok);
-  res.json({ ok, generatedAt: new Date().toISOString(), steps });
+  sendJson(res, { ok, generatedAt: new Date().toISOString(), steps });
 });
 
 // ---------- Diagnostic 2: synthetic student ----------
@@ -406,7 +441,7 @@ router.post("/diagnostics/synthetic-run", async (_req, res) => {
   );
 
   const ok = steps.every((s) => s.ok);
-  res.json({ ok, generatedAt: new Date().toISOString(), steps });
+  sendJson(res, { ok, generatedAt: new Date().toISOString(), steps });
 });
 
 // ---------- Expand lectures: generate medium / long versions with more examples ----------
@@ -492,7 +527,7 @@ router.post("/diagnostics/expand-lectures", async (req, res) => {
     );
   }
 
-  res.json({ ok: failed === 0, level, updated, failed, total: lectures.length });
+  sendJson(res, { ok: failed === 0, level, updated, failed, total: lectures.length });
 });
 
 // ---------- Diagnostic 3: content audit (OpenAI fact-checks every lecture + every "correct" answer) ----------
@@ -654,7 +689,7 @@ router.post("/diagnostics/content-audit", async (_req, res) => {
     const lectureIssues = lectureResults.filter((r) => !r.ok || r.issues.length > 0);
     const problemIssues = problemResults.filter((r) => !r.ok);
 
-    res.json({
+    sendJson(res, {
       ok: lectureIssues.length === 0 && problemIssues.length === 0,
       generatedAt: new Date().toISOString(),
       summary: {
@@ -667,7 +702,11 @@ router.post("/diagnostics/content-audit", async (_req, res) => {
       problemIssues,
     });
   } catch (e) {
-    res.status(500).json({
+    // After heartbeats have flushed we can no longer set status; embed the
+    // error in the JSON payload (ok:false). Quick failures still reach here
+    // before any heartbeat fires and headers are still mutable.
+    if (!res.headersSent) res.status(500);
+    sendJson(res, {
       ok: false,
       error: e instanceof Error ? e.message : String(e),
     });
