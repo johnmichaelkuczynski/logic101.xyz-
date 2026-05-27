@@ -1,12 +1,12 @@
-# Teach Yourself Mathematical Notation — App Blueprint
+# Teach Yourself Conceptual Mathematics — App Blueprint
 
-A complete architectural blueprint for the *Teach Yourself Mathematical Notation* 4-week course. This document is the single reference for what the app does, how it's wired, and the contracts between pieces. For day-to-day commands and gotchas see `replit.md`.
+A complete architectural blueprint for the *Teach Yourself Conceptual Mathematics* 4-week course. This document is the single reference for what the app does, how it's wired, and the contracts between pieces. For day-to-day commands and gotchas see `replit.md`.
 
 ---
 
 ## 1. Product summary
 
-Teach Yourself Mathematical Notation is a self-paced, single-user, no-login web course covering the symbols of mathematics, science, and engineering. Each micro-lecture targets one symbol family, grounds it in a real scientific equation, and demands the student type the symbol in their answer. The math keyboard is the only practical input — which is exactly the point: this build is a beta harness for the math-notation stack (keyboard, KaTeX renderer, LaTeX-aware grader, detection pipeline) so it can be reused in other apps.
+Teach Yourself Conceptual Mathematics is a self-paced, single-user, no-login web course covering the *ideas behind the symbols* of modern mathematics — numbers, operations and structures, the continuum, and the foundations (logic, proof, undecidability). Each micro-lecture introduces one concept, grounds it in a real example from science or the history of mathematics, and asks the student to write the defining statement *in symbols of their own* using the on-screen math keyboard.
 
 The full QuantReason runtime is preserved unchanged: lectures at three depths, section-scoped AI tutor, adaptive practice, AI-graded assignments, two-layer AI-authorship detection, and one-click diagnostics.
 
@@ -27,18 +27,18 @@ Shared contracts live in `lib/`:
 
 ---
 
-## 2. Curriculum (the symbols)
+## 2. Curriculum (the ideas)
 
-Source: `artifacts/api-server/src/lib/seed.ts`. 28 micro-lectures across four weeks. Each lecture teaches exactly one symbol family, anchors it in a real scientific use, and ships a question that *requires* the symbol on the keyboard to be typed.
+Source: `artifacts/api-server/src/lib/seed.ts`. 32 micro-lectures across four weeks. Each lecture teaches exactly one concept, anchors it in a real worked example, and ships a question that *requires* the student to write the key statement in symbolic form.
 
-| Week | Theme | Symbols covered |
+| Week | Theme | Concepts covered |
 | --- | --- | --- |
-| 1 | Foundations | `=, ≠, ≈, ≡` · `<, >, ≤, ≥` · `±, ∝` · `xⁿ` · `√, ³√` · `\|x\|, n!` · `x₀, xₜ, vᵧ` |
-| 2 | Calculus and change | `Σ` · `Π` · `Δ, δ` · `lim, →, ∞` · `d/dx, ∂/∂x` · `∫, ∬, ∮` · `e, ln, log` |
-| 3 | Probability and statistics | `μ, σ, σ²` · `x̄, p̂, s` · `P(A), P(A∣B)` · `E(X), Var(X)` · `X ∼ N(μ, σ²)` · `z, t, χ²` · `α, β` |
-| 4 | Logic, sets, and foundations | `∈, ∉` · `⊂, ⊆` · `∪, ∩, ∅, Aᶜ` · `∀, ∃, ∄` · `∧, ∨, ¬` · `→, ↔` · `ℕ, ℤ, ℚ, ℝ, ℂ` |
+| 1 | The number systems | Counting & the number line · rationals & ratios · irrationals & the $\sqrt 2$ scandal · real numbers & completeness · imaginary & complex numbers as rotations · zero, negatives, conceptual leaps · bases & place value · countable vs. uncountable infinity |
+| 2 | Operations and structures | What an operation is · commutativity, associativity, distributivity · groups & symmetry · rings & fields · vector spaces · functions as mappings · relations, equivalence classes, isomorphism · modular arithmetic |
+| 3 | The continuum | Limits & the taming of infinity · continuity · derivatives as instantaneous rate · integrals as accumulation · the Fundamental Theorem of Calculus · sequences, series, & Zeno · Euclidean vs. non-Euclidean geometry · topology, dimension, & curvature |
+| 4 | Foundations: logic, proof, undecidability | Propositional & predicate logic · what a proof is · mathematical induction · sets & Russell's paradox · axioms & independence · Gödel's incompleteness theorems · probability (measure, frequency, credence) · computability & the halting problem |
 
-Assignment shape (per week, unchanged from QuantReason): 2 homeworks + 1 test. A midterm follows week 2; a cumulative final follows week 4.
+Assignment shape: 2 homeworks per week plus a graded checkpoint at the end of each week — a Week 1 test, the midterm at the end of Week 2, a Week 3 test, and the cumulative final at the end of Week 4 — 12 assignments total. Each problem prompt is *one symbolic statement* the student must compose.
 
 ---
 
@@ -67,12 +67,12 @@ Push schema with `pnpm --filter @workspace/db run push`.
 
 ### 3.1 Curriculum-swap reseed
 
-`seedIfEmpty` (same file as the seed data) maintains an `EXPECTED_TOPIC_SLUGS` set. On boot it compares that set to the topic slugs already in the database:
+`seedIfEmpty` maintains an `EXPECTED_TOPIC_SLUGS` set and a `REVISION_SENTINEL` constant (sentinel slug + a phrase that must appear in that lecture's body). On boot it compares the set of seeded topic slugs to the expected set, **and** verifies the sentinel phrase appears in the designated lecture:
 
-- If they match: do nothing.
-- If they differ (or the table is empty): wipe attempts, answers, practice, problems, assignments, lectures, topics in dependency order, then re-seed the full curriculum.
+- If both match: do nothing.
+- If either differs (or the table is empty): wipe attempts, answers, practice, problems, assignments, lectures, topics in dependency order, then re-seed the full curriculum.
 
-This is what lets a single content swap (e.g. swapping out QR for math notation) propagate cleanly on the next server start.
+This is what lets a single content swap (e.g. swapping a previous QR or notation curriculum out for the conceptual-math one) propagate cleanly on the next server start, without manual DB surgery.
 
 ---
 
@@ -88,7 +88,7 @@ Source: `lib/api-spec/openapi.yaml`. **Never** hand-edit `lib/api-zod/src/genera
 | `assignments` | `GET /assignments`, `GET /assignments/{id}`, `POST /assignments/{id}/attempt`, `PUT /assignments/{id}/attempts/{aid}/answers/{pid}`, `POST /assignments/{id}/attempts/{aid}/submit` | Homework / test flow. Submit triggers AI grade + detection per answer. |
 | `analytics` | `GET /analytics/summary`, `GET /analytics/topics`, `GET /analytics/activity` | KPIs, topic mastery, recent activity. |
 | `detection` | `POST /detection/scan` | Run AI + diachronic detection on an arbitrary text + trace. Used by the diagnostics page. |
-| `diagnostics` | `GET /diagnostics/system`, `POST /diagnostics/synthetic-run`, `POST /diagnostics/expand-lectures`, `POST /diagnostics/reset` | Self-tests and seed maintenance. See §7. |
+| `diagnostics` | `GET /diagnostics/system`, `POST /diagnostics/synthetic-run`, `POST /diagnostics/expand-lectures`, `POST /diagnostics/reset` | Self-tests and seed maintenance. See §8. |
 
 The submit endpoint's response schema (`AttemptResult`) bundles `score / total / percent / perProblem[] / detection[]` so the UI can render the AI-grade + detection verdict in one round-trip.
 
@@ -114,7 +114,7 @@ artifacts/api-server/src/
     ├── ai.ts              OpenAI client (Replit AI Integrations proxy)
     ├── detection.ts       GPTZero + heuristic + diachronic scoring
     ├── grading.ts         AI-graded answer with rationale
-    ├── seed.ts            28-topic curriculum + auto-reseed
+    ├── seed.ts            32-topic curriculum + auto-reseed
     └── logger.ts          singleton pino logger (req.log in routes)
 ```
 
@@ -127,20 +127,20 @@ artifacts/api-server/src/
 
 ---
 
-## 6. Math keyboard beta harness — `MathKeyboard.tsx`
+## 6. Symbolic answer harness — `MathKeyboard.tsx`
 
-The student-facing app (`artifacts/qr-course`) ships a floating math keyboard that opens when the answer textarea focuses. Each tab targets one of the four curricular families above (Foundations / Calculus / Probability / Logic & Sets). Pressing a key inserts the corresponding LaTeX fragment at the textarea cursor.
+The student-facing app (`artifacts/qr-course`) ships a floating math keyboard that opens when the answer textarea focuses. Each tab targets one of the four curricular families (Numbers / Algebra & structures / Calculus & continuum / Logic & sets). Pressing a key inserts the corresponding LaTeX fragment at the textarea cursor.
 
-This curriculum is, by design, the keyboard's worst-case load: every assignment problem's reference answer contains at least one symbol that requires the keyboard. Anything the keyboard can't insert, the renderer can't display, the grader can't read, or the detector can't trace will surface here.
+The conceptual-math curriculum is, by design, a worst-case load for this keyboard: most assignment problems' canonical answers contain at least one symbol that requires it — set-builder notation, quantifiers, blackboard-bold sets, congruences, $\varepsilon$–$\delta$, $\Sigma$ / $\Pi$ / $\int$ / $\partial$, $\mathbb{Z}/n\mathbb{Z}$, and so on.
 
 What the harness stresses:
 
 | Sub-system | Stress |
 | --- | --- |
-| Tab discoverability | Each lecture's problems force the student into a specific tab; if a tab is hidden or mislabeled, the student gets stuck. |
+| Tab discoverability | Each lecture's problems push the student into a specific tab; if a tab is hidden or mislabeled, the student gets stuck. |
 | Cursor insertion | LaTeX fragments must land at the current caret without smearing surrounding text. |
-| Keystroke detection | Each keyboard press counts as a real keystroke in the diachronic trace; otherwise typed-answer behavior reads as a paste. |
-| LaTeX-aware grading | Reference answers contain LaTeX; the grader must match `\sum` to `Σ`, `\geq` to `≥`, `\hat p` to `p̂`, etc. |
+| Keystroke detection | Each keyboard press counts as a real keystroke in the diachronic trace; otherwise typed-answer behaviour reads as a paste. |
+| LaTeX-aware grading | Canonical answers contain LaTeX; the grader must match `\sum` to `Σ`, `\geq` to `≥`, `\mathbb{Q}` to `ℚ`, `\equiv \ldots \pmod n`, set-builder `\{x \in \mathbb{R} \mid \ldots\}`, and quantifier strings. |
 | KaTeX rendering | Both lecture body and student answer-preview render the same LaTeX subset. |
 
 ---
@@ -192,7 +192,7 @@ Penalty points:
 
 Clamped to `[0, 1]`. `diachronicFlagged = diachronicScore >= 0.55`.
 
-> ⚠️ The math keyboard interacts with diachronic detection: every keyboard press counts as a real `keydown` so the keystroke-to-output ratio stays human-shaped. If a future keyboard implementation inserts characters without dispatching keydowns, every answer will diachronically flag as paste — the keyboard *is* part of the detection contract.
+> ⚠️ The math keyboard interacts with diachronic detection: every keyboard press counts as a real `keydown` so the keystroke-to-output ratio stays human-shaped. If a future keyboard implementation inserts characters without dispatching keydowns, every symbolic answer will diachronically flag as paste — the keyboard *is* part of the detection contract.
 
 ---
 
@@ -206,7 +206,7 @@ Strict ordered checklist returning `{ ok, generatedAt, steps[] }`:
 
 1. **Environment** — `DATABASE_URL` present.
 2. **Database** — `SELECT 1` round-trip.
-3. **Database** — course content seeded (≥28 topics, ≥1 lecture / assignment / problem).
+3. **Database** — course content seeded (≥32 topics, ≥1 lecture / assignment / problem).
 4. **OpenAI** — fast-model chat completion returns non-empty text.
 5. **OpenAI** — JSON mode returns `{ ok: true }`.
 6. **Detection** — heuristic+scoring pipeline returns numbers for a benign sentence.
@@ -263,7 +263,7 @@ The trace is included in the answer `PUT` body and on `POST submit`, then stored
 
 ## 10. Demo video — `@workspace/qr-course-demo`
 
-A **screencast-style** product walkthrough, **not** a marketing reel. Built per the `video-js` skill: React + framer-motion, exported to MP4 from the preview pane via the browser recorder.
+A **screencast-style** product walkthrough of the conceptual-math course UI, **not** a marketing reel. Built per the `video-js` skill: React + framer-motion, exported to MP4 from the preview pane via the browser recorder.
 
 ```
 artifacts/qr-course-demo/src/components/video/
@@ -275,11 +275,11 @@ artifacts/qr-course-demo/src/components/video/
 ├── StreamingText.tsx        word-by-word AI-response streaming
 ├── TypingIndicator.tsx      three pulsing dots
 └── video_scenes/
-    ├── Scene1.tsx           Dashboard → Week 1 (8s)
-    ├── Scene2.tsx           Lecture: Short/Long toggle + Practice/Tutor tabs (8s)
-    ├── Scene3.tsx           Tutor Q&A with streaming response (12s)
+    ├── Scene1.tsx           Dashboard → Week 1 "The number systems" (8s)
+    ├── Scene2.tsx           Lecture 1.1 "Counting, the integers, and the number line": Short/Long toggle + Practice/Tutor tabs (8s)
+    ├── Scene3.tsx           Tutor Q&A: "Why are the rationals countable but the reals are not?" (12s)
     ├── Scene4.tsx           Analytics with counting KPIs + topic mastery click (10s)
-    ├── Scene5.tsx           Topic Practice: wrong → adjust ↓ → right → adjust ↑ (14s)
+    ├── Scene5.tsx           Topic Practice: wrong → adjust ↓ → right (symbolic answer typed via the math keyboard) → adjust ↑ (14s)
     └── Scene6.tsx           Assignments review with AI grade + AI-detection chip (10s)
 ```
 
@@ -289,7 +289,7 @@ artifacts/qr-course-demo/src/components/video/
 
 - **Sidebar persistence.** Sidebar lives in `VideoTemplate.tsx` outside `<AnimatePresence>`. Only the right-pane scene swaps.
 - **Cursor persistence.** `CursorPointer` lives outside `<AnimatePresence>` and is driven by `setCursorPos / setIsClicking` passed into every scene.
-- **The UI is rebuilt, not screenshotted.** Scenes use the real fonts and colors but every pixel is JSX.
+- **The UI is rebuilt, not screenshotted.** Scenes use the real fonts and colours but every pixel is JSX.
 - **`AnimatePresence` key = `currentSceneKey`** (NOT `baseSceneKey`). When scene-lock toggles `_r1` / `_r2`, both iterations must remount.
 - **Mute wiring.** The mute toggle is declarative JSX (`<audio muted={muted}>`) only — it must not also re-seek `audio.currentTime`, or unmute restarts the scene's audio.
 
@@ -299,10 +299,10 @@ artifacts/qr-course-demo/src/components/video/
 
 `replit.md` and `README.md` are the always-loaded project READMEs. They contain:
 
-1. **Product overview** — what the course is and why this build exists (math-keyboard beta harness).
+1. **Product overview** — what the course is and why this build exists (conceptual scaffolding behind the symbols).
 2. **Required env / secrets** — `DATABASE_URL`, `OPENAI_API_KEY`, `GPTZERO_API_KEY`, `SESSION_SECRET`.
-3. **Curriculum summary** — the 28 symbol families across four weeks.
-4. **Technical features** — keyboard harness, two-layer detection, diagnostics, auto-reseed, contract-first API.
+3. **Curriculum summary** — the 32 concepts across four weeks.
+4. **Technical features** — symbolic-answer harness, two-layer detection, diagnostics, auto-reseed, contract-first API.
 
 If you change anything in this blueprint, update `README.md` and `replit.md` to match — they are the long-form and short-form views of the same truth.
 
@@ -310,9 +310,9 @@ If you change anything in this blueprint, update `README.md` and `replit.md` to 
 
 ## 12. End-to-end request example
 
-A student submits Homework 1.1 (equality family). The full path:
+A student submits Homework 1.1 (the number systems). The full path:
 
-1. Browser: `qr-course/src/pages/AssignmentRunner.tsx` calls the generated `useSubmitAttempt()` hook with `{ traces: { [problemId]: TraceInput } }`. Every `=`, `≠`, `≈`, `≡` in the answer was inserted by `MathKeyboard.tsx`, but each insert dispatched a real `keydown` so the trace looks human.
+1. Browser: `qr-course/src/pages/AssignmentRunner.tsx` calls the generated `useSubmitAttempt()` hook with `{ traces: { [problemId]: TraceInput } }`. Every $\sqrt{}$, $\mathbb{Q}$, $\notin$, $\forall$ in the answer was inserted by `MathKeyboard.tsx`, but each insert dispatched a real `keydown` so the trace looks human.
 2. Generated client: `POST /api/assignments/{id}/attempts/{aid}/submit`, validated against `SubmitAttemptBody` Zod schema.
 3. Express route (`routes/assignments.ts`):
    - Loads `attempt` + `answers` + `problems` from Drizzle.

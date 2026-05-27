@@ -76,8 +76,8 @@ export function Scene1({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                   </div>
                 </div>
                 <div className="flex-1 bg-white border border-border p-6 rounded-xl shadow-sm">
-                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Practice Problems</div>
-                  <div className="text-3xl font-sans font-light">4</div>
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Lectures Completed</div>
+                  <div className="text-3xl font-sans font-light">32 <span className="text-muted-foreground text-xl">/ 32</span></div>
                 </div>
               </div>
               <div className="row-span-2 bg-white border border-border p-6 rounded-xl shadow-sm">
@@ -108,13 +108,13 @@ export function Scene1({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                     transition={{ duration: 0.2 }}
                   >
                     <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-1">Week 1</div>
-                    <h4 className="font-serif text-lg mb-2">Foundations</h4>
-                    <p className="text-sm text-muted-foreground">7 Lectures · 3 Assignments</p>
+                    <h4 className="font-serif text-lg mb-2">The number systems</h4>
+                    <p className="text-sm text-muted-foreground">8 Lectures · 3 Assignments</p>
                   </motion.div>
                   <div className="bg-white/60 border border-border p-5 rounded-xl opacity-70">
                     <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Week 2</div>
-                    <h4 className="font-serif text-lg mb-2">Calculus and change</h4>
-                    <p className="text-sm text-muted-foreground">5 Lectures · 4 Assignments</p>
+                    <h4 className="font-serif text-lg mb-2">Operations and structures</h4>
+                    <p className="text-sm text-muted-foreground">8 Lectures · 3 Assignments</p>
                   </div>
                 </div>
               </div>
@@ -134,7 +134,7 @@ export function Scene1({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
               <span className="text-primary font-medium">Week 1</span>
             </div>
             
-            <h1 className="text-4xl font-serif text-primary mb-8 tracking-tight">Week 1 — Foundations</h1>
+            <h1 className="text-4xl font-serif text-primary mb-8 tracking-tight">Week 1 — The number systems</h1>
             
             <div className="bg-white border border-border rounded-xl shadow-sm overflow-hidden w-2/3">
               <div className="px-6 py-4 bg-muted/30 border-b border-border text-xs font-semibold text-muted-foreground uppercase tracking-wider">Lectures</div>
@@ -146,7 +146,7 @@ export function Scene1({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                 >
                   <div className="flex items-center space-x-4">
                     <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-medium">1</div>
-                    <span className="font-medium">1.1 The equality family: =, ≠, ≈, ≡</span>
+                    <span className="font-medium">1.1 Counting, the integers, and the number line</span>
                   </div>
                   <span className="text-xs text-muted-foreground">12 min</span>
                 </motion.div>
@@ -154,32 +154,32 @@ export function Scene1({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                 <div className="px-6 py-4 flex items-center justify-between opacity-80">
                   <div className="flex items-center space-x-4">
                     <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground">2</div>
-                    <span>1.2 Inequality symbols: &lt;, &gt;, ≤, ≥</span>
+                    <span>1.2 Rational numbers and ratios</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground">14 min</span>
+                </div>
+                
+                <div className="px-6 py-4 flex items-center justify-between opacity-80">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground">3</div>
+                    <span>1.3 Irrationals and the √2 scandal</span>
                   </div>
                   <span className="text-xs text-muted-foreground">15 min</span>
                 </div>
                 
                 <div className="px-6 py-4 flex items-center justify-between opacity-80">
                   <div className="flex items-center space-x-4">
-                    <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground">3</div>
-                    <span>1.3 ± and ∝</span>
-                  </div>
-                  <span className="text-xs text-muted-foreground">18 min</span>
-                </div>
-                
-                <div className="px-6 py-4 flex items-center justify-between opacity-80">
-                  <div className="flex items-center space-x-4">
                     <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground">4</div>
-                    <span>1.4 Exponents: x², xⁿ</span>
+                    <span>1.4 Real numbers and completeness</span>
                   </div>
-                  <span className="text-xs text-muted-foreground">14 min</span>
+                  <span className="text-xs text-muted-foreground">16 min</span>
                 </div>
                 <div className="px-6 py-4 flex items-center justify-between opacity-80">
                   <div className="flex items-center space-x-4">
                     <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground">5</div>
-                    <span>1.5 Roots: √, ³√</span>
+                    <span>1.5 Imaginary and complex numbers as rotations</span>
                   </div>
-                  <span className="text-xs text-muted-foreground">10 min</span>
+                  <span className="text-xs text-muted-foreground">14 min</span>
                 </div>
               </div>
             </div>

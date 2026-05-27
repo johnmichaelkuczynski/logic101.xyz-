@@ -71,11 +71,11 @@ export function Scene4({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
   }, [setCursorPos, setIsClicking]);
 
   const rows = [
-    { topic: 'The equality family: =, ≠, ≈, ≡', week: 'Week 1', att: 0, acc: 0, stat: 'UNTESTED', statColor: 'text-muted-foreground bg-muted' },
-    { topic: 'Inequality symbols: <, >, ≤, ≥', week: 'Week 1', att: 1, acc: 1, stat: 'STRONG', statColor: 'text-emerald-700 bg-emerald-50' },
-    { topic: '± and ∝', week: 'Week 1', att: 1, acc: 1, stat: 'STRONG', statColor: 'text-emerald-700 bg-emerald-50' },
-    { topic: 'Exponents: x², xⁿ', week: 'Week 1', att: 0, acc: 0, stat: 'UNTESTED', statColor: 'text-muted-foreground bg-muted' },
-    { topic: 'Roots: √, ³√', week: 'Week 1', att: 0, acc: 0, stat: 'UNTESTED', statColor: 'text-muted-foreground bg-muted' },
+    { topic: 'Counting, the integers, and the number line', week: 'Week 1', att: 0, acc: 0, stat: 'UNTESTED', statColor: 'text-muted-foreground bg-muted' },
+    { topic: 'Rational numbers and ratios', week: 'Week 1', att: 1, acc: 1, stat: 'STRONG', statColor: 'text-emerald-700 bg-emerald-50' },
+    { topic: 'Irrationals and the √2 scandal', week: 'Week 1', att: 1, acc: 1, stat: 'STRONG', statColor: 'text-emerald-700 bg-emerald-50' },
+    { topic: 'Real numbers and completeness', week: 'Week 1', att: 0, acc: 0, stat: 'UNTESTED', statColor: 'text-muted-foreground bg-muted' },
+    { topic: 'Countable vs. uncountable infinity', week: 'Week 1', att: 0, acc: 0, stat: 'UNTESTED', statColor: 'text-muted-foreground bg-muted' },
   ];
 
   return (
