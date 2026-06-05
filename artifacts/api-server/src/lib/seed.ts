@@ -447,7 +447,7 @@ Each connective has an **introduction** rule (how to prove it) and an **eliminat
 - $\\to$-elim (**modus ponens**): from $p$ and $p \\to q$ infer $q$.
 - $\\to$-intro: assume $p$, derive $q$, then discharge to conclude $p \\to q$.
 - $\\vee$-intro: from $p$ infer $p \\vee q$.
-- $\\neg$-elim / reductio: assume $p$, derive a contradiction $\\bot$, conclude $\\neg p$.
+- $\\neg$-intro / reductio: assume $p$, derive a contradiction $\\bot$, discharge to conclude $\\neg p$. ($\\neg$-elim is the converse: from $p$ and $\\neg p$ infer $\\bot$.)
 
 ## Derived rules
 
@@ -612,11 +612,11 @@ Only *mixed* $\\forall\\exists$ vs. $\\exists\\forall$ is order-sensitive.
 
 Continuity and uniform continuity differ *only* in quantifier order. A function $f$ is continuous when
 
-$$\\forall \\varepsilon\\, \\forall x\\, \\exists \\delta\\, \\forall y\\,\\bigl(|x-y|<\\delta \\to |f(x)-f(y)|<\\varepsilon\\bigr),$$
+$$\\forall \\varepsilon>0\\, \\forall x\\, \\exists \\delta>0\\, \\forall y\\,\\bigl(|x-y|<\\delta \\to |f(x)-f(y)|<\\varepsilon\\bigr),$$
 
 but **uniformly** continuous when the $\\exists\\delta$ moves *out front*, before $\\forall x$:
 
-$$\\forall \\varepsilon\\, \\exists \\delta\\, \\forall x\\, \\forall y\\,\\bigl(|x-y|<\\delta \\to |f(x)-f(y)|<\\varepsilon\\bigr).$$
+$$\\forall \\varepsilon>0\\, \\exists \\delta>0\\, \\forall x\\, \\forall y\\,\\bigl(|x-y|<\\delta \\to |f(x)-f(y)|<\\varepsilon\\bigr).$$
 
 Generations of calculus students conflate these two, and the difference is *purely* the position of one quantifier — exactly the $\\forall\\exists$ vs. $\\exists\\forall$ distinction above. Mastering quantifier scope is mastering the language in which all of modern mathematics is written.`,
   },
@@ -682,7 +682,7 @@ Show the syllogism $\\forall x\\,(Hx \\to Mx),\\ Hs \\vdash Ms$:
 
 ## Example: proving an entailment a table cannot
 
-Show $\\forall x\\,(Fx \\to Gx),\\ \\exists x\\, Fx \\vdash \\exists x\\, Gx$. Use $\\exists$-elim on $\\exists x\\, Fx$ to get a fresh witness $Fa$, instantiate the universal to $Fa \\to Ga$, apply modus ponens for $Ga$, then $\\exists$-introduce $\\exists x\\, Gx$. Over an *infinite* domain no truth table can check this, yet the proof is four lines. That gap — finite proofs deciding infinite-domain validities — is precisely the power that makes week 4's completeness theorem so remarkable.`,
+Show $\\forall x\\,(Fx \\to Gx),\\ \\exists x\\, Fx \\vdash \\exists x\\, Gx$. To use $\\exists$-elim on $\\exists x\\, Fx$, open a subproof assuming $F(a)$ for a *fresh* constant $a$; instantiate the universal to $F(a) \\to G(a)$, apply modus ponens for $G(a)$, then $\\exists$-introduce $\\exists x\\, Gx$ — which, having no free $a$, discharges out of the subproof. Truth tables cannot check this first-order entailment at all (they are a method for propositional logic), yet the proof is four lines. That gap — finite proofs deciding infinite-domain validities — is precisely the power that makes week 4's completeness theorem so remarkable.`,
   },
   {
     slug: "models-interpretations-counterexamples",
