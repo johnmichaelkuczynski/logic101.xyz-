@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "Teach Yourself Conceptual Mathematics"
+title = "Teach Yourself Formal Logic"
 version = "1.0.0"
 id = "artifacts/qr-course"
 router = "path"
