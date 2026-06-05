@@ -557,7 +557,7 @@ async function auditLecture(
   try {
     const out = await chatJson<{ issues?: LectureIssue[] }>(
       "You are a rigorous formal-logic fact-checker for a college-level course on formal logic. " +
-        "You scrutinize a single lecture body for FACTUAL ERRORS only — wrong definitions, wrong formulas, wrong physical laws, wrong worked examples, misuse of notation (e.g. calling an equation an identity when it isn't), incorrect numerical claims, or self-contradictions. " +
+        "You scrutinize a single lecture body for FACTUAL ERRORS only — wrong definitions, wrong formulas, invalid inference rules, wrong worked examples or proofs, misuse of notation (e.g. confusing ⊢ with ⊨, or a connective with its dual), incorrect claims about validity/soundness/decidability, or self-contradictions. " +
         "Style, tone, completeness, and pedagogy are OUT OF SCOPE — do NOT flag them. " +
         'Respond as strict JSON: {"issues": [{"quote": string, "problem": string, "fix": string}]}. ' +
         '"quote" must be a short verbatim snippet from the lecture (<= 160 chars). "problem" states the error in one sentence. "fix" proposes the correction in one sentence. ' +
