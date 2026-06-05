@@ -1,5 +1,16 @@
 uploads = []
-generated = []
+
+[[generated]]
+id = "d4LmguaebHtZP_d1UKS7t"
+uri = "file://artifacts/qr-course-demo/public/images/bg-abstract.png"
+type = "image"
+title = "Abstract dark geometry"
+
+[[generated]]
+id = "65REMKQq-mu_0Ma9lEvUs"
+uri = "file://artifacts/qr-course-demo/public/images/keyboard-macro.png"
+type = "image"
+title = "Dark keyboard macro"
 
 [[outputs]]
 id = "k9ub7M-_NtEMTP4gQFmL8"

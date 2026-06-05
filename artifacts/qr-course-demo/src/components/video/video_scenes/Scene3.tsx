@@ -1,137 +1,71 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { TypewriterText } from '../TypewriterText';
 import { StreamingText } from '../StreamingText';
-import { TypingIndicator } from '../TypingIndicator';
 
-export function Scene3({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x: string, y: string}) => void, setIsClicking: (val: boolean) => void }) {
+export function Scene3() {
   const [phase, setPhase] = useState(0);
 
   useEffect(() => {
-    // 0-2.0s Cursor into textarea, types "Why is dividing by zero undefined?"
-    // 2.0-2.5s Cursor to send button, clicks.
-    // 2.5-3.5s Pulsing dots.
-    // 3.5-10s AI response streams.
-    // 10-12s Cursor types "What about limits?"
+    const t1 = setTimeout(() => setPhase(1), 800); // Title
+    const t2 = setTimeout(() => setPhase(2), 1500); // Keyboard appears
+    const t3 = setTimeout(() => setPhase(3), 2500); // Typing
+    const t4 = setTimeout(() => setPhase(4), 4500); // Exit
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
+  }, []);
 
-    setCursorPos({ x: '60vw', y: '16vh' }); // Start at Tutor tab
-    
-    const t1 = setTimeout(() => {
-      setCursorPos({ x: '60vw', y: '85vh' }); // Move to textarea
-      setPhase(1); // Start typing question 1
-    }, 500);
-
-    const t2 = setTimeout(() => {
-      setCursorPos({ x: '92vw', y: '88vh' }); // Move to send button
-    }, 2000);
-
-    const t3 = setTimeout(() => {
-      setIsClicking(true);
-      setPhase(2); // Show user bubble, start AI typing
-    }, 2400);
-
-    const t4 = setTimeout(() => {
-      setIsClicking(false);
-      setPhase(3); // AI streaming
-    }, 3400);
-
-    const t5 = setTimeout(() => {
-      setCursorPos({ x: '65vw', y: '90vh' }); // Move back to textarea
-    }, 10000);
-
-    const t6 = setTimeout(() => {
-      setPhase(4); // Start typing question 2
-    }, 10500);
-
-    return () => {
-      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3);
-      clearTimeout(t4); clearTimeout(t5); clearTimeout(t6);
-    };
-  }, [setCursorPos, setIsClicking]);
+  const keys = ['P', 'Q', '→', '⊢', '∀', '∃', '≡', '¬'];
 
   return (
     <motion.div 
-      className="absolute inset-0 w-full h-full bg-background flex"
-      initial={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      className="absolute inset-0 w-full h-full flex flex-col items-center justify-center p-12 overflow-hidden"
+      initial={{ opacity: 0, scale: 1.05 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, y: -50 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* Left Pane (Static from previous) */}
-      <div className="w-1/2 h-full border-r border-border p-12 overflow-hidden flex flex-col relative opacity-50">
-        <div className="text-xs font-bold tracking-widest text-muted-foreground mb-4">WEEK 1 — REASONING, ARGUMENTS, AND LOGICAL FORM</div>
-        <h1 className="text-3xl font-serif text-primary mb-8">1.1 What logic is: arguments and inference</h1>
-        <div className="prose prose-sm max-w-none text-foreground/80 space-y-6">
-          <h2 className="font-serif text-2xl text-primary">What is an argument?</h2>
-          <p>Formal logic asks the question reasoning classes usually skip: what is it for a conclusion to <em>follow</em> from premises? What is a statement, a connective, a quantifier, a proof? This course teaches the ideas behind the symbols, from validity to Gödel and the halting problem.</p>
-        </div>
-      </div>
+      <div 
+        className="absolute inset-0 opacity-20 mix-blend-screen bg-cover bg-center"
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/keyboard-macro.png)` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
 
-      {/* Right Pane: Tutor Chat */}
-      <div className="w-1/2 h-full bg-white flex flex-col relative">
-        <div className="flex border-b border-border px-4 pt-4 bg-background">
-          <div className="px-6 py-3 font-medium text-sm border-b-2 border-primary text-primary">Ask the tutor</div>
-          <div className="px-6 py-3 font-medium text-sm border-b-2 border-transparent text-muted-foreground">Practice on this</div>
-        </div>
+      <div className="relative z-10 w-full max-w-4xl text-center flex flex-col items-center gap-12">
+        <motion.h2 
+          className="text-[4vw] font-bold leading-tight"
+          initial={{ opacity: 0, y: -20 }}
+          animate={phase >= 1 ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+          transition={{ duration: 0.8 }}
+        >
+          Symbolic Answers
+        </motion.h2>
 
-        <div className="flex-1 p-8 relative flex flex-col overflow-hidden">
-          
-          <div className="flex-1 overflow-y-auto space-y-6 flex flex-col">
-            {phase < 2 && (
-              <motion.div exit={{ opacity: 0, y: -20 }} className="mt-auto">
-                <div className="mb-4 text-xs font-semibold text-muted-foreground uppercase tracking-widest">Starter questions for this section</div>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">Can a valid argument have a false conclusion?</div>
-                </div>
-              </motion.div>
-            )}
-
-            {phase >= 2 && (
-              <motion.div 
-                initial={{ opacity: 0, y: 20, scale: 0.95 }} 
-                animate={{ opacity: 1, y: 0, scale: 1 }} 
-                className="self-end max-w-[85%] bg-primary text-white p-4 rounded-2xl rounded-tr-sm shadow-sm mt-auto"
-              >
-                Can a valid argument have a false conclusion?
-              </motion.div>
-            )}
-
-            {phase === 2 && (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                className="self-start max-w-[85%]"
-              >
-                <TypingIndicator />
-              </motion.div>
-            )}
-
-            {phase >= 3 && (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                className="self-start w-[85%] bg-muted/30 border border-border p-5 rounded-2xl rounded-tl-sm text-[15px] leading-relaxed shadow-sm"
-              >
-                <StreamingText text="Yes — validity only forbids true premises with a false conclusion. If a premise is false, a valid argument can still deliver a false conclusion: 'All birds can fly; a penguin is a bird; so a penguin can fly' is valid in form but unsound. Validity is about form (P ⊢ C with no counter-model); soundness adds that every premise is actually true." delay={0} />
-              </motion.div>
-            )}
+        <motion.div 
+          className="w-full bg-background border border-primary/30 rounded-xl p-8 shadow-2xl shadow-primary/10"
+          initial={{ opacity: 0, y: 40 }}
+          animate={phase >= 2 ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ duration: 0.8, type: 'spring' }}
+        >
+          <div className="text-left text-muted-foreground text-sm mb-4">Express Modus Ponens:</div>
+          <div className="h-16 flex items-center border-b border-border mb-8 px-4 text-2xl font-mono text-primary bg-secondary/30 rounded-md">
+            {phase >= 3 && <StreamingText text="P, P → Q ⊢ Q" delay={0} />}
+            {phase >= 2 && <motion.span animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, duration: 0.8 }} className="ml-1 w-3 h-6 bg-primary inline-block" />}
           </div>
 
-          <div className="mt-6 w-full min-h-24 border border-border rounded-xl bg-background p-3 flex items-end shadow-inner relative z-10">
-            <div className="w-full flex justify-between items-center pr-2">
-              <div className="text-foreground text-[15px] font-medium pl-2 relative w-full h-full flex items-center">
-                {phase === 1 && <TypewriterText text="Can a valid argument have a false conclusion?" speed={25} />}
-                {phase >= 2 && phase < 4 && <span className="text-muted-foreground font-normal">Ask a question about arguments and inference...</span>}
-                {phase >= 4 && <TypewriterText text="So what makes an argument sound?" speed={20} />}
-                {((phase >= 1 && phase < 2) || phase >= 4) && (
-                  <motion.div className="w-0.5 h-5 bg-primary ml-1" animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, duration: 0.8 }} />
-                )}
-              </div>
-              <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors shrink-0 ${phase === 1 ? 'bg-primary text-white cursor-pointer shadow-md' : 'bg-muted text-muted-foreground opacity-50'}`}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-              </div>
-            </div>
+          <div className="flex justify-center gap-3">
+            {keys.map((k, i) => (
+              <motion.div
+                key={k}
+                className="w-14 h-14 rounded-lg bg-secondary border border-border flex items-center justify-center font-mono text-xl shadow-md"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={phase >= 2 ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+                transition={{ delay: 0.5 + (i * 0.05), type: 'spring' }}
+                whileHover={{ scale: 1.1, backgroundColor: '#1E293B' }}
+              >
+                {k}
+              </motion.div>
+            ))}
           </div>
-
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   );

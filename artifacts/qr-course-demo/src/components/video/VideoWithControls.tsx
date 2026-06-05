@@ -210,7 +210,6 @@ export default function VideoWithControls() {
         key={mountKey}
         durations={durations}
         loop
-        muted={muted}
         onSceneChange={onSceneChange}
       />
       <div
