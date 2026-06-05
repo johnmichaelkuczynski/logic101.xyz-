@@ -155,20 +155,19 @@ router.post("/practice/sessions/:sessionId/next", async (req, res): Promise<void
       correctAnswer: string;
       explanation: string;
     }>(
-      `You generate a single quantitative-reasoning practice problem for a college freshman. The problem MUST be on the topic "${topic.title}" and at difficulty "${difficultyLabel}" (${difficulty.toFixed(
+      `You generate a single formal-logic practice problem for a college logic student. The problem MUST be on the topic "${topic.title}" and at difficulty "${difficultyLabel}" (${difficulty.toFixed(
         1,
-      )}/5). Use $...$ for inline LaTeX where helpful. The answer must be a short string (a number, fraction, expression, or short word) — never multi-paragraph. Respond as strict JSON: {"prompt": string, "correctAnswer": string, "explanation": string}. Avoid these recent prompts: ${JSON.stringify(
+      )}/5). The problem MUST require the student to WRITE THE KEY STATEMENT IN SYMBOLS (e.g. translate an English sentence into propositional or predicate logic, write a quantified statement, an equivalence, a sequent with ⊢ or ⊨, or a modal formula). Use $...$ for inline LaTeX where helpful, and use proper logic commands ($\\to$, $\\neg$, $\\wedge$, $\\vee$, $\\leftrightarrow$, $\\forall$, $\\exists$, $\\vdash$, $\\models$, $\\Box$, $\\Diamond$). The correctAnswer must be a short symbolic string (a formula or sequent in unicode logic symbols) — never multi-paragraph. Respond as strict JSON: {"prompt": string, "correctAnswer": string, "explanation": string}. Avoid these recent prompts: ${JSON.stringify(
         lastProblems.map((p) => p.prompt),
       )}.`,
       userRequest || `Generate a new ${difficultyLabel} problem on ${topic.title}.`,
     );
   } catch {
     generated = {
-      prompt: `Practice (${topic.title}): If $x + ${Math.round(
-        difficulty * 3,
-      )} = ${Math.round(difficulty * 7)}$, what is $x$?`,
-      correctAnswer: String(Math.round(difficulty * 7) - Math.round(difficulty * 3)),
-      explanation: "Subtract from both sides.",
+      prompt: `Practice (${topic.title}): Translate the argument "If it is raining, the ground is wet; it is raining; therefore the ground is wet" into a propositional sequent using $\\to$ and $\\vdash$.`,
+      correctAnswer: "P \\to Q, P \\vdash Q",
+      explanation:
+        "Let $P$ = \"it is raining\" and $Q$ = \"the ground is wet\". The argument is modus ponens: from $P \\to Q$ and $P$, infer $Q$.",
     };
   }
 
@@ -257,7 +256,7 @@ router.post("/practice/sessions/:sessionId/grade", async (req, res): Promise<voi
     try {
       tutorTip = (
         await chatJson<{ tip: string }>(
-          "You are a kind, concise math tutor. Given a problem, the correct answer, and the student's wrong attempt, give ONE focused next-step tip (2 sentences max). Respond as strict JSON: {\"tip\": string}.",
+          "You are a kind, concise formal-logic tutor. Given a problem, the correct answer, and the student's wrong attempt, give ONE focused next-step tip (2 sentences max). Respond as strict JSON: {\"tip\": string}.",
           JSON.stringify({
             prompt: problem.prompt,
             correctAnswer: problem.correctAnswer,

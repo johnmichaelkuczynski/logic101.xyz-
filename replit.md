@@ -1,26 +1,26 @@
-# 🧠 Teach Yourself Conceptual Mathematics
+# ⊢ Teach Yourself Formal Logic
 
-**A Four-Week Course on the Ideas Behind the Symbols — From the Integers to Gödel and the Halting Problem**
+**A Four-Week Course on Reasoning, Arguments, and Proof — From Informal Argument Analysis to Soundness, Completeness, and the Limits of Decidability**
 
 ---
 
 ## 🧩 Overview
 
-Teach Yourself Conceptual Mathematics is a self-paced, single-user web course that asks the question math classes usually skip: *what are these things, really?* What is a number? What is an operation? What is a proof? What does it mean for a series to add up to a finite value? What does it mean for a theorem to be unprovable?
+Teach Yourself Formal Logic is a self-paced, single-user web course that takes you from "what makes an argument good?" to the machinery of formal proof and the metatheorems that describe its limits. It teaches the *form* of valid reasoning: how to strip an argument down to its logical skeleton, write it in symbols, and test it.
 
-The course is a content reskin of the **QuantReason** Quantitative Reasoning app. The full QuantReason runtime — lectures with short / medium / long depth, section-scoped AI tutor, adaptive practice, AI-graded homework / tests / midterm / final, two-layer AI-authorship detection, and one-click diagnostics — is preserved unchanged. The **purpose** of this build is to teach the conceptual backbone of modern mathematics — the same backbone that every undergraduate eventually meets in an analysis or algebra class, presented in one connected arc.
+The course is a content reskin of the **QuantReason** Quantitative Reasoning app. The full QuantReason runtime — lectures with short / medium / long depth, section-scoped AI tutor, adaptive practice, AI-graded homework / tests / midterm / final, two-layer AI-authorship detection, and one-click diagnostics — is preserved unchanged. The **purpose** of this build is to teach formal logic — the same backbone every philosophy, mathematics, and computer-science student eventually meets — presented in one connected arc.
 
 ---
 
 ## 🧠 What It Does
 
-- **Four-Week Curriculum of 32 Micro-Lectures** — Eight per week, organized by theme:
-  - **Week 1 — The number systems**: counting and the number line; rationals and ratios; irrationals and the $\sqrt 2$ scandal; real numbers and completeness; imaginary and complex numbers as rotations; zero, negatives, and other conceptual leaps; bases and place value; countable vs. uncountable infinity.
-  - **Week 2 — Operations and structures**: what an operation is; commutativity, associativity, distributivity; groups and symmetry; rings and fields; vector spaces; functions as mappings; relations, equivalence classes, and isomorphism; modular arithmetic.
-  - **Week 3 — The continuum: calculus, geometry, topology**: limits and the taming of infinity; continuity; derivatives as instantaneous rate; integrals as accumulation; the Fundamental Theorem of Calculus; sequences, series, and Zeno; Euclidean vs. non-Euclidean geometry; topology, dimension, and curvature.
-  - **Week 4 — Foundations: logic, proof, undecidability**: propositional and predicate logic; what a proof is; mathematical induction; sets and Russell's paradox; axioms and independence results; Gödel's incompleteness theorems; probability (measure, frequency, credence); computability and the halting problem.
-- **One Real Example per Lecture** — Every micro-lecture grounds its concept in a worked example from science, history, or another part of mathematics — e.g. the Pythagoreans throwing Hippasus overboard for $\sqrt 2$, Cantor's diagonal argument, the Banach–Tarski paradox, Eddington's 1919 eclipse confirming non-Euclidean spacetime, the RSA cryptosystem as computation in $\mathbb{Z}/n\mathbb{Z}$, Cohen's forcing argument for the independence of CH, and Turing's diagonal proof of the undecidability of the halting problem.
-- **One Symbolic Question per Lecture** — Every homework / test / midterm / final problem requires the student to *write the key statement in symbols* (set-builder notation, $\varepsilon$–$\delta$, quantifiers, $\Sigma$, $\equiv \ldots \pmod n$), not just describe it in English. The on-screen math keyboard is the only practical way to compose these answers.
+- **Four-Week Curriculum of 28 Micro-Lectures** — organized by theme:
+  - **Week 1 — Reasoning, arguments, and logical form (7 lectures):** what logic is; statements and truth values; validity and soundness; deductive vs. inductive reasoning; logical form and translation; informal fallacies; necessary and sufficient conditions.
+  - **Week 2 — Propositional logic (6 lectures):** the propositional connectives; truth tables; tautology, contradiction, and contingency; logical equivalence and De Morgan's laws; translating into propositional logic; natural deduction in propositional logic.
+  - **Week 3 — Predicate logic (7 lectures):** predicates and singular terms; the quantifiers; translating into predicate logic; multiple quantifiers and scope; identity and definite descriptions; natural deduction in predicate logic; models, interpretations, and counterexamples.
+  - **Week 4 — Metalogic and beyond (8 lectures):** soundness and completeness; modal logic; set theory for logicians; relations and functions; decidability and its limits; non-classical and defeasible logics; applying argument analysis; a capstone synthesis.
+- **One Real Example per Lecture** — Every micro-lecture grounds its concept in a worked argument or historical case — e.g. Aristotle's syllogistic in the *Prior Analytics*, modus ponens vs. affirming the consequent, the truth-table test for validity, De Morgan duality, Russell's theory of definite descriptions, Gödel's completeness theorem vs. the incompleteness theorems, and the undecidability of first-order validity.
+- **One Symbolic Question per Lecture** — Every homework / test / midterm / final problem requires the student to *write the key statement in symbols* (∧ ∨ ¬ → ↔, ∀ ∃, ⊢ ⊨, □ ◇, set-builder notation, ≡), not just describe it in English. The on-screen math/logic keyboard is the only practical way to compose these answers.
 - **Three-Depth Lectures, Section-Scoped Tutor, Adaptive Practice, AI Grading, Two-Layer Detection, One-Click Diagnostics** — All inherited unchanged from the QuantReason runtime.
 - **Built-In Product Demo Video** — The companion `qr-course-demo` artifact still ships as a short screencast of the live UI.
 
@@ -28,7 +28,7 @@ The course is a content reskin of the **QuantReason** Quantitative Reasoning app
 
 ## ⚙️ Technical Features
 
-- **Symbolic Answer Harness** — Every problem prompt is structured so the canonical answer is a piece of mathematical notation. Both the prompt rendering (KaTeX) and the answer entry/grading (LaTeX-aware AI grader with numeric short-circuit) must handle set-builder, quantifiers, blackboard-bold, congruence-modulo, $\varepsilon$–$\delta$, and the rest cleanly.
+- **Symbolic Answer Harness** — Every problem prompt is structured so the canonical answer is a piece of logical notation. Both the prompt rendering (KaTeX) and the answer entry/grading (LaTeX-aware AI grader with numeric short-circuit) must handle connectives, quantifiers, turnstiles (⊢, ⊨), modal operators (□, ◇), set-builder notation, congruence/equivalence (≡), and the rest cleanly.
 - **Two-Layer AI-Authorship Detection** —
   - **Static (GPTZero):** Every submitted answer is sent to GPTZero's `predict/text` endpoint; the per-document AI probability is blended `0.85 × GPTZero + 0.15 × structural-heuristic` for the final score. If GPTZero is unavailable, the system silently falls back to an LLM scorer plus heuristic.
   - **Diachronic (Keystroke Pattern):** The student textarea captures keystroke count, erase count, bulk-insert events, longest bulk insert, rewrite segments, and total duration. A scorer penalizes paste-then-reword behavior, low keystroke-to-output ratios, and impossibly sustained typing speeds.
@@ -54,18 +54,18 @@ Both are requested via the secrets panel; neither is hard-coded.
 
 ## 🎓 Designed For
 
-- **Anyone Who Took a Calculus Class and Wondered "But What *Is* This?":** A short, focused course on the conceptual scaffolding behind the symbols — number, operation, structure, limit, proof, undecidability.
-- **The Maintainer of QuantReason and Its Clones:** A pure stress test of the math-notation stack — keyboard, LaTeX rendering, grading, and AI detection — under a different curriculum, with answers that lean on quantifiers and set-builder notation.
+- **Anyone Who Wants to Reason Rigorously:** A short, focused course on the form of valid argument — statement, validity, connective, quantifier, proof, and the metatheorems that bound them.
+- **The Maintainer of QuantReason and Its Clones:** A pure stress test of the math-notation stack — keyboard, LaTeX rendering, grading, and AI detection — under a different curriculum, with answers that lean on connectives, quantifiers, and turnstiles.
 
 ---
 
 ## 💡 Core Idea
 
-Most mathematics courses teach the *moves* — how to differentiate, how to multiply matrices, how to solve a congruence. Far fewer teach the *objects* — what a number is, what an operation is, what a proof is, what an axiom can and cannot do. This course is built around the second list.
+Most logic is learned as a pile of rules — modus ponens here, De Morgan there. Far fewer courses make the *form* itself the object of study: what a statement is, what makes an inference valid, what a quantifier ranges over, what a proof guarantees, and what no proof procedure can decide.
 
-Read the idea, see it grounded in a real example, then write the defining statement in symbols of your own.
+Read the idea, see it grounded in a real argument, then write the defining statement in symbols of your own.
 
-**Teach Yourself Conceptual Mathematics — read the idea, ground the idea, write the idea.**
+**Teach Yourself Formal Logic — read the idea, ground the idea, write the idea.**
 
 ---
 

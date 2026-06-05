@@ -148,11 +148,12 @@ router.get("/diagnostics/system", async (_req, res) => {
   steps.push(
     await run("Grader: equivalence check", async () => {
       const g = await gradeAnswer({
-        prompt: "What is 2 + 2?",
-        correctAnswer: "4",
-        userAnswer: "four",
+        prompt: "Write the negation of $P \\wedge Q$ using De Morgan's law.",
+        correctAnswer: "¬P ∨ ¬Q",
+        userAnswer: "\\lnot P \\lor \\lnot Q",
       });
-      if (!g.correct) throw new Error('"four" should equal "4"');
+      if (!g.correct)
+        throw new Error('"\\lnot P \\lor \\lnot Q" should equal "¬P ∨ ¬Q"');
       return "semantic equivalence ok";
     }),
   );
@@ -352,7 +353,7 @@ router.post("/diagnostics/synthetic-run", async (_req, res) => {
           correctAnswer: string;
           explanation: string;
         }>(
-          `You generate a single quantitative-reasoning practice problem on "${topic.title}" at easy difficulty. Respond as strict JSON: {"prompt": string, "correctAnswer": string, "explanation": string}.`,
+          `You generate a single formal-logic practice problem on "${topic.title}" at easy difficulty that requires writing the key statement in symbols. Respond as strict JSON: {"prompt": string, "correctAnswer": string, "explanation": string}.`,
           `New problem on ${topic.title}.`,
         );
         const [stored] = await db
@@ -401,7 +402,7 @@ router.post("/diagnostics/synthetic-run", async (_req, res) => {
   steps.push(
     await run("AI detection scan (pasted-style text should flag)", async () => {
       const r = await detect(
-        "In conclusion, the multifaceted tapestry of conceptual mathematics is paramount to navigating the landscape of modern academic discourse.",
+        "In conclusion, the multifaceted tapestry of formal logic is paramount to navigating the landscape of modern academic discourse.",
         {
           keystrokeCount: 8,
           eraseCount: 0,
@@ -491,7 +492,7 @@ router.post("/diagnostics/expand-lectures", async (req, res) => {
       : "Noticeably more explanation: clarify each definition, motivate each rule, and add a short 'why this works' note where useful.";
 
   const sys =
-    `You are a college quantitative-reasoning lecturer producing the ${level.toUpperCase()} version of a lecture. ` +
+    `You are a college formal-logic lecturer producing the ${level.toUpperCase()} version of a lecture. ` +
     "You are given the SHORT version of the lecture. Rewrite it as a longer teaching version. RULES, no exceptions:\n" +
     "1. KEEP every heading and every concept from the SHORT version, in the same order, with the same names. You may add new sub-sections only when needed to introduce additional examples — but no new top-level topics.\n" +
     `2. ${moreExplanation}\n` +
@@ -555,7 +556,7 @@ async function auditLecture(
 ): Promise<LectureAuditRow> {
   try {
     const out = await chatJson<{ issues?: LectureIssue[] }>(
-      "You are a rigorous mathematics and physics fact-checker for a college-level course on conceptual mathematics. " +
+      "You are a rigorous formal-logic fact-checker for a college-level course on formal logic. " +
         "You scrutinize a single lecture body for FACTUAL ERRORS only — wrong definitions, wrong formulas, wrong physical laws, wrong worked examples, misuse of notation (e.g. calling an equation an identity when it isn't), incorrect numerical claims, or self-contradictions. " +
         "Style, tone, completeness, and pedagogy are OUT OF SCOPE — do NOT flag them. " +
         'Respond as strict JSON: {"issues": [{"quote": string, "problem": string, "fix": string}]}. ' +
@@ -596,10 +597,10 @@ async function auditProblem(p: {
       issue?: string;
       betterAnswer?: string;
     }>(
-      "You are a rigorous grader for a college-level conceptual-mathematics course. " +
+      "You are a rigorous grader for a college-level formal-logic course. " +
         "You are given a problem PROMPT and the STATED CORRECT ANSWER stored in the course database. " +
         "Decide whether the stated answer is genuinely correct, fully sufficient, and notationally appropriate for the prompt. " +
-        "Minor stylistic differences (LaTeX vs unicode, spacing, equivalent algebraic forms) are NOT issues. Flag only true errors: wrong value, wrong formula, wrong symbol, wrong physics, missing a required part of the answer, or an answer that does not actually satisfy the prompt. " +
+        "Minor stylistic differences (LaTeX vs unicode, spacing, logically equivalent formulations) are NOT issues. Flag only true errors: invalid inference, wrong formula, wrong symbol, wrong quantifier or connective, missing a required part of the answer, or an answer that does not actually satisfy the prompt. " +
         'Respond as strict JSON: {"verdict": "correct" | "incorrect" | "ambiguous", "issue": string, "betterAnswer": string}. ' +
         'If verdict is "correct", issue and betterAnswer may be empty strings. ' +
         'If verdict is "incorrect" or "ambiguous", "issue" must explain the problem in one sentence and "betterAnswer" must give the answer you would store instead.',

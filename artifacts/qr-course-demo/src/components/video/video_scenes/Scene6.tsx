@@ -94,7 +94,7 @@ export function Scene6({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
               >
                 <div>
                   <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Homework</div>
-                  <h4 className="font-serif text-lg text-primary mb-1">Homework 1.1 — Counting, rationals, irrationals, completeness</h4>
+                  <h4 className="font-serif text-lg text-primary mb-1">Homework 1.1 — Arguments, truth-values, validity, soundness</h4>
                   <div className="text-sm text-muted-foreground">4 problems</div>
                 </div>
                 <div className="flex items-center space-x-6">
@@ -117,7 +117,7 @@ export function Scene6({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
               >
                 <div>
                   <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Homework</div>
-                  <h4 className="font-serif text-lg text-primary mb-1">Homework 1.2 — Complex numbers, bases, infinity</h4>
+                  <h4 className="font-serif text-lg text-primary mb-1">Homework 1.2 — Deduction, logical form, fallacies, conditions</h4>
                   <div className="text-sm text-muted-foreground">4 problems</div>
                 </div>
                 <div className="flex items-center space-x-6">
@@ -174,11 +174,11 @@ export function Scene6({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
             <div className="bg-white border border-border rounded-xl shadow-sm p-8 mb-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 bg-emerald-100 text-emerald-700 px-4 py-1.5 text-xs font-bold tracking-widest rounded-bl-xl border-b border-l border-emerald-200">GRADED</div>
               
-              <h3 className="font-medium text-lg mb-6 max-w-2xl text-foreground">Q1. The Pythagoreans discovered that the diagonal of a unit square cannot be written as a ratio of two integers. Write that fact — that √2 is not a rational number — in symbols.</h3>
+              <h3 className="font-medium text-lg mb-6 max-w-2xl text-foreground">Q1. Modus ponens lets you infer Q from P together with the conditional P → Q. Write this argument form in symbols.</h3>
               
               <div className="w-fit mb-6">
                 <div className="text-xs text-muted-foreground mb-2">Your answer:</div>
-                <div className="px-6 py-3 bg-muted/30 border border-border rounded-lg text-lg font-mono">√2 ∉ ℚ</div>
+                <div className="px-6 py-3 bg-muted/30 border border-border rounded-lg text-lg font-mono">P, P → Q ⊢ Q</div>
               </div>
 
               <AnimatePresence>
@@ -193,7 +193,7 @@ export function Scene6({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                       <span>AI Tutor Feedback</span>
                     </div>
                     <div className="text-sm text-blue-900 leading-relaxed">
-                      <StreamingText text="Correct. √2 ∉ ℚ is exactly the statement of the Pythagorean discovery — √2 is real, but no integer ratio equals it. Clean use of set-membership and the blackboard-bold ℚ." delay={0} />
+                      <StreamingText text="Correct. P, P → Q ⊢ Q is exactly modus ponens — from P and the conditional P → Q, the conclusion Q follows. Clean use of the turnstile ⊢ and the conditional →." delay={0} />
                     </div>
                   </motion.div>
                 )}
@@ -219,7 +219,7 @@ export function Scene6({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
             </div>
             
             <div className="bg-white border border-border rounded-xl shadow-sm p-8 opacity-50">
-              <h3 className="font-medium text-lg mb-6 max-w-2xl text-foreground">Q2. Write the set of positive integers in set-builder notation as a subset of ℤ.</h3>
+              <h3 className="font-medium text-lg mb-6 max-w-2xl text-foreground">Q2. Write the argument form modus tollens in symbols, using P, Q, →, ¬, and ⊢.</h3>
               <div className="text-sm text-muted-foreground">Problem content hidden...</div>
             </div>
           </motion.div>

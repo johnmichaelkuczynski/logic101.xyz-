@@ -19,1279 +19,965 @@ type SeedTopic = {
 
 const TOPICS: SeedTopic[] = [
   // ───────────────────────────────────────────────────────────────
-  // Week 1 — The number systems
+  // Week 1 — Reasoning, arguments, and logical form
   // ───────────────────────────────────────────────────────────────
   {
-    slug: "counting-integers-numberline",
-    title: "Counting, the integers, and the number line",
+    slug: "what-logic-is",
+    title: "What logic is: arguments and inference",
     weekNumber: 1,
-    blurb: "From tally marks to a continuous line of integers.",
-    lectureTitle: "1.1 Counting, the integers, and the number line",
-    body: `# Counting, the integers, and the number line
+    blurb: "Logic studies which conclusions follow from which premises.",
+    lectureTitle: "1.1 What logic is: arguments and inference",
+    body: `# What logic is: arguments and inference
 
-Mathematics begins with *counting*. The natural numbers $\\mathbb{N} = \\{1, 2, 3, \\ldots\\}$ — or $\\{0, 1, 2, \\ldots\\}$, depending on the author — are the answer to "how many?" They are discrete, ordered, and unbounded above.
+Logic is the study of **inference** — of which conclusions *follow from* which assumptions. It is not the study of what is true in the world (that is for the sciences), but of the relation $\\vdash$ between **premises** and a **conclusion**: when does accepting the premises commit you to accepting the conclusion?
 
-Extending counting in the opposite direction gives the **integers** $\\mathbb{Z} = \\{\\ldots, -2, -1, 0, 1, 2, \\ldots\\}$. The letter $\\mathbb{Z}$ comes from German *Zahlen* ("numbers"). What makes $\\mathbb{Z}$ a genuine *extension* of $\\mathbb{N}$ is that subtraction is now always defined: $3 - 5 = -2$ has no answer in $\\mathbb{N}$, but it does in $\\mathbb{Z}$.
+## Arguments
 
-## The number line
+An **argument** is a finite list of statements — the **premises** $P_1, P_2, \\ldots, P_n$ — offered in support of a final statement, the **conclusion** $C$. We write it
 
-Around 1600, John Wallis popularized the picture of integers as evenly-spaced points on a horizontal **line** stretching to infinity in both directions. The visual is so familiar we forget it is a *modeling choice*: we are asserting that numbers, which began life as counts of distinct objects, can be identified with positions on a continuum.
+$$P_1,\\ P_2,\\ \\ldots,\\ P_n \\ \\therefore\\ C.$$
 
-That single picture quietly unifies arithmetic with geometry. Addition becomes translation; negation becomes reflection through $0$; ordering ($<$, $>$) becomes "left of, right of." Every later number system — the rationals, the reals, the complex numbers — is built by adding more points to (or stacking more lines onto) this single mental object.
+The turnstile $\\vdash$ records the *claim* that $C$ is derivable from the premises: $P_1, \\ldots, P_n \\vdash C$. Logic asks whether that claim holds, by inspecting the **form** of the argument rather than the subject matter.
 
-## A historical example
+## Inference vs. assertion
 
-Negative numbers were rejected as absurd in Europe until the 17th century — Cardano (1545) called them *numeri ficti*, "fictitious numbers." What changed minds was *bookkeeping*: a debt of seven coins is structurally a $-7$, and treating it as a number lets you add receipts and debts in one column. The number line absorbed the negatives by giving them a home: a *place* to stand, on the left of zero.`,
+Asserting "$C$ is true" is not arguing. An argument exhibits *grounds*: it says "given these, you must accept this." The premises need not be true for the inference to be good — what matters is the *connection*. We will spend the course making that connection precise.
+
+## The classic example
+
+Aristotle's syllogistic, set out in the *Prior Analytics* (c. 350 BCE), was the first formal theory of valid inference. His standard example:
+
+- $P_1$: All humans are mortal.
+- $P_2$: Socrates is a human.
+- $C$: Therefore Socrates is mortal.
+
+Aristotle's insight is that the argument is good *because of its shape* — "All $M$ are $P$; $s$ is $M$; therefore $s$ is $P$" — and any argument of that shape is equally good, whatever $M$, $P$, and $s$ stand for. That move, from particular arguments to argument **forms**, is the beginning of logic and the thread of this entire course.`,
   },
   {
-    slug: "rationals-ratios",
-    title: "Rational numbers and ratios",
+    slug: "statements-truth-values",
+    title: "Statements, truth, and truth-values",
     weekNumber: 1,
-    blurb: "Numbers as ratios of integers; why $\\mathbb{Q}$ is dense.",
-    lectureTitle: "1.2 Rational numbers and ratios",
-    body: `# Rational numbers and ratios
+    blurb: "The bearers of truth: declarative sentences and their values.",
+    lectureTitle: "1.2 Statements, truth, and truth-values",
+    body: `# Statements, truth, and truth-values
 
-A **rational number** is a ratio $p/q$ of integers with $q \\neq 0$. The set of all such ratios, with two representations identified when they cross-multiply equal, is
+Logic works on **statements** (also called *propositions*): declarative sentences that are either **true** or **false**. The two possible values, written $\\top$ (true) and $\\bot$ (false) — or $T$ and $F$ — are the **truth-values**.
 
-$$\\mathbb{Q} = \\{\\,p/q : p, q \\in \\mathbb{Z},\\ q \\neq 0\\,\\}.$$
+## What counts as a statement
 
-The point of this construction is to make *division* always work — exactly as the integers existed to make subtraction always work.
+A sentence is a statement only if it has a truth-value. "The Moon orbits the Earth" is a statement (true). "$7$ is prime" is a statement (true). "Is it raining?", "Shut the door!", and "Hello" are *not* statements — questions, commands, and greetings are not true or false.
 
-## Density
+## Bivalence
 
-Between any two rationals, no matter how close, there is another rational: take their average. Iterate, and you discover that the rationals are **dense** on the number line — there are no "gaps" between them as far as any finite measurement could ever detect.
+Classical logic assumes the principle of **bivalence**: every statement has exactly one of the two truth-values — never both, never neither. Formally, for any statement $A$,
 
-This is so counterintuitive that for centuries mathematicians assumed the rationals already filled the line. They do not — but you cannot tell from the inside.
+$$A = \\top \\quad\\text{or}\\quad A = \\bot, \\quad\\text{and not both.}$$
 
-## A scientific example
+This is a substantive assumption. In week 4 we meet logics that reject it (for vagueness, for the future, for partial information). For now it is our ground rule.
 
-Every measurement humans actually make is rational. A digital scale reading "$1.732\\,\\text{kg}$" is asserting $1732/1000$. The speed of light in SI units, $c = 299{,}792{,}458\\,\\text{m/s}$, is an *exact* integer by definition since 1983 — and therefore rational.
+## A subtle example: the Liar
 
-## Ratios vs. fractions
+Consider the sentence $L$: "This sentence is false." If $L$ is true, then what it says holds, so it is false; if $L$ is false, then what it says fails, so it is true. $L$ has no consistent truth-value at all.
 
-The word *ratio* in $\\mathbb{Q}$ matters. Pythagoras taught that the harmony of a musical interval is a ratio of small integers: the octave is $2{:}1$, the perfect fifth $3{:}2$, the perfect fourth $4{:}3$. Greek mathematics for two centuries was essentially the study of *ratios of magnitudes*, on the implicit assumption that any two magnitudes had one. The next lecture is the story of how that assumption broke.`,
+The Liar paradox, known to the Megarian logician Eubulides in the 4th century BCE, shows that not every grammatical declarative sentence expresses a genuine statement. Twenty-three centuries later the *same* self-referential trick reappears at the heart of Gödel's and Tarski's theorems (week 4): the careful separation of a language from talk *about* that language is logic's response to the Liar.`,
   },
   {
-    slug: "irrationals-sqrt2",
-    title: "Irrational numbers and the $\\sqrt 2$ scandal",
+    slug: "validity-soundness",
+    title: "Validity and soundness",
     weekNumber: 1,
-    blurb: "The diagonal of the unit square is not a ratio.",
-    lectureTitle: "1.3 Irrational numbers and the $\\sqrt 2$ scandal",
-    body: `# Irrational numbers and the $\\sqrt 2$ scandal
+    blurb: "The two central virtues of a deductive argument.",
+    lectureTitle: "1.3 Validity and soundness",
+    body: `# Validity and soundness
 
-The Pythagoreans believed every length was a ratio of two integers — that is, every length was rational. The unit square killed that belief.
+The central concept of deductive logic is **validity**. An argument is **valid** when the truth of its premises *guarantees* the truth of its conclusion — when it is impossible for the premises to be true and the conclusion false.
 
-## The diagonal
+## The definition
 
-By the Pythagorean theorem, the diagonal of a square of side $1$ has length $d$ with $d^2 = 1^2 + 1^2 = 2$, so $d = \\sqrt 2$. The Pythagoreans tried to write $\\sqrt 2 = p/q$ and discovered they could not.
+An argument with premises $P_1, \\ldots, P_n$ and conclusion $C$ is valid iff
 
-## The proof by contradiction
+$$\\text{there is no situation in which } P_1, \\ldots, P_n \\text{ are all true and } C \\text{ is false.}$$
 
-Suppose $\\sqrt 2 = p/q$ in lowest terms. Then $p^2 = 2 q^2$, so $p^2$ is even, so $p$ is even, so $p = 2k$. Substituting: $4k^2 = 2q^2$, i.e. $q^2 = 2k^2$, so $q$ is even too. But then $p$ and $q$ share a factor of $2$ — contradicting "lowest terms." Therefore no such $p/q$ exists. $\\sqrt 2 \\notin \\mathbb{Q}$.
+In the semantic notation of later weeks, validity is written $P_1, \\ldots, P_n \\models C$. Validity is about the *form* of the inference, not about whether the premises actually hold.
 
-This is one of the oldest theorems in mathematics and one of the cleanest examples of *proof by contradiction*, a technique we will revisit in week 4.
+## Validity does not require true premises
 
-## A scandal, not just a result
+This valid argument has a false premise and a false conclusion:
 
-Legend says Hippasus of Metapontum, who first proved this, was thrown overboard by his fellow Pythagoreans for revealing the result. Whether or not the drowning happened, the cultural shock was real: the entire Pythagorean cosmology — "all is number" meaning "all is ratio of integers" — collapsed. A new kind of number was needed.
+- All fish are mammals. $\\quad$ All mammals breathe air. $\\quad\\therefore$ All fish breathe air.
 
-## The bigger picture
+It is *valid* — IF the premises held, the conclusion would have to. Conversely, an argument can have true premises and a true conclusion yet be **invalid**, if the conclusion does not follow from them.
 
-$\\sqrt 2$, $\\pi$, $e$, $\\log_2 3$, and almost every number you can write down are irrational. The irrationals are not a few exotic exceptions sprinkled into $\\mathbb{Q}$; they are, in a precise sense we will quantify in 1.8, the *overwhelming majority* of the real numbers.`,
+## Soundness
+
+An argument is **sound** iff it is *both* valid *and* has all true premises. Soundness is what we ultimately want, because:
+
+$$\\text{valid} + \\text{true premises} \\;\\Rightarrow\\; \\text{true conclusion}.$$
+
+## Example
+
+- All whales are mammals. (true) $\\quad$ All mammals are warm-blooded. (true) $\\quad\\therefore$ All whales are warm-blooded.
+
+Valid *and* both premises true — so it is sound, and the conclusion is guaranteed. Logic alone delivers validity; establishing the premises is the job of the sciences. The division of labour between *valid* and *true* is one of the most useful distinctions you will learn.`,
   },
   {
-    slug: "reals-completeness",
-    title: "Real numbers and completeness",
+    slug: "deductive-inductive",
+    title: "Deductive and inductive reasoning",
     weekNumber: 1,
-    blurb: "Filling in the gaps: $\\mathbb{R}$ has no holes.",
-    lectureTitle: "1.4 Real numbers and completeness",
-    body: `# Real numbers and completeness
+    blurb: "Necessity vs. probability: two ways an argument can support a conclusion.",
+    lectureTitle: "1.4 Deductive and inductive reasoning",
+    body: `# Deductive and inductive reasoning
 
-The rationals are dense but full of holes — $\\sqrt 2$, $\\pi$, and uncountably many others are missing. The **real numbers** $\\mathbb{R}$ are the result of filling in *every* such hole.
+There are two great families of argument, distinguished by *how strongly* the premises are meant to support the conclusion.
 
-## What "complete" means
+## Deductive arguments
 
-A number system is **complete** if every "convergent-looking" sequence actually converges to something *inside the system*. Two precise versions of this idea:
+A **deductive** argument aims at **validity**: the premises are intended to *guarantee* the conclusion. Deduction is **monotonic** and **truth-preserving** — adding premises never destroys validity, and true premises in a valid argument force a true conclusion. The syllogism of 1.1 is deductive.
 
-- **Least Upper Bound axiom.** Every nonempty subset of $\\mathbb{R}$ with an upper bound has a least upper bound (a supremum) in $\\mathbb{R}$.
-- **Cauchy completeness.** Every sequence whose terms get arbitrarily close to each other converges to a real limit.
+## Inductive arguments
 
-In $\\mathbb{Q}$ both properties *fail*. The sequence $1, 1.4, 1.41, 1.414, 1.4142, \\ldots$ of decimal approximations to $\\sqrt 2$ is a Cauchy sequence of rationals with no rational limit. In $\\mathbb{R}$ its limit is $\\sqrt 2$, which is, by construction, *in* $\\mathbb{R}$.
+An **inductive** argument aims only at **strength**: the premises make the conclusion *probable*, not certain. Inductive support comes in degrees and is **ampliative** — the conclusion says more than the premises strictly contain. Crucially, induction is **defeasible**: a strong inductive argument can be overturned by new information.
 
-## How $\\mathbb{R}$ is built
+The standard contrast:
 
-Two classical constructions:
+- Deductive: "All ravens are black; this is a raven; so it is black." Conclusion *guaranteed*.
+- Inductive: "Every raven observed so far has been black; so all ravens are black." Conclusion *supported*, not guaranteed.
 
-1. **Dedekind cuts** (1872). A real number is a partition of $\\mathbb{Q}$ into a "lower" and "upper" set with no greatest element below. $\\sqrt 2$ is the cut $\\{q \\in \\mathbb{Q} : q^2 < 2\\}\\,|\\,\\{q \\in \\mathbb{Q} : q^2 > 2\\}$.
-2. **Cauchy sequences** (Cantor, 1872). A real number is an equivalence class of Cauchy sequences of rationals.
+## Hume's problem of induction
 
-Both constructions yield the same field $\\mathbb{R}$, up to isomorphism.
+David Hume (1748) pointed out that induction has no *deductive* justification. The inference "the future will resemble the past" cannot itself be proved deductively (it might fail) nor inductively (that would be circular). Yet all of empirical science rests on it.
 
-## A scientific example
-
-In physics, the *continuum* hypothesis — that space and time are modeled by $\\mathbb{R}$, not $\\mathbb{Q}$ — is what lets us write down differential equations. The reals' completeness is exactly what guarantees that, e.g., Newton's $F = ma$ has solutions; in the rationals alone, most ODEs would have no solution to converge to.`,
+Nelson Goodman sharpened this in 1955 with the predicate *grue* (green if examined before some future time $t$, blue afterwards): the same evidence that "confirms" *all emeralds are green* equally "confirms" *all emeralds are grue*. Deciding which inductions are legitimate turns out to be deep — which is exactly why this course's *formal* machinery is built for deduction, and induction is handled separately in week 4's defeasible logics.`,
   },
   {
-    slug: "complex-rotations",
-    title: "Imaginary and complex numbers as rotations",
+    slug: "logical-form-translation",
+    title: "Logical form and translation",
     weekNumber: 1,
-    blurb: "$i$ is not mysterious — it's a $90°$ turn.",
-    lectureTitle: "1.5 Imaginary and complex numbers as rotations",
-    body: `# Imaginary and complex numbers as rotations
+    blurb: "Stripping content to expose the skeleton on which validity depends.",
+    lectureTitle: "1.5 Logical form and translation",
+    body: `# Logical form and translation
 
-A **complex number** has the form $z = a + bi$ with $a, b \\in \\mathbb{R}$ and $i$ defined by $i^2 = -1$. The set of all such numbers is $\\mathbb{C}$.
+Validity depends on **form**, not content. The work of formal logic is to *translate* a natural-language argument into a symbolic skeleton in which that form is visible, and then test the skeleton.
 
-## The leap
+## What "form" means
 
-Cardano (1545) used $\\sqrt{-1}$ as a *bookkeeping device* in solving cubic equations — the imaginary parts cancelled at the end, leaving real roots. For two centuries $\\sqrt{-1}$ remained, in Euler's words, "neither nothing, nor greater than nothing, nor less than nothing." The mystery was: *what is it the number of?*
+Compare:
 
-## The Argand picture
+- All cats are animals; Felix is a cat; so Felix is an animal.
+- All primes are integers; $7$ is a prime; so $7$ is an integer.
 
-Caspar Wessel (1799) and Jean-Robert Argand (1806) independently noticed that complex numbers live not on a *line* but on a *plane*: identify $a + bi$ with the point $(a, b)$. Real numbers occupy the horizontal axis. The number $i$ sits at $(0, 1)$.
+Different subject matter, *same form*: "All $F$ are $G$; $a$ is $F$; therefore $a$ is $G$." The validity lives in the schematic letters and the logical words — *all*, *is*, *therefore* — not in cats or primes. We isolate that by **translation**: choose symbols for the building blocks, then write the form.
 
-In this picture, **multiplication by $i$ is rotation by $90°$**. Multiplying by $i$ twice rotates by $180°$, which is multiplication by $-1$ — and that is precisely the equation $i^2 = -1$. The imaginary unit is not a mystery; it is the quarter-turn.
+## Logical vs. non-logical vocabulary
 
-More generally, multiplying by $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ rotates the plane by angle $\\theta$. This is **Euler's formula**, and the special case $e^{i\\pi} + 1 = 0$ packages five fundamental constants in seven symbols.
+Translation hinges on separating two kinds of words:
 
-## A scientific example
+- **Logical constants** — *not, and, or, if…then, all, some, is identical to* — rendered $\\neg, \\wedge, \\vee, \\to, \\forall, \\exists, =$. Their meaning is fixed by logic.
+- **Non-logical vocabulary** — *cat, prime, Felix, 7* — rendered by schematic letters $F, G, a, b$. Their meaning is supplied by interpretation.
 
-Alternating current in electrical engineering is described by complex *impedances*: a resistor contributes a real number, a capacitor or inductor contributes an imaginary number. The phase shift between voltage and current is literally an angle in the complex plane. Without $i$, you would write coupled trigonometric differential equations; with $i$, you write algebra.`,
+A valid form is one that comes out valid for *every* reinterpretation of the non-logical letters.
+
+## Why translation is hard: an example
+
+English hides logical form. "Nothing is better than eternal happiness, and a cheese sandwich is better than nothing" looks like it yields "a cheese sandwich is better than eternal happiness." The joke works because *nothing* is not a name; properly translated with quantifiers ($\\neg\\exists x\\, Bx$ vs. $Bca$ for some $a$), the two "nothings" have different logical forms and the inference collapses. Getting the translation right is most of the battle — and the central skill of weeks 2 and 3.`,
   },
   {
-    slug: "zero-negatives-leaps",
-    title: "Zero, negatives, and other conceptual leaps",
+    slug: "informal-fallacies",
+    title: "Informal fallacies",
     weekNumber: 1,
-    blurb: "How long it took to accept the numbers we now take for granted.",
-    lectureTitle: "1.6 Zero, negatives, and other conceptual leaps",
-    body: `# Zero, negatives, and other conceptual leaps
+    blurb: "Arguments that persuade without being valid.",
+    lectureTitle: "1.6 Informal fallacies",
+    body: `# Informal fallacies
 
-The set $\\{0, 1, -3, \\sqrt 2, \\pi, i\\}$ contains nothing exotic to a modern eye. To the mathematicians who lived through the introduction of each of these ideas, every entry was scandalous.
+A **fallacy** is an argument that tends to persuade while failing to give genuine logical support. *Formal* fallacies are invalid in virtue of their shape; *informal* fallacies fail because of their content, context, or rhetoric, even when the surface form looks fine.
 
-## Zero
+## Two formal fallacies (for contrast)
 
-Most early number systems had no $0$. The Babylonians, Greeks, and Romans counted with words for "nothing" but no *numeral* for it — Roman numerals have no zero. Indian mathematicians (Brahmagupta, c. 628 CE) wrote down the first formal arithmetic rules for $0$: $a + 0 = a$, $a \\cdot 0 = 0$, and the still-debated $a / 0$. The numeral itself, *śūnya* ("emptiness"), travelled west via Arabic mathematicians and reached Europe through Fibonacci's *Liber Abaci* (1202). Even then, several Italian cities banned zero into the 1300s on the grounds that it made accounting forgery easier.
+These are invalid *forms* that mimic valid ones:
 
-## Negatives
+- **Affirming the consequent**: $P \\to Q,\\ Q \\;\\therefore\\; P$. (Invalid — $Q$ might hold for another reason.)
+- **Denying the antecedent**: $P \\to Q,\\ \\neg P \\;\\therefore\\; \\neg Q$. (Invalid.)
 
-Diophantus (3rd c. CE) called the equation $4x + 20 = 4$ "absurd" because its solution would have to be negative. Descartes (1637) called negative roots of polynomial equations *fausses racines*, "false roots." Acceptance only came when negatives modelled something — debt, direction, signed measurement — that could not be wished away.
+Compare the *valid* modus ponens $P \\to Q,\\ P \\therefore Q$ and modus tollens $P \\to Q,\\ \\neg Q \\therefore \\neg P$ from week 2. One symbol out of place flips validity.
 
-## Irrationals, transcendentals, $i$
+## A catalogue of informal fallacies
 
-Each new kind of number arrived as a forced response to an equation the previous system could not solve:
+- **Ad hominem** — attacking the arguer, not the argument.
+- **Straw man** — refuting a distorted version of the opponent's claim.
+- **Begging the question** (*petitio principii*) — assuming the conclusion among the premises.
+- **False dilemma** — presenting two options as exhaustive when they are not.
+- **Equivocation** — shifting the meaning of a term mid-argument.
+- **Appeal to ignorance** — "not proven false, therefore true."
 
-- $x + 1 = 0$ forces $\\mathbb{Z}$.
-- $2x = 1$ forces $\\mathbb{Q}$.
-- $x^2 = 2$ forces $\\mathbb{R}$ (or at least the algebraic reals).
-- $x^2 + 1 = 0$ forces $\\mathbb{C}$.
+## Example: equivocation
 
-## The lesson
+> Only *man* is rational. No *woman* is a man. Therefore no woman is rational.
 
-A *conceptual leap* in mathematics is almost always the recognition that an object the previous generation called "impossible" is in fact useful, consistent, and indispensable. The reluctance is cultural, not logical.`,
+The word *man* means "human being" in the first premise and "male" in the second. Because the term changes meaning, the argument has *no single logical form* — it merely looks like a valid syllogism. Diagnosing equivocation is exactly diagnosing a failed *translation*: under an honest symbolization the middle term splits into two predicates $M_1$ and $M_2$, and the syllogism's link is severed. Fallacy-spotting is applied translation, which is why it belongs at the end of week 1.`,
   },
   {
-    slug: "bases-place-value",
-    title: "Bases, place value, and representation",
+    slug: "necessary-sufficient",
+    title: "Necessary and sufficient conditions",
     weekNumber: 1,
-    blurb: "A number is one thing; its written form is another.",
-    lectureTitle: "1.7 Bases, place value, and representation",
-    body: `# Bases, place value, and representation
+    blurb: "The two directions of the conditional, and the biconditional.",
+    lectureTitle: "1.7 Necessary and sufficient conditions",
+    body: `# Necessary and sufficient conditions
 
-The number *seventeen* is a single concept. Its written representations include:
+Much careless reasoning comes from confusing **necessary** with **sufficient** conditions. The conditional $\\to$ makes the distinction exact.
 
-- $17$ in base $10$
-- $10001$ in base $2$
-- $11$ in base $16$ (often written $0x11$)
-- XVII in Roman numerals
-- 一十七 in Chinese.
+## Definitions
 
-The number is invariant; the *numeral* changes with the convention.
+Let $P$ and $Q$ be statements.
 
-## Place value
+- $P$ is **sufficient** for $Q$ when $P$'s holding is enough to guarantee $Q$: $\\;P \\to Q$.
+- $P$ is **necessary** for $Q$ when $Q$ cannot hold without $P$: $\\;Q \\to P$, equivalently $\\neg P \\to \\neg Q$.
 
-In a positional system of base $b$, the string $d_k d_{k-1} \\ldots d_1 d_0$ means
+These are *converse* conditionals. "Sufficient" points one way; "necessary" points the other.
 
-$$d_k b^k + d_{k-1} b^{k-1} + \\cdots + d_1 b + d_0,$$
+## The biconditional
 
-with each digit $d_i$ in $\\{0, 1, \\ldots, b-1\\}$. The *position* of a digit determines what power of $b$ it contributes. This is the deep insight that the Romans lacked: in Roman numerals, $X$ always means ten, no matter where it sits.
+If $P$ is **both** necessary and sufficient for $Q$, then $P$ and $Q$ hold under exactly the same conditions:
 
-Place value lets you do arithmetic algorithmically: add column by column, carry when a column overflows. Try long-division in Roman numerals — you can't, which is why the Roman world used an abacus.
+$$(P \\to Q) \\wedge (Q \\to P) \\;\\equiv\\; P \\leftrightarrow Q.$$
 
-## Why base 10?
+"$P$ if and only if $Q$" — abbreviated **iff** — is the biconditional $P \\leftrightarrow Q$. Mathematical definitions are biconditionals.
 
-There is no mathematical reason for base 10. We use it because humans have ten fingers. The Babylonians used base 60 — you still find it in time ($60$ seconds, $60$ minutes) and angles ($360°$). The Maya used base 20. Modern computers use base 2.
+## Example
 
-## A scientific example
+Being divisible by $4$ is *sufficient* for being even ($\\text{div}_4(n) \\to \\text{Even}(n)$) but not necessary ($6$ is even, not divisible by $4$). Being even is *necessary* for being divisible by $4$ ($\\text{div}_4(n) \\to \\text{Even}(n)$, read the other way) but not sufficient.
 
-Floating-point arithmetic in a computer represents a real number as $\\pm m \\cdot 2^{e}$, with the *mantissa* $m$ and *exponent* $e$ both stored in binary. The number $0.1$ has a finite decimal representation but an *infinite* binary one — which is why "0.1 + 0.2" is not exactly "0.3" in JavaScript. The mathematical number is fine; its representation in base $2$ rounds.
+A real-world cost: a medical test that is *sufficient* for a diagnosis (a positive result guarantees the disease) is very different from one that is *necessary* (everyone with the disease tests positive). Confusing the two — "the test was negative, so you're fine," when the test is only sufficient, not necessary — is a literal life-and-death conditional error. The arrow's *direction* is everything, and keeping it straight is the bridge into the propositional logic of week 2.`,
+  },
 
-## A philosophical aside
+  // ───────────────────────────────────────────────────────────────
+  // Week 2 — Propositional logic
+  // ───────────────────────────────────────────────────────────────
+  {
+    slug: "propositional-connectives",
+    title: "Propositional connectives",
+    weekNumber: 2,
+    blurb: "Five truth-functional operators that build complex statements.",
+    lectureTitle: "2.1 Propositional connectives",
+    body: `# Propositional connectives
 
-Once you separate a number from its representation, you can ask: which properties of a number are intrinsic, and which are artifacts of how we wrote it? "Is 7 a prime?" is intrinsic. "Does the decimal expansion of 7 contain the digit 3?" is representational.`,
+Propositional logic takes atomic statements — letters $p, q, r, \\ldots$ — and builds compound statements with **connectives**. The connectives are **truth-functional**: the truth-value of a compound is fixed entirely by the truth-values of its parts.
+
+## The five standard connectives
+
+| Name | Symbol | English |
+|---|---|---|
+| Negation | $\\neg p$ | not $p$ |
+| Conjunction | $p \\wedge q$ | $p$ and $q$ |
+| Disjunction | $p \\vee q$ | $p$ or $q$ (inclusive) |
+| Conditional | $p \\to q$ | if $p$ then $q$ |
+| Biconditional | $p \\leftrightarrow q$ | $p$ if and only if $q$ |
+
+Negation is **unary** (one input); the rest are **binary** (two inputs).
+
+## How each behaves
+
+- $\\neg p$ flips the value of $p$.
+- $p \\wedge q$ is true exactly when *both* are true.
+- $p \\vee q$ is true when *at least one* is true (inclusive *or* — both counts).
+- $p \\to q$ is false in exactly one case: $p$ true and $q$ false.
+- $p \\leftrightarrow q$ is true when the two sides *match*.
+
+## The material conditional, and an example
+
+The conditional $\\to$ is **material**: $p \\to q$ is *defined* as $\\neg p \\vee q$. So a conditional with a false antecedent is automatically true ("vacuously true"). "If the Moon is made of cheese, then $2+2=4$" is true, simply because the antecedent is false.
+
+This bites in mathematics. The statement "for all $x$, if $x$ is a unicorn, then $x$ can fly" is *true* — there are no unicorns, so every instance has a false antecedent. The material reading is what makes universally quantified conditionals over empty domains come out true, a convention you will rely on constantly from week 3 onward.`,
   },
   {
-    slug: "countable-uncountable",
-    title: "Countable vs. uncountable infinity",
-    weekNumber: 1,
-    blurb: "There are more reals than rationals — strictly more.",
-    lectureTitle: "1.8 Countable vs. uncountable infinity",
-    body: `# Countable vs. uncountable infinity
+    slug: "truth-tables",
+    title: "Truth tables",
+    weekNumber: 2,
+    blurb: "An exhaustive method that decides every propositional question.",
+    lectureTitle: "2.2 Truth tables",
+    body: `# Truth tables
 
-For finite sets, "same size" means "same count." For infinite sets, Cantor (1874) showed that "same size" must mean **same cardinality**: there is a one-to-one correspondence (a bijection) between them.
+A **truth table** lists every possible assignment of truth-values to the atomic letters and computes the value of a formula in each. With $n$ distinct letters there are $2^n$ rows — the table is finite, so it *mechanically decides* any propositional question.
 
-## Countable
+## The base tables
 
-A set is **countable** if it can be put in bijection with $\\mathbb{N}$. Astonishingly:
+$$
+\\begin{array}{cc|c|c|c|c}
+p & q & \\neg p & p\\wedge q & p\\vee q & p\\to q \\\\ \\hline
+\\top & \\top & \\bot & \\top & \\top & \\top \\\\
+\\top & \\bot & \\bot & \\bot & \\top & \\bot \\\\
+\\bot & \\top & \\top & \\bot & \\top & \\top \\\\
+\\bot & \\bot & \\top & \\bot & \\bot & \\top
+\\end{array}
+$$
 
-- $\\mathbb{Z}$ is countable: list $0, 1, -1, 2, -2, 3, -3, \\ldots$
-- $\\mathbb{N} \\times \\mathbb{N}$ is countable: walk diagonals $(0,0), (1,0), (0,1), (2,0), (1,1), (0,2), \\ldots$
-- $\\mathbb{Q}$ is countable: a rational $p/q$ is a pair of integers, so apply the previous result.
+Note the single $\\bot$ in the $p \\to q$ column: a conditional fails only when a true antecedent meets a false consequent.
 
-So all three of $\\mathbb{N}$, $\\mathbb{Z}$, $\\mathbb{Q}$ have the *same* infinite size. Cantor called this size $\\aleph_0$ ("aleph-null").
+## Building bigger tables
 
-## Uncountable
+For a compound formula, give each atomic letter a column, then add a column for each sub-formula, working outward. The final column is the formula's truth-function. Two formulas are equivalent exactly when their final columns agree row by row (lecture 2.4).
 
-Cantor's **diagonal argument** shows $\\mathbb{R}$ is **not** countable. Suppose, for contradiction, you had a list $r_1, r_2, r_3, \\ldots$ of every real number in $[0,1]$. Write each $r_n$ as a decimal:
+## Testing an argument
 
-$$r_1 = 0.d_{11} d_{12} d_{13} \\ldots$$
-$$r_2 = 0.d_{21} d_{22} d_{23} \\ldots$$
-$$\\vdots$$
+An argument is valid iff there is **no row** where all premises are $\\top$ and the conclusion is $\\bot$. So truth tables decide validity by inspection.
 
-Now construct a new number $x = 0.e_1 e_2 e_3 \\ldots$ where $e_n$ is *different* from $d_{nn}$ (say, $e_n = 5$ if $d_{nn} \\neq 5$, else $e_n = 6$). By construction, $x$ differs from $r_n$ in the $n$th decimal place, so $x$ is not on the list — yet $x \\in [0,1]$. Contradiction. There is no such list.
+## Example
 
-The cardinality of $\\mathbb{R}$ is strictly greater than $\\aleph_0$; it is usually written $\\mathfrak{c}$ or $2^{\\aleph_0}$.
+Test modus ponens $p,\\ p \\to q \\models q$. The only rows where both premises $p$ and $p \\to q$ are true is the first row ($p = \\top$, $q = \\top$), and there $q = \\top$. No counterexample row exists, so the argument is valid. The same table, read for the form $p \\to q,\\ q \\models p$, *does* have a bad row ($p = \\bot$, $q = \\top$): premises true, conclusion false. That is the fallacy of affirming the consequent, caught mechanically. The price of this certainty is the $2^n$ blow-up — the first hint of the complexity questions in week 4.`,
+  },
+  {
+    slug: "tautology-contradiction-contingency",
+    title: "Tautology, contradiction, and contingency",
+    weekNumber: 2,
+    blurb: "Three ways a formula can relate to truth.",
+    lectureTitle: "2.3 Tautology, contradiction, and contingency",
+    body: `# Tautology, contradiction, and contingency
+
+Looking only at a formula's final truth-table column sorts every propositional formula into three classes.
+
+## The three classes
+
+- A **tautology** is true on *every* row — true under all assignments. We write $\\models A$.
+- A **contradiction** is false on *every* row.
+- A **contingency** is true on some rows and false on others.
+
+A formula is a tautology iff its negation is a contradiction, and vice versa.
+
+## Canonical examples
+
+- Tautology: the **law of excluded middle**, $p \\vee \\neg p$. Whatever $p$ is, one of the two disjuncts holds.
+- Contradiction: the **law of non-contradiction's negation**, $p \\wedge \\neg p$ — never true.
+- Contingency: $p \\to q$ — true in three rows, false in one.
+
+## Tautologies and valid arguments
+
+The two big ideas of the week connect here. An argument $P_1, \\ldots, P_n \\models C$ is valid **iff** the single conditional
+
+$$(P_1 \\wedge \\cdots \\wedge P_n) \\to C$$
+
+is a tautology. So "is this argument valid?" and "is this formula a tautology?" are the same question. Validity-checking *is* tautology-checking.
+
+## Example: a logical truth in disguise
+
+Peirce's law, $((p \\to q) \\to p) \\to p$, is a tautology — but a surprising one. It contains no atom that is plainly forced, and intuitively it looks contingent. Build the four-row table and the final column is all $\\top$. (Remarkably, Peirce's law is a tautology of *classical* logic that *fails* in the intuitionistic logic of week 4 — a first sign that "logical truth" depends on which logic you adopt.) The lesson: do not trust intuition about tautologies; compute the column.`,
+  },
+  {
+    slug: "logical-equivalence-demorgan",
+    title: "Logical equivalence and De Morgan's laws",
+    weekNumber: 2,
+    blurb: "When two formulas say the same thing, and how to push negation inward.",
+    lectureTitle: "2.4 Logical equivalence and De Morgan's laws",
+    body: `# Logical equivalence and De Morgan's laws
+
+Two formulas are **logically equivalent**, written $A \\equiv B$, when they have the *same* truth-value on every row of the truth table — equivalently, when $A \\leftrightarrow B$ is a tautology. Equivalent formulas are interchangeable.
+
+## The core equivalences
+
+- **Double negation**: $\\neg\\neg p \\equiv p$.
+- **Commutativity**: $p \\wedge q \\equiv q \\wedge p$, $\\;p \\vee q \\equiv q \\vee p$.
+- **Distributivity**: $p \\wedge (q \\vee r) \\equiv (p \\wedge q) \\vee (p \\wedge r)$.
+- **Conditional as disjunction**: $p \\to q \\equiv \\neg p \\vee q$.
+- **Contrapositive**: $p \\to q \\equiv \\neg q \\to \\neg p$.
+
+## De Morgan's laws
+
+The two most useful equivalences govern how negation interacts with $\\wedge$ and $\\vee$:
+
+$$\\neg(p \\wedge q) \\equiv \\neg p \\vee \\neg q, \\qquad \\neg(p \\vee q) \\equiv \\neg p \\wedge \\neg q.$$
+
+Negation pushed through a conjunction becomes a disjunction of negations, and vice versa — "not (both)" is "(not one) or (not the other)"; "not (either)" is "(not this) and (not that)." Augustus De Morgan stated them in 1847, though they were known to medieval logicians.
+
+## Example: negating a promise
+
+"You may have cake **and** ice cream" denied is "you may **not** have cake **or** not have ice cream" — $\\neg(c \\wedge i) \\equiv \\neg c \\vee \\neg i$. People routinely get this wrong, sliding to "not cake and not ice cream," which over-denies.
+
+De Morgan's laws are also the engine of digital hardware: every Boolean circuit can be rebuilt from NAND gates alone precisely because $\\neg(p \\wedge q)$ generates the whole connective family by these laws. And in week 3 they generalize to quantifiers — $\\neg\\forall$ becomes $\\exists\\neg$ — making them among the most reused identities in all of logic.`,
+  },
+  {
+    slug: "translating-propositional",
+    title: "Translating natural language into propositional logic",
+    weekNumber: 2,
+    blurb: "Turning English sentences into formulas — and the traps that lurk.",
+    lectureTitle: "2.5 Translating natural language into propositional logic",
+    body: `# Translating natural language into propositional logic
+
+To *use* propositional logic you must translate. Fix a **dictionary** assigning atomic letters to simple statements, then render the connecting words with the five connectives.
+
+## The standard cues
+
+- *not, it is not the case that, fails to* $\\to \\neg$
+- *and, but, however, moreover, yet* $\\to \\wedge$
+- *or, unless* $\\to \\vee$
+- *if … then, only if, provided that* $\\to \\to$
+- *if and only if, exactly when, just in case* $\\to \\leftrightarrow$
+
+"But" is logically just $\\wedge$ — the contrast it signals is rhetorical, not truth-functional.
+
+## The conditional traps
+
+The two hardest cues:
+
+- "$p$ **only if** $q$" translates to $p \\to q$ — *not* $q \\to p$. ("Only if" gives a *necessary* condition for $p$.)
+- "$p$ **unless** $q$" translates to $\\neg q \\to p$, equivalently $p \\vee q$. ("Unless" is "if not.")
+
+## Example
+
+> "I'll go to the party only if Sam goes, but I won't go unless Maria goes too."
+
+Dictionary: $g$ = I go, $s$ = Sam goes, $m$ = Maria goes. Piece by piece: "go only if Sam goes" is $g \\to s$; "won't go unless Maria goes" is $g \\to m$ (I go only if Maria goes). Joined by "but" ($\\wedge$):
+
+$$(g \\to s) \\wedge (g \\to m), \\quad\\text{equivalently}\\quad g \\to (s \\wedge m).$$
+
+Notice the equivalence collapses two conditions into one — a small theorem about your own social plans, derived purely by translation and the equivalences of 2.4. Sloppy readers translate "only if" as $s \\to g$ and reach the opposite commitment; precise translation is the whole game.`,
+  },
+  {
+    slug: "natural-deduction-propositional",
+    title: "Natural deduction in propositional logic",
+    weekNumber: 2,
+    blurb: "Proving conclusions by chaining inference rules instead of tables.",
+    lectureTitle: "2.6 Natural deduction in propositional logic",
+    body: `# Natural deduction in propositional logic
+
+Truth tables *decide* validity but say nothing about *why*. **Natural deduction** is a proof system: a small kit of **inference rules** that let you derive a conclusion from premises step by step, writing $\\Gamma \\vdash C$ ("$C$ is provable from the set of premises $\\Gamma$").
+
+## The core rules
+
+Each connective has an **introduction** rule (how to prove it) and an **elimination** rule (how to use it):
+
+- $\\wedge$-elim: from $p \\wedge q$ infer $p$ (and infer $q$).
+- $\\wedge$-intro: from $p$ and $q$ infer $p \\wedge q$.
+- $\\to$-elim (**modus ponens**): from $p$ and $p \\to q$ infer $q$.
+- $\\to$-intro: assume $p$, derive $q$, then discharge to conclude $p \\to q$.
+- $\\vee$-intro: from $p$ infer $p \\vee q$.
+- $\\neg$-elim / reductio: assume $p$, derive a contradiction $\\bot$, conclude $\\neg p$.
+
+## Derived rules
+
+From the core you can derive shortcuts — **modus tollens** ($p \\to q,\\ \\neg q \\vdash \\neg p$), **hypothetical syllogism** ($p \\to q,\\ q \\to r \\vdash p \\to r$), and **disjunctive syllogism** ($p \\vee q,\\ \\neg p \\vdash q$).
+
+## A worked proof
+
+Show $p \\to q,\\ q \\to r,\\ p \\vdash r$:
+
+1. $p \\to q$ — premise
+2. $q \\to r$ — premise
+3. $p$ — premise
+4. $q$ — from 1, 3 by modus ponens
+5. $r$ — from 2, 4 by modus ponens. $\\;\\blacksquare$
+
+## Why two systems? An example of the payoff
+
+Proof and truth tables answer the same question by opposite routes — and in week 4 we prove they *always* agree: $\\Gamma \\vdash C$ if and only if $\\Gamma \\models C$ (soundness and completeness). Deduction also scales where tables cannot: when we add quantifiers in week 3, the $2^n$ table can become *infinite*, but the proof rules carry over almost unchanged. Natural deduction, introduced by Gentzen in 1934 to mirror how mathematicians actually argue, is the method you will use for the rest of the course.`,
+  },
+
+  // ───────────────────────────────────────────────────────────────
+  // Week 3 — Predicate logic
+  // ───────────────────────────────────────────────────────────────
+  {
+    slug: "predicates-singular-terms",
+    title: "Predicates and singular terms",
+    weekNumber: 3,
+    blurb: "Looking inside the atom: objects, names, and properties.",
+    lectureTitle: "3.1 Predicates and singular terms",
+    body: `# Predicates and singular terms
+
+Propositional logic treats "Socrates is mortal" as a single unanalyzed atom $p$. But then it cannot see why "Socrates is mortal" follows from "all humans are mortal." **Predicate logic** opens the atom into *objects* and *properties*.
+
+## The building blocks
+
+- **Singular terms** name individual objects: **constants** $a, b, c$ (proper names like $s$ for Socrates) and **variables** $x, y, z$ (placeholders).
+- **Predicates** stand for properties and relations: $Hx$ ("$x$ is human"), $Mx$ ("$x$ is mortal"), $Lxy$ ("$x$ loves $y$"). A predicate's number of slots is its **arity**.
+
+## Atomic formulas
+
+Filling a predicate's slots with terms gives an **atomic formula**:
+
+$$Ms \\;(\\text{Socrates is mortal}), \\qquad Lsa \\;(\\text{Socrates loves } a).$$
+
+An atomic formula is true or false once we say which objects exist and which satisfy which predicates — that is the *interpretation* of lecture 3.7.
+
+## Relations need order
+
+For relations, *order matters*: $Lxy$ ("$x$ loves $y$") is generally not the same as $Lyx$. "Romeo loves Juliet" is $Lrj$; "Juliet loves Romeo" is $Ljr$; the tragedy is precisely that these can differ.
+
+## Example
+
+Frege's *Begriffsschrift* (1879) introduced exactly this object/predicate split, replacing the subject–predicate grammar that logic had used since Aristotle. The gain is enormous: with one binary predicate $Pxy$ ("$x$ is a parent of $y$") we can later define grandparent, ancestor, and sibling, none of which Aristotelian logic could express. Cracking the atom into terms and predicates is the single step that lets logic finally handle the language of mathematics — and it is the foundation for the quantifiers of 3.2.`,
+  },
+  {
+    slug: "quantifiers",
+    title: "Universal and existential quantifiers",
+    weekNumber: 3,
+    blurb: "Saying 'all' and 'some' with $\\forall$ and $\\exists$.",
+    lectureTitle: "3.2 Universal and existential quantifiers",
+    body: `# Universal and existential quantifiers
+
+Predicates give us properties of *named* objects. **Quantifiers** let us speak about *all* objects or *some* object without naming them — the heart of predicate logic.
+
+## The two quantifiers
+
+- The **universal quantifier** $\\forall x\\, \\varphi(x)$ — "for all $x$, $\\varphi(x)$."
+- The **existential quantifier** $\\exists x\\, \\varphi(x)$ — "there exists an $x$ such that $\\varphi(x)$."
+
+A quantifier **binds** the variable in its scope; a variable not bound by any quantifier is **free**. A formula with no free variables is a **sentence** and has a definite truth-value (relative to an interpretation).
+
+## The standard sentence shapes
+
+The two most common forms, which you must memorize:
+
+$$\\text{"All } F \\text{ are } G\\text{"}: \\quad \\forall x\\,(Fx \\to Gx),$$
+$$\\text{"Some } F \\text{ is } G\\text{"}: \\quad \\exists x\\,(Fx \\wedge Gx).$$
+
+Note the connectives: *universal goes with $\\to$, existential goes with $\\wedge$*. Writing $\\forall x (Fx \\wedge Gx)$ wrongly claims *everything* is both $F$ and $G$; writing $\\exists x (Fx \\to Gx)$ is true far too easily (any non-$F$ makes it true).
+
+## Quantifier duality
+
+The quantifiers are linked by negation, generalizing De Morgan:
+
+$$\\neg \\forall x\\, \\varphi \\equiv \\exists x\\, \\neg\\varphi, \\qquad \\neg \\exists x\\, \\varphi \\equiv \\forall x\\, \\neg\\varphi.$$
+
+## Example
+
+"All humans are mortal" is $\\forall x\\,(Hx \\to Mx)$. Its negation, "not all humans are mortal," becomes $\\exists x\\,(Hx \\wedge \\neg Mx)$ — "some human is immortal." To *refute* a universal claim you need just one counterexample; to refute an existential claim you must rule out *every* candidate. This asymmetry — cheap to refute "all," expensive to refute "some" — is why mathematicians prize counterexamples, and it drives the whole method of models and counterexamples in 3.7.`,
+  },
+  {
+    slug: "translating-predicate",
+    title: "Translating into predicate logic",
+    weekNumber: 3,
+    blurb: "Rendering English generality with predicates and quantifiers.",
+    lectureTitle: "3.3 Translating into predicate logic",
+    body: `# Translating into predicate logic
+
+Translation into predicate logic is harder than into propositional logic because we must expose *generality*. The recipe: fix a **domain** of discourse, a **dictionary** of predicates and constants, then build the quantified formula.
+
+## The four Aristotelian forms
+
+The categorical sentences, now precise:
+
+$$
+\\begin{array}{ll}
+\\text{All } F \\text{ are } G & \\forall x\\,(Fx \\to Gx) \\\\
+\\text{No } F \\text{ is } G & \\forall x\\,(Fx \\to \\neg Gx) \\\\
+\\text{Some } F \\text{ is } G & \\exists x\\,(Fx \\wedge Gx) \\\\
+\\text{Some } F \\text{ is not } G & \\exists x\\,(Fx \\wedge \\neg Gx)
+\\end{array}
+$$
+
+## "Only" and "any" and "no"
+
+- "Only $F$s are $G$" reverses to $\\forall x\\,(Gx \\to Fx)$.
+- "No $F$ is $G$" is $\\forall x\\,(Fx \\to \\neg Gx)$, equivalently $\\neg\\exists x\\,(Fx \\wedge Gx)$.
+- "Any" is treacherous: "if anyone can solve it, Pat can" is $\\forall x(Sx \\to Sp)$ in antecedent position, not $\\exists$.
+
+## Example
+
+> "Every student who studies passes; some students do not pass; therefore some students do not study."
+
+Domain: people. $Tx$ = $x$ studies, $Px$ = $x$ passes, $Sx$ = $x$ is a student.
+
+- $P_1$: $\\forall x\\,((Sx \\wedge Tx) \\to Px)$
+- $P_2$: $\\exists x\\,(Sx \\wedge \\neg Px)$
+- $C$: $\\exists x\\,(Sx \\wedge \\neg Tx)$
+
+Once written symbolically, the argument is plainly *valid* — the non-passing student from $P_2$ cannot have studied, by $P_1$ (contrapositive), so it satisfies $C$. The English alone leaves people unsure; the translation settles it. This is why mathematics is *written* in this notation: ambiguity that survives in prose dies on contact with quantifiers.`,
+  },
+  {
+    slug: "multiple-quantifiers-scope",
+    title: "Multiple quantifiers and scope",
+    weekNumber: 3,
+    blurb: "Why the order of $\\forall$ and $\\exists$ can reverse meaning.",
+    lectureTitle: "3.4 Multiple quantifiers and scope",
+    body: `# Multiple quantifiers and scope
+
+The real expressive power — and the real danger — of predicate logic appears when quantifiers **nest**. The **scope** of a quantifier is the sub-formula it governs, and the *order* of nested quantifiers can completely change the claim.
+
+## Order matters for mixed quantifiers
+
+With a binary relation $Lxy$ ("$x$ loves $y$"), compare:
+
+$$\\forall x\\, \\exists y\\, Lxy \\qquad\\text{vs.}\\qquad \\exists y\\, \\forall x\\, Lxy.$$
+
+- $\\forall x\\, \\exists y\\, Lxy$: *everyone loves someone* — each person may love a different someone.
+- $\\exists y\\, \\forall x\\, Lxy$: *someone is loved by everyone* — one fixed person whom all love.
+
+The second implies the first, but not conversely. Swapping $\\forall$ and $\\exists$ is not innocent.
+
+## Same-type quantifiers commute
+
+Two universals can be swapped freely, and likewise two existentials:
+
+$$\\forall x\\,\\forall y\\,\\varphi \\equiv \\forall y\\,\\forall x\\,\\varphi, \\qquad \\exists x\\,\\exists y\\,\\varphi \\equiv \\exists y\\,\\exists x\\,\\varphi.$$
+
+Only *mixed* $\\forall\\exists$ vs. $\\exists\\forall$ is order-sensitive.
+
+## The example that runs all of analysis
+
+Continuity and uniform continuity differ *only* in quantifier order. A function $f$ is continuous when
+
+$$\\forall \\varepsilon\\, \\forall x\\, \\exists \\delta\\, \\forall y\\,\\bigl(|x-y|<\\delta \\to |f(x)-f(y)|<\\varepsilon\\bigr),$$
+
+but **uniformly** continuous when the $\\exists\\delta$ moves *out front*, before $\\forall x$:
+
+$$\\forall \\varepsilon\\, \\exists \\delta\\, \\forall x\\, \\forall y\\,\\bigl(|x-y|<\\delta \\to |f(x)-f(y)|<\\varepsilon\\bigr).$$
+
+Generations of calculus students conflate these two, and the difference is *purely* the position of one quantifier — exactly the $\\forall\\exists$ vs. $\\exists\\forall$ distinction above. Mastering quantifier scope is mastering the language in which all of modern mathematics is written.`,
+  },
+  {
+    slug: "identity-definite-descriptions",
+    title: "Identity and definite descriptions",
+    weekNumber: 3,
+    blurb: "The logic of '=', counting, and 'the so-and-so'.",
+    lectureTitle: "3.5 Identity and definite descriptions",
+    body: `# Identity and definite descriptions
+
+Adding one special two-place predicate — **identity**, $x = y$ — vastly increases what predicate logic can say. Identity is fixed in meaning: $x = y$ holds exactly when $x$ and $y$ are the *same object*.
+
+## What identity buys
+
+With $=$ we can express **numerical** claims that pure predicates cannot:
+
+- "At least two $F$s": $\\exists x\\, \\exists y\\,(Fx \\wedge Fy \\wedge x \\neq y)$.
+- "At most one $F$": $\\forall x\\, \\forall y\\,((Fx \\wedge Fy) \\to x = y)$.
+- "Exactly one $F$": $\\exists x\\,(Fx \\wedge \\forall y\\,(Fy \\to y = x))$.
+
+Identity obeys two laws: **reflexivity** $\\forall x\\,(x = x)$ and **substitution** (**Leibniz's Law**) — identicals share all properties, $x = y \\to (\\varphi(x) \\leftrightarrow \\varphi(y))$.
+
+## Definite descriptions
+
+A **definite description** — "**the** $F$" — presupposes a unique $F$. Bertrand Russell's 1905 analysis ("On Denoting") renders "the $F$ is $G$" as a conjunction of *existence*, *uniqueness*, and *predication*:
+
+$$\\exists x\\,\\bigl(Fx \\wedge \\forall y\\,(Fy \\to y = x) \\wedge Gx\\bigr).$$
+
+## Example
+
+"The present King of France is bald" has no real referent — France has no king. Naively it looks neither true nor false, threatening bivalence. Russell's analysis rescues classical logic: the sentence is simply **false**, because its existence clause $\\exists x(Kx \\wedge \\ldots)$ fails. And its negation splits into two readings depending on whether $\\neg$ takes wide or narrow scope over the description — a genuine ambiguity that the *scope* tools of 3.4 resolve exactly. Russell's theory of descriptions is often called the paradigm of analytic philosophy precisely because it shows logical form solving a puzzle that grammar could not.`,
+  },
+  {
+    slug: "natural-deduction-predicate",
+    title: "Natural deduction in predicate logic",
+    weekNumber: 3,
+    blurb: "Four new rules for introducing and eliminating quantifiers.",
+    lectureTitle: "3.6 Natural deduction in predicate logic",
+    body: `# Natural deduction in predicate logic
+
+The propositional proof rules of 2.6 carry over unchanged; predicate logic just adds **four quantifier rules**, two for each quantifier. Proof now reaches conclusions that no finite truth table could.
+
+## The four rules
+
+- **$\\forall$-elimination** (universal instantiation): from $\\forall x\\, \\varphi(x)$ infer $\\varphi(a)$ for any term $a$. (What holds of all holds of each.)
+- **$\\forall$-introduction** (universal generalization): if you derive $\\varphi(a)$ for an **arbitrary** $a$ (a constant about which you assumed nothing), conclude $\\forall x\\, \\varphi(x)$.
+- **$\\exists$-introduction** (existential generalization): from $\\varphi(a)$ infer $\\exists x\\, \\varphi(x)$.
+- **$\\exists$-elimination**: from $\\exists x\\, \\varphi(x)$, introduce a fresh name $a$ for the witness, prove your goal from $\\varphi(a)$, then discharge $a$.
+
+## The crucial side-condition
+
+$\\forall$-introduction and $\\exists$-elimination require the chosen name to be **arbitrary/fresh** — it must not appear in any premise or undischarged assumption. Violating this is the commonest proof error: you cannot generalize from a name you have already constrained.
+
+## A worked proof
+
+Show the syllogism $\\forall x\\,(Hx \\to Mx),\\ Hs \\vdash Ms$:
+
+1. $\\forall x\\,(Hx \\to Mx)$ — premise
+2. $Hs$ — premise
+3. $Hs \\to Ms$ — from 1 by $\\forall$-elim (instantiate $x := s$)
+4. $Ms$ — from 2, 3 by modus ponens. $\\;\\blacksquare$
+
+## Example: proving an entailment a table cannot
+
+Show $\\forall x\\,(Fx \\to Gx),\\ \\exists x\\, Fx \\vdash \\exists x\\, Gx$. Use $\\exists$-elim on $\\exists x\\, Fx$ to get a fresh witness $Fa$, instantiate the universal to $Fa \\to Ga$, apply modus ponens for $Ga$, then $\\exists$-introduce $\\exists x\\, Gx$. Over an *infinite* domain no truth table can check this, yet the proof is four lines. That gap — finite proofs deciding infinite-domain validities — is precisely the power that makes week 4's completeness theorem so remarkable.`,
+  },
+  {
+    slug: "models-interpretations-counterexamples",
+    title: "Models, interpretations, and counterexamples",
+    weekNumber: 3,
+    blurb: "The semantics of predicate logic: making formulas true or false.",
+    lectureTitle: "3.7 Models, interpretations, and counterexamples",
+    body: `# Models, interpretations, and counterexamples
+
+Proof ($\\vdash$) is the *syntactic* side of logic. **Semantics** is the other side: an **interpretation** assigns meaning, and asks whether a formula is *true*. The semantic counterpart of $\\vdash$ is the double turnstile $\\models$.
+
+## What an interpretation is
+
+A **structure** (or **model**) $\\mathcal{M}$ provides:
+
+- a non-empty **domain** $D$ — the objects in play;
+- an object in $D$ for each constant;
+- a subset of $D$ for each one-place predicate (the things that satisfy it), a set of pairs for each two-place predicate, and so on.
+
+A sentence is **true in $\\mathcal{M}$**, written $\\mathcal{M} \\models \\varphi$, when it holds under these assignments. $\\varphi$ is **valid** ($\\models \\varphi$) when true in *every* model; satisfiable when true in *some*.
+
+## Semantic entailment
+
+$\\Gamma \\models \\varphi$ means every model of all of $\\Gamma$ is also a model of $\\varphi$. This is the precise notion of "follows from" that validity (1.3) was reaching for.
+
+## Counterexamples
+
+To show an argument is **invalid**, exhibit a **counterexample**: one model where the premises are true and the conclusion false. A single such model defeats any claim of validity.
+
+## Example
+
+Is $\\forall x\\,(Fx \\to Gx),\\ \\exists x\\, Gx \\models \\exists x\\, Fx$? Try the model $D = \\{1, 2\\}$ with $F = \\varnothing$ (nothing is $F$) and $G = \\{1\\}$. Then the universal premise is *vacuously* true (no $F$s), $\\exists x\\, Gx$ is true ($1$ is $G$), but $\\exists x\\, Fx$ is **false**. So the argument is invalid — caught by one tiny two-element model. Building such finite counter-models is the day-to-day craft of logic, and the fact that finite models suffice for many questions is the launch point for the metalogic of week 4: how proof ($\\vdash$) and truth ($\\models$) relate, and where that relationship breaks down.`,
+  },
+
+  // ───────────────────────────────────────────────────────────────
+  // Week 4 — Metalogic and beyond
+  // ───────────────────────────────────────────────────────────────
+  {
+    slug: "soundness-completeness",
+    title: "Soundness and completeness",
+    weekNumber: 4,
+    blurb: "Proof and truth coincide: $\\vdash$ and $\\models$ are two sides of one coin.",
+    lectureTitle: "4.1 Soundness and completeness",
+    body: `# Soundness and completeness
+
+We now have two notions of "follows from": the *syntactic* $\\Gamma \\vdash \\varphi$ ("there is a proof") and the *semantic* $\\Gamma \\models \\varphi$ ("true in every model"). **Metalogic** studies the proof system itself — and its two headline theorems say these notions match exactly.
+
+## The two directions
+
+- **Soundness**: $\\Gamma \\vdash \\varphi \\;\\Rightarrow\\; \\Gamma \\models \\varphi$. Everything provable is true — the rules never lead from truths to a falsehood. Soundness is what makes proof *trustworthy*.
+- **Completeness**: $\\Gamma \\models \\varphi \\;\\Rightarrow\\; \\Gamma \\vdash \\varphi$. Everything true (in all models) is provable — the rule kit misses nothing. Completeness is what makes proof *sufficient*.
+
+Together:
+
+$$\\Gamma \\vdash \\varphi \\;\\Longleftrightarrow\\; \\Gamma \\models \\varphi.$$
 
 ## What this means
 
-There are infinitely many sizes of infinity. The rationals are sparse compared to the reals in a precise sense: if you "pick a random real," the probability you get a rational is exactly $0$. Most numbers — almost all of them — are irrational, in fact *transcendental*, and we cannot write them down.
+Soundness is the easy direction — check each rule preserves truth. Completeness is deep: it promises that for *any* valid argument, however complex, *some* finite proof exists. Kurt Gödel proved the completeness of first-order predicate logic in his 1929 doctoral thesis — a triumphant result, and not to be confused with his *incompleteness* theorems (4.5), which are about arithmetic, not pure logic.
 
-This week we have climbed from counting to a hierarchy of infinities. Next week we ask: what are we *doing* to these numbers when we add, multiply, and group them?`,
-  },
+## Example: a corollary that shapes everything after
 
-  // ───────────────────────────────────────────────────────────────
-  // Week 2 — Operations and structures
-  // ───────────────────────────────────────────────────────────────
-  {
-    slug: "what-is-operation",
-    title: "What an operation is",
-    weekNumber: 2,
-    blurb: "An operation is a function that combines elements of a set.",
-    lectureTitle: "2.1 What an operation is",
-    body: `# What an operation is
-
-We have spent week 1 collecting numbers. Now we ask: what is happening when we *combine* them?
-
-## The formal definition
-
-A **binary operation** on a set $S$ is a function
-
-$$* : S \\times S \\to S$$
-
-that takes two elements of $S$ and returns one element of $S$. Addition on $\\mathbb{R}$ is one ($+ : \\mathbb{R} \\times \\mathbb{R} \\to \\mathbb{R}$). So is multiplication. So is concatenation of strings, union of sets, composition of functions.
-
-The deep word in that definition is the codomain: the result is required to be *in $S$*. This is called **closure**, and it is not automatic.
-
-## Closure: not automatic
-
-- Subtraction is a binary operation on $\\mathbb{Z}$ but **not** on $\\mathbb{N}$ — $3 - 5 = -2 \\notin \\mathbb{N}$.
-- Division is a binary operation on $\\mathbb{Q}^{\\times} = \\mathbb{Q}\\setminus\\{0\\}$ but **not** on $\\mathbb{Q}$ — you cannot divide by $0$.
-- The cross product is a binary operation on $\\mathbb{R}^3$ but does not generalize as a binary operation to $\\mathbb{R}^n$ for arbitrary $n$.
-
-The history of week 1 — the introduction of negatives, fractions, irrationals, complex numbers — is, retold structurally, the story of *enlarging the set so that the operation has closure*.
-
-## Unary and $n$-ary
-
-Beyond binary, you also have:
-
-- **Unary** operations: negation $x \\mapsto -x$, square root $x \\mapsto \\sqrt x$.
-- **$n$-ary** operations: e.g. the determinant of an $n \\times n$ matrix.
-- **Nullary** operations (constants): the identity element $0$ of addition, the identity element $1$ of multiplication.
-
-## A scientific example
-
-In quantum mechanics, the operation $[A, B] = AB - BA$ on linear operators is a binary operation called the **commutator**. It is *not* closed under all combinations — its very failure of niceness encodes the uncertainty principle. The operation has been chosen because its violations of nice structure tell you something physical.`,
+From completeness flows **compactness**: if every *finite* subset of $\\Gamma$ is satisfiable, then $\\Gamma$ itself is satisfiable. This sounds technical but is explosive — it implies first-order logic *cannot* pin down the natural numbers uniquely (there exist "non-standard models" with infinite integers), which in turn is why no first-order theory can be both complete and categorical. The clean match of $\\vdash$ and $\\models$ here is the high-water mark of logic; the rest of the week is about where, and why, the tide goes out.`,
   },
   {
-    slug: "commutative-associative-distributive",
-    title: "Commutativity, associativity, distributivity",
-    weekNumber: 2,
-    blurb: "Three structural laws — and what happens when they fail.",
-    lectureTitle: "2.2 Commutativity, associativity, distributivity",
-    body: `# Commutativity, associativity, distributivity
-
-Once we have an operation $*$ on a set $S$, three properties dominate the discussion.
-
-## Commutativity
-
-$$a * b = b * a \\quad \\text{for all } a, b \\in S.$$
-
-Order doesn't matter. Addition and multiplication of real numbers are commutative. Subtraction is **not** — $3 - 5 \\neq 5 - 3$. Function composition is usually **not** — $\\sin(\\cos x) \\neq \\cos(\\sin x)$ in general. Matrix multiplication is **not** — and this failure is the whole content of quantum mechanics' non-commuting observables.
-
-## Associativity
-
-$$(a * b) * c = a * (b * c) \\quad \\text{for all } a, b, c \\in S.$$
-
-Grouping doesn't matter. Without associativity you cannot write $a*b*c$ unambiguously; you would have to specify which pair to combine first. Addition, multiplication, function composition, and matrix multiplication are all associative. Subtraction and the cross product are **not** — $(1-2)-3 = -4 \\neq 2 = 1 - (2-3)$, and $(\\vec a \\times \\vec b) \\times \\vec c \\neq \\vec a \\times (\\vec b \\times \\vec c)$ in general.
-
-## Distributivity
-
-With two operations $*$ and $\\circ$ on the same set, $*$ **distributes over** $\\circ$ if
-
-$$a * (b \\circ c) = (a * b) \\circ (a * c).$$
-
-Multiplication distributes over addition: $a(b + c) = ab + ac$. Addition does **not** distribute over multiplication: $a + (bc) \\neq (a + b)(a + c)$ in general.
-
-## Why these three?
-
-These three laws are not arbitrary — they are exactly the laws that make algebraic *manipulation* work. Solving $2x + 3 = 11$ silently uses every one of them. Without commutativity of addition, the order of the terms would matter. Without associativity, $2x + 3$ would be ambiguous. Without distributivity, you could not factor or expand.
-
-Modern abstract algebra is the systematic study of *which combinations of these laws hold*, and *what consequences each combination has*. The next four lectures are tour stops on that map.`,
-  },
-  {
-    slug: "groups-symmetry",
-    title: "Groups and symmetry",
-    weekNumber: 2,
-    blurb: "A group is a set with an invertible, associative operation.",
-    lectureTitle: "2.3 Groups and symmetry",
-    body: `# Groups and symmetry
-
-A **group** is a set $G$ together with a binary operation $* : G \\times G \\to G$ satisfying four axioms:
-
-1. **Closure.** For all $a, b \\in G$, $a * b \\in G$.
-2. **Associativity.** $(a*b)*c = a*(b*c)$ for all $a, b, c$.
-3. **Identity.** There exists $e \\in G$ with $e*a = a*e = a$ for all $a$.
-4. **Inverses.** For every $a \\in G$ there exists $a^{-1} \\in G$ with $a*a^{-1} = a^{-1}*a = e$.
-
-If, in addition, $a*b = b*a$ for all $a,b$, the group is **abelian**.
-
-## Examples
-
-- $(\\mathbb{Z}, +)$, $(\\mathbb{Q}, +)$, $(\\mathbb{R}, +)$, $(\\mathbb{C}, +)$ — abelian groups under addition; identity $0$.
-- $(\\mathbb{Q}^{\\times}, \\cdot)$, $(\\mathbb{R}^{\\times}, \\cdot)$ — abelian groups under multiplication (after removing $0$); identity $1$.
-- $S_n$, the **symmetric group** — permutations of $n$ objects under composition. Non-abelian for $n \\ge 3$.
-- The set of rotations of an equilateral triangle (identity, $120°$, $240°$) under composition.
-
-## Groups are symmetries
-
-The headline theorem (Cayley, 1854): every group is isomorphic to a group of permutations. A more useful way to say it: a group is *the set of symmetries of something*.
-
-- The symmetries of a square form a group of order $8$ (the dihedral group $D_4$): four rotations $\\times$ two flips.
-- The symmetries of a circle form an *infinite* group: every rotation by every real angle.
-- The symmetries of an equation are a group, called its Galois group, and they decide whether the equation is solvable by radicals (Galois, 1832).
-
-This single insight — that *symmetry is a group* — pervades modern mathematics and physics. Noether's theorem (1918) says every continuous symmetry of a physical system gives a conserved quantity: time-translation symmetry $\\Rightarrow$ conservation of energy; rotational symmetry $\\Rightarrow$ conservation of angular momentum.
-
-## A scientific example
-
-The set of $3 \\times 3$ rotation matrices $SO(3)$ is the group of rotations of physical space. It is non-abelian: rotating $90°$ about the $x$-axis then $90°$ about the $y$-axis is a different physical rotation than doing them in the opposite order. Try it with a book — that non-commutativity is a real fact about the geometry of 3D space.`,
-  },
-  {
-    slug: "rings-fields",
-    title: "Rings and fields",
-    weekNumber: 2,
-    blurb: "Two operations playing well together: addition and multiplication.",
-    lectureTitle: "2.4 Rings and fields",
-    body: `# Rings and fields
-
-A group has one operation. The familiar number systems have two — and the way the two interact is what gives arithmetic its power.
-
-## Ring
-
-A **ring** $R$ is a set with two operations, traditionally $+$ and $\\cdot$, such that:
-
-- $(R, +)$ is an abelian group with identity $0$.
-- $(R, \\cdot)$ is associative and has an identity $1$ (in a **ring with unity**).
-- Multiplication distributes over addition: $a(b+c) = ab + ac$ and $(b+c)a = ba + ca$.
-
-Note: multiplication is not required to be commutative, and elements are not required to have multiplicative inverses.
-
-## Examples of rings
-
-- $\\mathbb{Z}$, $\\mathbb{Q}$, $\\mathbb{R}$, $\\mathbb{C}$ — all commutative rings with unity.
-- $M_n(\\mathbb{R})$, the $n \\times n$ real matrices — a **noncommutative** ring under matrix addition and multiplication.
-- $\\mathbb{R}[x]$, polynomials in $x$ with real coefficients — a commutative ring.
-- $\\mathbb{Z}/n\\mathbb{Z}$, the integers modulo $n$ — see lecture 2.8.
-
-## Field
-
-A **field** $F$ is a commutative ring in which every nonzero element has a multiplicative inverse. Equivalently: $(F\\setminus\\{0\\}, \\cdot)$ is an abelian group.
-
-- $\\mathbb{Q}$, $\\mathbb{R}$, $\\mathbb{C}$ are fields.
-- $\\mathbb{Z}$ is **not** a field: $2$ has no integer inverse.
-- $\\mathbb{Z}/p\\mathbb{Z}$ is a field exactly when $p$ is prime.
-
-## Why these axioms?
-
-A field is precisely the abstract setting in which the entire toolkit of high-school algebra — solving linear equations, dividing both sides, manipulating fractions — works. Once you know "these axioms hold," you get all the theorems for free, whether the field is $\\mathbb{R}$ or the integers mod $7$ or the rational functions over $\\mathbb{C}$.
-
-## A scientific example
-
-The finite field $\\mathbb{F}_{2^8}$ with $256$ elements is the arithmetic backbone of the AES encryption standard that protects most of the world's internet traffic. The S-box of AES is, definitionally, multiplicative inversion in this field followed by an affine map. Every secure HTTPS connection you make is computing in a 256-element field on your behalf.`,
-  },
-  {
-    slug: "vector-spaces",
-    title: "Vector spaces and linear combination",
-    weekNumber: 2,
-    blurb: "Adding arrows and scaling them — the universal language of linear math.",
-    lectureTitle: "2.5 Vector spaces and linear combination",
-    body: `# Vector spaces and linear combination
-
-A **vector space** $V$ over a field $F$ is a set whose elements (**vectors**) can be added to each other and scaled by elements of $F$ (**scalars**), subject to a short list of axioms:
-
-- $(V, +)$ is an abelian group.
-- For all $\\alpha, \\beta \\in F$ and $v, w \\in V$:
-  - $\\alpha(v + w) = \\alpha v + \\alpha w$
-  - $(\\alpha + \\beta) v = \\alpha v + \\beta v$
-  - $(\\alpha \\beta) v = \\alpha(\\beta v)$
-  - $1 \\cdot v = v$.
-
-## Examples
-
-- $\\mathbb{R}^n$, ordered $n$-tuples of real numbers, with componentwise addition and scalar multiplication. The prototype example.
-- The set of all polynomials with real coefficients, $\\mathbb{R}[x]$, under polynomial addition and scaling.
-- The set of all continuous functions $f : [0,1] \\to \\mathbb{R}$, under pointwise addition.
-- The set of solutions to a linear homogeneous differential equation.
-
-The same axioms apply to all of these — and so the same theorems do.
-
-## Linear combinations, span, basis
-
-A **linear combination** of vectors $v_1, \\ldots, v_k$ is an expression
-
-$$\\alpha_1 v_1 + \\alpha_2 v_2 + \\cdots + \\alpha_k v_k, \\quad \\alpha_i \\in F.$$
-
-The set of all linear combinations of a fixed list is its **span**. A list is **linearly independent** if no vector in it is a linear combination of the others. A **basis** is a linearly independent list whose span is all of $V$. The number of vectors in any basis is the **dimension** of $V$.
-
-## Why this matters
-
-Most of physics, signal processing, machine learning, and computer graphics is the systematic exploitation of vector-space structure. Fourier analysis says: the space of "nice" functions has a basis of sines and cosines, so any signal is a linear combination of pure tones. Principal component analysis says: high-dimensional data can usually be approximated in a low-dimensional subspace.
-
-## A scientific example
-
-A quantum state of a spin-$\\tfrac{1}{2}$ particle is a unit vector in the complex vector space $\\mathbb{C}^2$. The basis $\\{|{\\uparrow}\\rangle, |{\\downarrow}\\rangle\\}$ is "spin up" and "spin down" along a chosen axis. Every other state — including the "superposition" states that drive every paradox of quantum mechanics — is a linear combination $\\alpha|{\\uparrow}\\rangle + \\beta|{\\downarrow}\\rangle$. The famous mystery is entirely the linearity.`,
-  },
-  {
-    slug: "functions-mappings",
-    title: "Functions as mappings",
-    weekNumber: 2,
-    blurb: "A function is a rule that sends every input to exactly one output.",
-    lectureTitle: "2.6 Functions as mappings",
-    body: `# Functions as mappings
-
-A **function** $f : A \\to B$ is a rule that assigns to *every* element $a$ of the **domain** $A$ exactly one element $f(a)$ of the **codomain** $B$.
-
-The set $f(A) = \\{f(a) : a \\in A\\} \\subseteq B$ is the **image** (or range). The codomain $B$ is the place where outputs are *allowed* to live; the image is the subset they actually hit.
-
-## Three classifications
-
-- **Injective** (one-to-one): different inputs give different outputs. $f(a_1) = f(a_2) \\Rightarrow a_1 = a_2$.
-- **Surjective** (onto): every element of the codomain is hit. $f(A) = B$.
-- **Bijective**: both. Bijections are precisely the functions that have a two-sided inverse $f^{-1} : B \\to A$.
-
-A bijection $f : A \\to B$ is, in essence, a *renaming* of $A$'s elements as $B$'s elements. Two sets have the same cardinality (1.8) iff there is a bijection between them.
-
-## Composition
-
-Functions compose: if $f : A \\to B$ and $g : B \\to C$, then $g \\circ f : A \\to C$ is the function $a \\mapsto g(f(a))$. Composition is **associative** but generally **not** commutative.
-
-The set of bijections of a fixed set $X$ to itself, under composition, is a group — the symmetric group $S_X$. This is the bridge from "function" back to "group."
-
-## Functions vs. formulas
-
-A function is *not* a formula. A formula is one way to *describe* a function. The function $f : \\mathbb{R} \\to \\mathbb{R}$, $f(x) = x^2$ can equally well be described as $f(x) = |x|^2$, $f(x) = x \\cdot x$, or by a table or by a graph. They are all the same function: same domain, same codomain, same input-to-output rule.
-
-## A scientific example
-
-Crystallography classifies crystals by their **symmetry group** — the group of geometric transformations $f : \\mathbb{R}^3 \\to \\mathbb{R}^3$ that map the crystal to itself. There are exactly $230$ such groups in 3D (the *crystallographic space groups*), determined a century ago, and every real crystal falls into exactly one of them.`,
-  },
-  {
-    slug: "relations-equivalence-iso",
-    title: "Relations, equivalence classes, and isomorphism",
-    weekNumber: 2,
-    blurb: "Sameness, refined: when do two different things count as the same?",
-    lectureTitle: "2.7 Relations, equivalence classes, and isomorphism",
-    body: `# Relations, equivalence classes, and isomorphism
-
-A **relation** on a set $S$ is a subset $R \\subseteq S \\times S$. We write $a \\sim b$ for $(a, b) \\in R$. An **equivalence relation** is one satisfying three properties:
-
-1. **Reflexive.** $a \\sim a$ for all $a$.
-2. **Symmetric.** $a \\sim b \\Rightarrow b \\sim a$.
-3. **Transitive.** $a \\sim b$ and $b \\sim c \\Rightarrow a \\sim c$.
-
-## Equivalence classes
-
-Given an equivalence relation $\\sim$ on $S$, the **equivalence class** of $a$ is
-
-$$[a] = \\{x \\in S : x \\sim a\\}.$$
-
-The classes form a **partition** of $S$: every element is in exactly one class, and the classes don't overlap. Conversely, every partition of $S$ defines an equivalence relation.
-
-## Examples
-
-- "Has the same birthday as" on the set of all humans. The classes have at most $366$ elements each.
-- $a \\sim b$ iff $a - b \\in \\mathbb{Z}$, on $\\mathbb{R}$. Each class is the set of reals with a given fractional part. The quotient set is the circle $\\mathbb{R}/\\mathbb{Z}$.
-- $a \\sim b$ iff $a - b$ is divisible by $5$, on $\\mathbb{Z}$. The classes are $\\{[0], [1], [2], [3], [4]\\}$ — the integers mod $5$ (lecture 2.8).
-
-Every time mathematicians say "consider $X$ up to $\\sim$," they are forming a quotient set by an equivalence relation.
-
-## Isomorphism: the deepest equivalence
-
-Two algebraic objects — two groups, two rings, two vector spaces — are **isomorphic** when there is a bijection between them that preserves the operations. Symbolically, $G \\cong H$.
-
-Isomorphism says: $G$ and $H$ are "the same object, with different names for the elements." Every property expressible in the language of the structure transfers across an isomorphism.
-
-## A scientific example
-
-The group $(\\mathbb{R}, +)$ and the group $(\\mathbb{R}_{>0}, \\cdot)$ are isomorphic: the bijection $x \\mapsto e^x$ sends $a + b$ to $e^{a+b} = e^a \\cdot e^b$. This isomorphism is exactly what makes the **logarithm** useful: it lets you convert a hard multiplication problem into an easier addition problem (the principle behind slide rules and log tables).`,
-  },
-  {
-    slug: "modular-arithmetic",
-    title: "Modular arithmetic",
-    weekNumber: 2,
-    blurb: "Clock arithmetic, and the basis of modern cryptography.",
-    lectureTitle: "2.8 Modular arithmetic",
-    body: `# Modular arithmetic
-
-Fix a positive integer $n$, called the **modulus**. Define an equivalence relation on $\\mathbb{Z}$ by
-
-$$a \\equiv b \\pmod n \\iff n \\mid (a - b).$$
-
-The equivalence classes are $[0], [1], \\ldots, [n-1]$. The set of classes is denoted $\\mathbb{Z}/n\\mathbb{Z}$ or $\\mathbb{Z}_n$.
-
-The miracle is that addition and multiplication on $\\mathbb{Z}$ **descend** to operations on $\\mathbb{Z}/n\\mathbb{Z}$: $[a] + [b] = [a+b]$ and $[a] \\cdot [b] = [ab]$, with the answer independent of which representative you chose. So $\\mathbb{Z}/n\\mathbb{Z}$ is itself a ring (lecture 2.4) — a finite one, with $n$ elements.
-
-## Clock arithmetic
-
-The most familiar example is $\\mathbb{Z}/12\\mathbb{Z}$ — the integers mod $12$. If it is $9$ o'clock and you wait $5$ hours, the clock reads $9 + 5 \\equiv 2 \\pmod{12}$. Every act of telling time is modular arithmetic.
-
-## When is $\\mathbb{Z}/n\\mathbb{Z}$ a field?
-
-$\\mathbb{Z}/n\\mathbb{Z}$ is a field iff $n$ is **prime**. For $n = p$ prime, every nonzero class has a multiplicative inverse (by Bézout's lemma), so you can divide. For $n$ composite, this fails: in $\\mathbb{Z}/6\\mathbb{Z}$, $2 \\cdot 3 = 6 \\equiv 0$ — two nonzero elements multiplying to zero, which a field forbids.
-
-## Fermat's Little Theorem
-
-For prime $p$ and integer $a$ not divisible by $p$,
-
-$$a^{p-1} \\equiv 1 \\pmod p.$$
-
-This single congruence is the backbone of:
-
-- **Primality testing.** Probabilistic tests (Miller–Rabin) check whether a candidate $n$ satisfies an analogue of FLT; failure is a *proof* $n$ is composite.
-- **RSA encryption.** Picking two large primes $p$ and $q$ and computing $n = pq$, the security of every RSA-encrypted email and SSH connection rests on the difficulty of recovering $p$ and $q$ from $n$, combined with the modular-exponentiation identities that FLT provides.
-
-## The point
-
-Modular arithmetic is what week 2 was building toward: a small, *finite* number system that nonetheless obeys the field axioms of lecture 2.4, supports linear algebra (lecture 2.5), and has nontrivial groups (lecture 2.3) sitting inside it. It is also one of the most economically valuable structures in mathematics — virtually all of public-key cryptography is computation in $\\mathbb{Z}/n\\mathbb{Z}$.`,
-  },
-
-  // ───────────────────────────────────────────────────────────────
-  // Week 3 — The continuum: calculus, geometry, topology
-  // ───────────────────────────────────────────────────────────────
-  {
-    slug: "limits-taming-infinity",
-    title: "Limits and the taming of infinity",
-    weekNumber: 3,
-    blurb: "Making 'gets arbitrarily close to' a precise idea.",
-    lectureTitle: "3.1 Limits and the taming of infinity",
-    body: `# Limits and the taming of infinity
-
-For two thousand years, mathematicians used phrases like "infinitely small" and "approaches but never reaches" without a rigorous definition. The 19th century replaced the metaphor with arithmetic.
-
-## The $\\varepsilon$–$\\delta$ definition
-
-We write $\\lim_{x \\to a} f(x) = L$ to mean:
-
-> For every $\\varepsilon > 0$ there exists a $\\delta > 0$ such that whenever $0 < |x - a| < \\delta$, we have $|f(x) - L| < \\varepsilon$.
-
-In symbols:
-
-$$\\forall \\varepsilon > 0,\\ \\exists \\delta > 0 : 0 < |x - a| < \\delta \\Rightarrow |f(x) - L| < \\varepsilon.$$
-
-This formulation is due to Cauchy (1821) and refined by Weierstrass in the 1850s. It says: no matter how tight a window $\\varepsilon$ you demand on the output, I can find a tight enough window $\\delta$ on the input that guarantees it. Nothing in this definition mentions "infinity" or "infinitesimal." That is the entire point.
-
-## What the definition replaced
-
-Newton and Leibniz, inventing calculus in the 1670s, spoke of *fluxions* and *infinitesimals* — quantities smaller than any positive number but not zero. Bishop Berkeley (1734) mocked them as "the ghosts of departed quantities," and he was right that the foundations were incoherent. Two centuries later, the $\\varepsilon$–$\\delta$ definition gave calculus the rigorous foundation it had been doing without. (Robinson, 1960, vindicated the infinitesimal approach with *nonstandard analysis* — but the $\\varepsilon$–$\\delta$ definition is still the working language.)
-
-## Limits at infinity
-
-$$\\lim_{x \\to \\infty} f(x) = L \\iff \\forall \\varepsilon > 0,\\ \\exists M : x > M \\Rightarrow |f(x) - L| < \\varepsilon.$$
-
-Same idea: the "tight window on the output" is met by a "far enough out on the input."
-
-## A scientific example
-
-The terminal velocity of a falling skydiver is a limit:
-
-$$v_{\\text{term}} = \\lim_{t \\to \\infty} v(t).$$
-
-The skydiver never *reaches* terminal velocity — at any finite $t$, $v(t)$ is strictly less. But the difference gets arbitrarily small as time goes on. The limit captures this precisely without committing to "infinity" as a number.`,
-  },
-  {
-    slug: "continuity",
-    title: "Continuity",
-    weekNumber: 3,
-    blurb: "A function is continuous when small input changes give small output changes.",
-    lectureTitle: "3.2 Continuity",
-    body: `# Continuity
-
-A function $f : \\mathbb{R} \\to \\mathbb{R}$ is **continuous at $a$** if
-
-$$\\lim_{x \\to a} f(x) = f(a).$$
-
-Three things have to be true simultaneously: $f(a)$ has to exist, the limit has to exist, and they have to be equal. $f$ is **continuous** if it is continuous at every $a$ in its domain.
-
-In plain English: nearby inputs go to nearby outputs. You can draw the graph without lifting your pen. (The plain-English version misses some pathological continuous functions, but it captures the spirit.)
-
-## Discontinuities
-
-There are three flavors of failure:
-
-- **Removable.** $\\lim_{x \\to a} f(x)$ exists but isn't $f(a)$. Redefine $f(a)$ and you've fixed it.
-- **Jump.** Left and right limits exist but differ. A step function. Common in physics (phase transitions) and economics (tax brackets).
-- **Essential.** The limit doesn't exist at all. $\\sin(1/x)$ near $0$ oscillates forever.
-
-## The Intermediate Value Theorem
-
-If $f$ is continuous on $[a, b]$ and $y_0$ is any value between $f(a)$ and $f(b)$, then there is some $c \\in [a, b]$ with $f(c) = y_0$.
-
-This is one of those theorems that feels like a definition: of *course* a continuous curve from $f(a)$ to $f(b)$ has to cross every height between them. But you cannot prove it without the completeness of $\\mathbb{R}$ (lecture 1.4) — the IVT is false on $\\mathbb{Q}$ alone.
-
-## The Extreme Value Theorem
-
-If $f$ is continuous on a closed bounded interval $[a, b]$, then $f$ attains a maximum and a minimum on $[a, b]$.
-
-This too fails without compactness: $f(x) = 1/x$ on $(0, 1]$ is continuous but unbounded.
-
-## A scientific example
-
-Temperature is a continuous function of position on Earth. By the IVT (applied on a great circle), at every moment there exist two *antipodal* points on the equator that have the exact same temperature. This is a special case of the **Borsuk–Ulam theorem**, which generalizes to any continuous map from a sphere to a Euclidean space of lower dimension.`,
-  },
-  {
-    slug: "derivatives-instantaneous-rate",
-    title: "Derivatives as instantaneous rate",
-    weekNumber: 3,
-    blurb: "What's the speed *right now*? — the question that started calculus.",
-    lectureTitle: "3.3 Derivatives as instantaneous rate",
-    body: `# Derivatives as instantaneous rate
-
-The average rate of change of $f$ over an interval $[a, a + h]$ is
-
-$$\\frac{f(a + h) - f(a)}{h}.$$
-
-The **derivative** of $f$ at $a$ is what this approaches as the interval shrinks:
-
-$$f'(a) = \\lim_{h \\to 0} \\frac{f(a + h) - f(a)}{h},$$
-
-when the limit exists. Geometrically, $f'(a)$ is the *slope of the tangent line* to the graph of $f$ at $x = a$.
-
-## Three pictures
-
-- **Geometric.** Slope of the tangent line.
-- **Physical.** Instantaneous rate of change. Velocity is the derivative of position; acceleration is the derivative of velocity.
-- **Numerical.** The best linear approximation: near $a$, $f(x) \\approx f(a) + f'(a)(x - a)$.
-
-All three are the same idea, stated in three languages.
-
-## Notation
-
-- Lagrange: $f'(x)$.
-- Leibniz: $\\dfrac{\\mathrm{d}f}{\\mathrm{d}x}$. Treats the derivative as a ratio of "differentials" — heuristic, but extremely useful for change-of-variable.
-- Newton: $\\dot f$. Mostly survives in physics, for derivatives with respect to time.
-- Operator: $D f$ or $\\partial_x f$.
-
-Same object, four notations. Each makes a different calculation natural.
-
-## Differentiable implies continuous
-
-If $f$ is differentiable at $a$, it is continuous at $a$. (Proof sketch: $f(a + h) - f(a) = h \\cdot \\dfrac{f(a+h)-f(a)}{h} \\to 0 \\cdot f'(a) = 0$ as $h \\to 0$.) The converse fails: $f(x) = |x|$ is continuous everywhere but not differentiable at $0$.
-
-In fact, Weierstrass (1872) constructed a function that is continuous everywhere and differentiable *nowhere* — a curve that is unbroken but has no tangent line at any point. The intuition that "continuous = smooth" is a useful lie.
-
-## A scientific example
-
-Newton's second law in its most general form is
-
-$$\\vec F = \\frac{\\mathrm{d}\\vec p}{\\mathrm{d}t},$$
-
-force equals the time-derivative of momentum. Reducing the universe of mechanics to a single derivative — that is what calculus is *for*.`,
-  },
-  {
-    slug: "integrals-accumulation",
-    title: "Integrals as accumulation",
-    weekNumber: 3,
-    blurb: "Summing infinitely many infinitesimal pieces.",
-    lectureTitle: "3.4 Integrals as accumulation",
-    body: `# Integrals as accumulation
-
-If the derivative answers "how fast is it changing?", the **integral** answers "how much has accumulated?".
-
-## The Riemann integral
-
-Partition $[a, b]$ into $n$ pieces by points $a = x_0 < x_1 < \\cdots < x_n = b$. Pick a sample point $x_i^*$ in each subinterval $[x_{i-1}, x_i]$. Form the **Riemann sum**
-
-$$S_n = \\sum_{i=1}^{n} f(x_i^*) \\, (x_i - x_{i-1}).$$
-
-Each term is a rectangle: width times height. Their sum approximates the area under $f$ over $[a,b]$.
-
-The **definite integral** is the limit of these sums as the partition is refined:
-
-$$\\int_a^b f(x)\\,\\mathrm{d}x = \\lim_{\\|P\\| \\to 0} \\sum_{i=1}^{n} f(x_i^*)(x_i - x_{i-1}),$$
-
-where $\\|P\\|$ is the width of the widest subinterval, and provided the limit exists independent of choices.
-
-## What integrals compute
-
-- **Area** under a curve, when $f \\ge 0$.
-- **Signed area** in general (positive above the axis, negative below).
-- **Accumulated total** of any rate: $\\int_a^b v(t)\\,\\mathrm{d}t$ is the displacement over $[a, b]$ if $v$ is velocity.
-- **Average value** of $f$ on $[a, b]$: $\\dfrac{1}{b - a}\\int_a^b f(x)\\,\\mathrm{d}x$.
-- **Probability**: the probability that a continuous random variable $X$ with density $p$ lies in $[a, b]$ is $\\int_a^b p(x)\\,\\mathrm{d}x$.
-
-## Why "$\\mathrm{d}x$"
-
-The "$\\mathrm{d}x$" is the limiting width of a rectangle. It is the same $\\mathrm{d}x$ that appears in Leibniz's derivative notation $\\mathrm{d}f/\\mathrm{d}x$, and the symmetry is the subject of the next lecture.
-
-## A historical example
-
-Archimedes computed the area of a parabolic segment, around 250 BCE, using essentially Riemann sums two millennia before Riemann. He bounded the area between inscribed and circumscribed triangles, refined the partition, and showed the bounds squeeze to the same value. Calculus existed in spirit long before its symbols did.`,
-  },
-  {
-    slug: "ftc",
-    title: "The Fundamental Theorem of Calculus",
-    weekNumber: 3,
-    blurb: "Differentiation and integration undo each other.",
-    lectureTitle: "3.5 The Fundamental Theorem of Calculus",
-    body: `# The Fundamental Theorem of Calculus
-
-Derivatives measure instantaneous change. Integrals accumulate change. The **Fundamental Theorem** says these are inverse operations.
-
-## Part 1: derivative of an integral
-
-Let $f$ be continuous on $[a, b]$, and define $F : [a, b] \\to \\mathbb{R}$ by
-
-$$F(x) = \\int_a^x f(t)\\,\\mathrm{d}t.$$
-
-Then $F$ is differentiable and $F'(x) = f(x)$.
-
-So integration *produces* an antiderivative: $F$ is a function whose derivative is $f$.
-
-## Part 2: integral of a derivative
-
-If $F$ is any antiderivative of $f$ on $[a, b]$ (i.e. $F' = f$ and $F$ is continuous on $[a, b]$), then
-
-$$\\int_a^b f(x)\\,\\mathrm{d}x = F(b) - F(a).$$
-
-This is the calculation rule: to integrate $f$, find any antiderivative $F$, and subtract.
-
-## Why this is "fundamental"
-
-Differentiation is a *local* operation: $f'(a)$ depends only on $f$ near $a$. Integration is a *global* operation: $\\int_a^b f$ depends on $f$ everywhere on $[a, b]$. There is no a priori reason these two operations should be related, much less inverse.
-
-The FTC is the bridge. It says: to compute the global thing (the integral), you can solve a local problem (find an antiderivative) and read off two values. Every closed-form integral you have ever computed is an application of the FTC.
-
-## A historical note
-
-Newton and Leibniz are usually credited with calculus because they were the first to recognize and exploit the FTC. Earlier mathematicians (Cavalieri, Fermat, Barrow) had pieces of the differentiation and integration theory but treated them as separate subjects. The unification was the conceptual leap.
-
-## A scientific example
-
-In thermodynamics, the change in internal energy of a closed system over a process is
-
-$$\\Delta U = \\int_{t_1}^{t_2} \\frac{\\mathrm{d}U}{\\mathrm{d}t}\\,\\mathrm{d}t = U(t_2) - U(t_1).$$
-
-We almost never know $\\mathrm{d}U/\\mathrm{d}t$ as a function we could integrate term by term. The point of having the FTC is that the *value* $\\Delta U$ depends only on the initial and final states, never on the path — energy is a *state function*. Every conservation law in physics is, formally, a statement that some integrand is the derivative of something.`,
-  },
-  {
-    slug: "sequences-series-zeno",
-    title: "Sequences, series, and Zeno",
-    weekNumber: 3,
-    blurb: "An infinite sum can have a finite value.",
-    lectureTitle: "3.6 Sequences, series, and Zeno",
-    body: `# Sequences, series, and Zeno
-
-A **sequence** is a function $\\mathbb{N} \\to \\mathbb{R}$, usually written $(a_n)_{n \\ge 1}$. A **series** is the formal sum
-
-$$\\sum_{n=1}^{\\infty} a_n = a_1 + a_2 + a_3 + \\cdots$$
-
-## What an infinite sum *means*
-
-You cannot add infinitely many numbers in finite time. So the value of an infinite series is defined as the limit of its **partial sums**:
-
-$$\\sum_{n=1}^{\\infty} a_n := \\lim_{N \\to \\infty} \\sum_{n=1}^{N} a_n,$$
-
-if the limit exists. If it does, the series **converges**; otherwise it **diverges**.
-
-## Zeno's paradox
-
-Achilles races a tortoise that starts $10$ meters ahead. Zeno (5th c. BCE) argued Achilles can never overtake it: first he has to cover the $10$ meters, then the new gap, then the new new gap, and so on — infinitely many steps in finite time, which Zeno called absurd.
-
-We now see the argument for what it is: the steps form a **geometric series**
-
-$$10 + 10 \\cdot r + 10 \\cdot r^2 + \\cdots = \\frac{10}{1 - r}$$
-
-which is *finite* whenever $|r| < 1$. Zeno's mistake was assuming infinitely many steps must take infinite time. They don't.
-
-## Convergence tests
-
-A short menu of standard tools:
-
-- **Geometric**: $\\sum r^n$ converges iff $|r| < 1$.
-- **$p$-series**: $\\sum 1/n^p$ converges iff $p > 1$.
-- **Ratio test**: if $\\lim |a_{n+1}/a_n| < 1$, the series converges absolutely.
-- **Comparison test**: if $|a_n| \\le b_n$ and $\\sum b_n$ converges, so does $\\sum a_n$.
-
-## Power series
-
-A **power series** is $\\sum c_n (x - a)^n$. Its **radius of convergence** is the largest $R$ such that the series converges for $|x - a| < R$. Inside its radius, a power series defines an infinitely differentiable function — its **analytic** representative. The functions $e^x = \\sum x^n / n!$, $\\sin x = \\sum (-1)^n x^{2n+1}/(2n+1)!$, and $\\cos x$ are all power series convergent for all $x$.
-
-## A scientific example
-
-Quantum field theory's predictions are computed as **perturbation series** in a small coupling constant. The series for the electron's anomalous magnetic moment, computed to high order, matches experiment to twelve decimal places — one of the most precise agreements between theory and measurement in all of science. (Notoriously, these series usually do not converge; they are *asymptotic*. The first few terms approximate the right answer, but adding more terms eventually makes things worse. Which is a story for an analysis course.)`,
-  },
-  {
-    slug: "euclidean-non-euclidean",
-    title: "Euclidean vs. non-Euclidean geometry",
-    weekNumber: 3,
-    blurb: "Euclid's fifth postulate is independent — and false on a sphere.",
-    lectureTitle: "3.7 Euclidean vs. non-Euclidean geometry",
-    body: `# Euclidean vs. non-Euclidean geometry
-
-Euclid's *Elements* (c. 300 BCE) developed plane geometry from five postulates. Four are uncontroversially "obvious." The fifth is not.
-
-## The parallel postulate
-
-> Through a point not on a given line, there is exactly one line parallel to the given line.
-
-For two millennia, mathematicians tried to *prove* this from the other four — believing it should be a theorem, not a postulate. Every attempt failed.
-
-## The resolution
-
-In the early 19th century, Lobachevsky (1829), Bolyai (1832), and Gauss (unpublished) independently realized why every attempt had failed: the parallel postulate is **independent** of the others. You can replace it with its negation and get a consistent geometry.
-
-Three possibilities:
-
-- **Exactly one parallel** — Euclidean geometry, $\\mathbb{R}^2$.
-- **No parallels** — elliptic / spherical geometry. On a sphere, every two great circles intersect.
-- **Infinitely many parallels** — hyperbolic geometry. Through a point off a line, infinitely many lines never meet the given line.
-
-Each of these is a logically consistent geometry. The angles of a triangle sum to $180°$ in Euclidean, more than $180°$ in elliptic, and less than $180°$ in hyperbolic.
-
-## Why this mattered
-
-The discovery of non-Euclidean geometry was a philosophical earthquake. It demonstrated, for the first time, that mathematics is not the description of a single "true" world but the systematic study of consequences of chosen axioms (a theme we will return to in 4.5).
-
-## A scientific example
-
-General relativity (Einstein, 1915) models spacetime as a *curved* manifold whose geometry is determined by the matter and energy inside it. Light rays follow **geodesics** — the analogues of straight lines — and those geodesics bend through gravitational fields. The first experimental confirmation was Eddington's 1919 measurement of starlight bending around the Sun during a solar eclipse. The universe is not Euclidean. The geometry of spacetime is fixed not by axiom but by Einstein's field equations:
-
-$$R_{\\mu\\nu} - \\tfrac{1}{2} g_{\\mu\\nu} R = \\frac{8\\pi G}{c^4} T_{\\mu\\nu}.$$`,
-  },
-  {
-    slug: "topology-dimension-curvature",
-    title: "Topology, dimension, and curvature",
-    weekNumber: 3,
-    blurb: "Geometry without distance: what survives when you stretch the page.",
-    lectureTitle: "3.8 Topology, dimension, and curvature",
-    body: `# Topology, dimension, and curvature
-
-**Topology** is the study of geometric properties that are preserved under continuous deformations — stretching, bending, twisting, but not tearing or gluing. The classic joke is that a topologist cannot tell a coffee mug from a donut, because each can be continuously deformed into the other.
-
-## What topology keeps and discards
-
-- **Discarded:** distance, angle, area, volume, curvature.
-- **Kept:** number of connected pieces, number of holes, orientability, the way the space loops back on itself.
-
-A circle and a square are topologically the same (both are simple closed loops). A line segment and a Y-shape are different: removing one point disconnects them differently.
-
-## Dimension
-
-Topology lets us say what the **dimension** of a space *is*, independent of any coordinate system.
-
-- Informally: a space is $n$-dimensional if it locally looks like $\\mathbb{R}^n$.
-- A line is $1$-dimensional; the plane is $2$-dimensional; the surface of a sphere is $2$-dimensional (yes, the surface — you can describe any point on it with latitude and longitude).
-- The Cantor set has dimension $\\log 2 / \\log 3 \\approx 0.63$ in the fractal (Hausdorff) sense — a single number need not be an integer to make sense as a dimension.
-
-## Curvature
-
-Once you put a *metric* (a notion of distance) back on a topological space, you can ask whether it is **curved**. Gauss (1827) showed that curvature is *intrinsic*: an ant living on a surface can detect curvature without ever leaving the surface, by measuring how the angles of triangles sum.
-
-- A plane has curvature $0$. Triangle angle sums equal $\\pi$.
-- A sphere of radius $R$ has constant positive curvature $1/R^2$. Triangle angle sums exceed $\\pi$.
-- A saddle / pseudosphere has negative curvature. Triangle angle sums fall below $\\pi$.
-
-## The Euler characteristic
-
-For a polyhedron with $V$ vertices, $E$ edges, and $F$ faces,
-
-$$\\chi = V - E + F.$$
-
-For *every* triangulation of a sphere, $\\chi = 2$. For *every* triangulation of a torus, $\\chi = 0$. The Euler characteristic is a topological invariant: it depends on the surface, not on how you cut it up.
-
-## A scientific example
-
-The shape of the *universe* — its global topology — is an open question in cosmology. Locally it appears flat (zero curvature). Globally it could be an infinite plane, a finite 3-torus, a 3-sphere, or any number of more exotic possibilities. Distinguishing these requires looking for repeated patterns in the cosmic microwave background — circles in the sky that would be "the same place seen twice." So far none have been found, but the constraints continue to tighten.`,
-  },
-
-  // ───────────────────────────────────────────────────────────────
-  // Week 4 — Foundations: logic, proof, set theory, undecidability
-  // ───────────────────────────────────────────────────────────────
-  {
-    slug: "propositional-predicate-logic",
-    title: "Propositional and predicate logic",
+    slug: "modal-logic",
+    title: "Modal logic",
     weekNumber: 4,
-    blurb: "Truth values, connectives, quantifiers: the grammar of proof.",
-    lectureTitle: "4.1 Propositional and predicate logic",
-    body: `# Propositional and predicate logic
+    blurb: "Adding 'necessarily' $\\Box$ and 'possibly' $\\Diamond$ to logic.",
+    lectureTitle: "4.2 Modal logic",
+    body: `# Modal logic
 
-Mathematics is built out of *statements* — sentences that are either true or false — combined according to a fixed grammar. **Logic** is the study of that grammar.
+Classical logic handles *is* and *is not*. **Modal logic** adds operators for *must* and *might*: the **necessity** operator $\\Box$ ("it is necessary that") and the **possibility** operator $\\Diamond$ ("it is possible that").
 
-## Propositional logic
+## The duality
 
-A **proposition** is a declarative sentence with a truth value. We build complex propositions out of simple ones using five **connectives**:
+The two modal operators are interdefinable through negation, exactly like the quantifiers:
 
-- $\\neg P$ — not $P$.
-- $P \\wedge Q$ — $P$ and $Q$.
-- $P \\vee Q$ — $P$ or $Q$ (inclusive — at least one).
-- $P \\to Q$ — if $P$ then $Q$ (implication).
-- $P \\leftrightarrow Q$ — $P$ if and only if $Q$ (biconditional).
+$$\\Diamond p \\equiv \\neg \\Box \\neg p, \\qquad \\Box p \\equiv \\neg \\Diamond \\neg p.$$
 
-Each connective is fully described by a truth table. Implication is the trickiest: $P \\to Q$ is false only when $P$ is true and $Q$ is false. In particular, "if $0 = 1$, then I am the Pope" is true — from a false premise, anything follows ($ex\\ falso\\ quodlibet$).
+"Possibly $p$" is "not necessarily not-$p$"; "necessarily $p$" is "not possibly not-$p$."
 
-A **tautology** is a propositional formula that is true under every truth assignment, e.g. $P \\vee \\neg P$ (the law of excluded middle).
+## Possible-worlds semantics
 
-## Predicate logic
+Saul Kripke's semantics (1959, at age 18) interprets modality over a set of **possible worlds** $W$ with an **accessibility relation** $R$:
 
-Propositional logic cannot say "every integer has a successor." For that we need **predicates** $P(x)$ — statements about a variable — and **quantifiers**:
+- $\\Box p$ is true at world $w$ iff $p$ is true at **every** world accessible from $w$.
+- $\\Diamond p$ is true at $w$ iff $p$ is true at **some** accessible world.
 
-- $\\forall x \\, P(x)$ — *for all* $x$, $P(x)$.
-- $\\exists x \\, P(x)$ — *there exists* $x$ such that $P(x)$.
+So $\\Box$ behaves like $\\forall$ over worlds and $\\Diamond$ like $\\exists$ — modal logic is "quantification over worlds in disguise."
 
-Predicate logic is strictly more powerful. The Pythagorean theorem, "for every right triangle with legs $a$, $b$ and hypotenuse $c$, $a^2 + b^2 = c^2$," is genuinely a $\\forall$ statement and cannot be captured in propositional logic alone.
+## Systems and their axioms
 
-## Negation of quantifiers
+Different properties of $R$ give different modal logics. The most important axiom, **T**, is $\\Box p \\to p$ ("the necessary is actual"), valid exactly when $R$ is **reflexive**. Adding $\\Box p \\to \\Box\\Box p$ (axiom **4**, transitivity) and $\\Diamond p \\to \\Box\\Diamond p$ (axiom **5**, symmetry/euclidean) builds the standard systems **T**, **S4**, **S5**.
 
-These are easy to get wrong:
+## Example
 
-$$\\neg(\\forall x \\, P(x)) \\equiv \\exists x \\, \\neg P(x),$$
-$$\\neg(\\exists x \\, P(x)) \\equiv \\forall x \\, \\neg P(x).$$
-
-The negation of "every swan is white" is "some swan is not white" — not "no swan is white."
-
-## A scientific example
-
-The $\\varepsilon$–$\\delta$ definition of a limit (3.1) is the canonical example of a nested-quantifier statement: $\\forall \\varepsilon, \\exists \\delta, \\forall x, \\ldots$. Reversing the order of the quantifiers — $\\exists \\delta, \\forall \\varepsilon$ — produces a strictly *stronger* condition (uniform continuity). Quantifier order *is* the mathematics.`,
+Read $\\Box$ as "it is provable" and the system becomes **provability logic**, in which Gödel's second incompleteness theorem is captured by a single modal formula: $\\neg\\Box\\bot$ (consistency) implies $\\neg\\Box(\\neg\\Box\\bot)$ (consistency is unprovable). Read $\\Box$ as "it is obligatory" and you get **deontic logic** for ethics and law; read it as "agent $a$ knows" and you get **epistemic logic** for AI and game theory. One pair of operators, $\\Box$ and $\\Diamond$, with one tunable relation $R$, models necessity, time, knowledge, obligation, and proof — which is why modal logic is the most widely applied extension of the classical core.`,
   },
   {
-    slug: "what-is-proof",
-    title: "What a proof is",
+    slug: "set-theory-logicians",
+    title: "Set theory for logicians",
     weekNumber: 4,
-    blurb: "A proof is a finite chain of inferences from accepted premises.",
-    lectureTitle: "4.2 What a proof is",
-    body: `# What a proof is
+    blurb: "The universe of sets, and the paradox that forced axioms on it.",
+    lectureTitle: "4.3 Set theory for logicians",
+    body: `# Set theory for logicians
 
-A **proof** of a statement $S$, in a given axiomatic system, is a finite sequence of statements ending in $S$, where each statement is either:
+Modern logic and mathematics are built on **sets**. A set is a collection of objects, its **members**; the basic relation is membership, $x \\in S$. Two sets are equal iff they have the same members (the **Axiom of Extensionality**):
 
-1. an axiom (a premise accepted without proof),
-2. a previously proven theorem, or
-3. a consequence of earlier statements in the sequence by an explicit rule of inference (e.g. modus ponens: from $P$ and $P \\to Q$, conclude $Q$).
+$$\\forall x\\,(x \\in A \\leftrightarrow x \\in B) \\;\\to\\; A = B.$$
 
-This is what proof *is*, formally. In practice, mathematicians write proofs in natural language that compresses many such steps into one — but the underlying object is always, in principle, a finite chain like the above.
+## The operations
 
-## Common proof techniques
+- **Subset**: $A \\subseteq B \\;\\equiv\\; \\forall x\\,(x \\in A \\to x \\in B)$.
+- **Union / intersection**: $A \\cup B = \\{x : x \\in A \\vee x \\in B\\}$, $\\;A \\cap B = \\{x : x \\in A \\wedge x \\in B\\}$.
+- **Power set**: $\\mathcal{P}(A) = \\{X : X \\subseteq A\\}$, the set of all subsets.
 
-- **Direct proof.** To prove $P \\to Q$: assume $P$, derive $Q$.
-- **Proof by contradiction.** To prove $S$: assume $\\neg S$, derive a contradiction. (Used in 1.3 for $\\sqrt 2 \\notin \\mathbb{Q}$.)
-- **Proof by contrapositive.** To prove $P \\to Q$: prove $\\neg Q \\to \\neg P$ instead. Logically equivalent.
-- **Proof by cases.** To prove $S$ given that exactly one of $C_1, \\ldots, C_n$ must hold: prove $S$ assuming each $C_i$ in turn.
-- **Proof by induction.** See 4.3.
-- **Constructive proof.** Prove $\\exists x \\, P(x)$ by exhibiting a specific $x$.
-- **Nonconstructive proof.** Prove $\\exists x \\, P(x)$ without producing one. (Classic: there exist irrational $a, b$ with $a^b$ rational. Proof: consider $\\sqrt 2 ^{\\sqrt 2}$. If rational, done. If irrational, then $(\\sqrt 2 ^{\\sqrt 2})^{\\sqrt 2} = 2$ is rational, done. We don't know which case applied.)
+Notice each definition is just a predicate-logic formula — set theory and logic are deeply intertwined.
 
-## What a proof is *not*
+## Russell's paradox
 
-A proof is not a description, a strong argument, an accumulation of examples, or a check that the result agrees with computation. "I've tried it for the first ten million $n$ and it works" is not a proof. (Famous example: the conjecture that $\\sum_{k=2}^n 1/(k \\ln k) > \\ln \\ln n$ for all $n \\ge 2$ holds for *every* $n$ ever checked but is now known to fail somewhere around $n \\approx 1.4 \\times 10^{316}$ — a number too large to ever check by computer.)
+Naive set theory allowed **unrestricted comprehension**: any predicate $\\varphi$ defines a set $\\{x : \\varphi(x)\\}$. Bertrand Russell (1901) asked about the set of all sets that are not members of themselves:
 
-## Why proof matters
+$$R = \\{x : x \\notin x\\}.$$
 
-Proof is the *currency* of mathematics. It is what separates mathematics from every other field: a result is part of the body of mathematics if and only if it has been proven from the axioms. Outside mathematics, "proof" is rhetoric. Inside mathematics, it is a precisely defined object.`,
+Then $R \\in R \\leftrightarrow R \\notin R$ — a contradiction either way. Naive set theory is *inconsistent*.
+
+## The axiomatic fix
+
+The cure (Zermelo–Fraenkel, **ZFC**) replaces unrestricted comprehension with **separation**: you may only carve a subset *out of an existing set*, $\\{x \\in A : \\varphi(x)\\}$. This blocks $R$ because there is no universal set $A$ to carve from.
+
+## Example
+
+Russell's paradox is the Liar of lecture 1.2 wearing set-theoretic clothing — both turn self-reference into contradiction. The same diagonal shape recurs once more in Cantor's theorem $|A| < |\\mathcal{P}(A)|$ and yet again in the halting problem (4.5). Recognizing this *one* recurring move — diagonalization against self-membership — is the deepest unifying idea in foundational logic, and ZFC is the carefully fenced playground built to keep it from biting.`,
   },
   {
-    slug: "mathematical-induction",
-    title: "Mathematical induction",
+    slug: "relations-functions",
+    title: "Relations and functions",
     weekNumber: 4,
-    blurb: "Prove a statement for all natural numbers from a base and a step.",
-    lectureTitle: "4.3 Mathematical induction",
-    body: `# Mathematical induction
+    blurb: "Sets of ordered pairs, and the special relations called functions.",
+    lectureTitle: "4.4 Relations and functions",
+    body: `# Relations and functions
 
-**Mathematical induction** is the proof technique tailored to statements of the form "for every natural number $n$, $P(n)$ holds."
+With sets in hand we can define the two structures that organize all of mathematics: **relations** and **functions**. Both are sets of **ordered pairs**, where $(a, b)$ records its components *in order*: $(a, b) = (c, d)$ iff $a = c$ and $b = d$.
 
-## The principle
+## Relations
 
-To prove $\\forall n \\in \\mathbb{N}\\, P(n)$:
+A (binary) **relation** $R$ from $A$ to $B$ is any subset $R \\subseteq A \\times B$ of the Cartesian product. We write $aRb$ for $(a, b) \\in R$. Key properties of a relation on a single set $A$:
 
-1. **Base case.** Prove $P(0)$ (or $P(1)$, depending on where $\\mathbb{N}$ starts).
-2. **Inductive step.** Prove that $P(k) \\Rightarrow P(k+1)$ for every $k$.
+- **Reflexive**: $\\forall x\\, (xRx)$.
+- **Symmetric**: $\\forall x\\, \\forall y\\, (xRy \\to yRx)$.
+- **Transitive**: $\\forall x\\, \\forall y\\, \\forall z\\, ((xRy \\wedge yRz) \\to xRz)$.
 
-If both succeed, $P(n)$ holds for all $n$. The metaphor is dominoes: knock the first one down (base), arrange each one so it knocks the next (step), and they all fall.
+A relation that is reflexive, symmetric, and transitive is an **equivalence relation**; it partitions $A$ into disjoint **equivalence classes**.
 
-## Why it works
+## Functions
 
-Induction is *equivalent* to the **well-ordering principle**: every nonempty subset of $\\mathbb{N}$ has a least element. Suppose induction failed for some $P$. Then $\\{n : \\neg P(n)\\}$ is a nonempty subset of $\\mathbb{N}$; let $m$ be its least element. We know $m > 0$ (since the base case holds), so $m - 1 \\in \\mathbb{N}$ and $P(m - 1)$ holds. But then by the inductive step $P(m)$ holds — contradiction.
+A **function** $f : A \\to B$ is a relation that is **total** and **single-valued**: every input has exactly one output —
 
-So induction is not a separate axiom: it is a consequence of how $\\mathbb{N}$ is ordered. Conversely, the **Peano axioms** for $\\mathbb{N}$ take induction as one of the foundational axioms.
+$$\\forall x \\in A\\, \\exists! y \\in B\\,\\bigl((x, y) \\in f\\bigr).$$
 
-## A worked example
+We write $f(x) = y$. Functions can be **injective** ($f(x_1) = f(x_2) \\to x_1 = x_2$), **surjective** (every $b \\in B$ is hit), or **bijective** (both).
 
-**Claim.** $1 + 2 + 3 + \\cdots + n = \\dfrac{n(n+1)}{2}$ for all $n \\ge 1$.
+## Example
 
-*Base.* For $n = 1$: LHS $= 1$, RHS $= 1 \\cdot 2 / 2 = 1$. ✓
-
-*Step.* Assume the formula for $n = k$:
-
-$$1 + 2 + \\cdots + k = \\frac{k(k+1)}{2}.$$
-
-Add $k + 1$ to both sides:
-
-$$1 + 2 + \\cdots + k + (k+1) = \\frac{k(k+1)}{2} + (k+1) = \\frac{(k+1)(k+2)}{2}.$$
-
-That's the formula at $n = k+1$. ✓ ∎
-
-## Strong induction
-
-A useful variant: assume $P(0), P(1), \\ldots, P(k)$ all hold and prove $P(k+1)$. Logically equivalent to ordinary induction, but more convenient when the proof needs more than the immediate predecessor — e.g. proving that every integer $\\ge 2$ has a prime factorization.
-
-## A scientific example
-
-The proof that a binary heap of $n$ elements supports *extract-min* in $O(\\log n)$ time goes by induction on the height of the heap. Almost every correctness proof in computer science is, under the hood, an induction over the size or structure of the input.`,
+A bijection $f : A \\to B$ is the precise sense in which two sets "have the same size." This is how Cantor compares infinities: $\\mathbb{N}$ and $\\mathbb{Q}$ are the same size (a bijection exists), but $\\mathbb{N}$ and $\\mathbb{R}$ are *not* (Cantor's diagonal argument shows no surjection $\\mathbb{N} \\to \\mathbb{R}$ exists). The accessibility relation of modal logic (4.2), the orderings of mathematics, and the very notion of "computable function" (4.5) are all just relations and functions with extra properties — the vocabulary of this lecture is the connective tissue of everything else.`,
   },
   {
-    slug: "sets-russell-paradox",
-    title: "Sets and Russell's paradox",
+    slug: "decidability-limits",
+    title: "Decidability and the limits of formal systems",
     weekNumber: 4,
-    blurb: "The naive notion of a set is inconsistent.",
-    lectureTitle: "4.4 Sets and Russell's paradox",
-    body: `# Sets and Russell's paradox
+    blurb: "Gödel, Turing, and questions no algorithm can settle.",
+    lectureTitle: "4.5 Decidability and the limits of formal systems",
+    body: `# Decidability and the limits of formal systems
 
-Set theory is the lingua franca of modern mathematics: every object we have studied — numbers, functions, groups, vector spaces — can be encoded as a set. So you might expect the foundations of set theory to be straightforward. They are not.
+We close the formal core with logic's most profound results: the discovery of sharp, *provable* limits on what formal systems and algorithms can do.
 
-## Naive set theory
+## Decidability
 
-Cantor and Frege, in the late 1800s, took as a basic principle:
+A set or problem is **decidable** if some algorithm always halts with a correct yes/no answer. Propositional validity is decidable (truth tables). But **first-order validity is undecidable** (Church and Turing, 1936): no algorithm can decide, for every formula, whether $\\models \\varphi$. First-order logic is complete (4.1) yet *not* decidable — provability can be *enumerated* but not *decided*.
 
-> **Unrestricted comprehension.** For every property $P$, there is a set $\\{x : P(x)\\}$ of all things satisfying $P$.
+## Gödel's incompleteness theorems
 
-This is the "naive" picture: a set is any collection you can describe. It seems obviously true. It is also inconsistent.
+For any consistent, effectively axiomatized theory $T$ strong enough to express arithmetic:
 
-## Russell's paradox (1901)
+- **First theorem**: there is a sentence $G$ such that $T \\nvdash G$ and $T \\nvdash \\neg G$ — $G$ is **undecidable in $T$**, yet true. No such $T$ is complete.
+- **Second theorem**: $T$ cannot prove its own consistency, $T \\nvdash \\operatorname{Con}(T)$ (unless $T$ is inconsistent).
 
-Define
-
-$$R = \\{x : x \\notin x\\},$$
-
-the set of all sets that are not members of themselves. (Most familiar sets satisfy this: $\\mathbb{N}$ is not an element of $\\mathbb{N}$.) Now ask: is $R \\in R$?
-
-- If $R \\in R$, then by definition of $R$, $R \\notin R$. Contradiction.
-- If $R \\notin R$, then $R$ satisfies the defining property, so $R \\in R$. Contradiction.
-
-Either way, contradiction. Therefore $R$ cannot be a set. Therefore unrestricted comprehension is false. Therefore naive set theory is inconsistent.
-
-Russell sent this to Frege in 1902, just as Frege's life work on the foundations of arithmetic was going to press. Frege added an appendix to the second volume acknowledging that the work was now on broken ground.
-
-## The fix: axiomatic set theory
-
-Modern set theory (Zermelo 1908, Fraenkel 1922) replaces unrestricted comprehension with weaker, carefully chosen axioms:
-
-- **Extensionality.** Two sets are equal iff they have the same elements.
-- **Pairing.** For any $a, b$, $\\{a, b\\}$ is a set.
-- **Union, power set, infinity, replacement, regularity, …**
-- **Restricted comprehension.** From a *given* set $A$ and a property $P$, you can form $\\{x \\in A : P(x)\\}$.
-
-The crucial change: you can only filter elements out of an existing set; you cannot conjure a set from a property alone. This blocks Russell's construction.
-
-This system, with the axiom of choice added, is **ZFC** — the standard foundation of mathematics today. (Almost) every theorem you know is, in principle, derivable from ZFC.
-
-## The lesson
-
-Mathematics is not self-evidently consistent. Even our most basic intuitions about "collection" can lead to contradiction. Foundations are not optional plumbing; they are a thing you can get wrong.`,
-  },
-  {
-    slug: "axioms-independence",
-    title: "Axioms and independence results",
-    weekNumber: 4,
-    blurb: "Some questions cannot be answered by the axioms we have.",
-    lectureTitle: "4.5 Axioms and independence results",
-    body: `# Axioms and independence results
-
-A statement $S$ is **independent** of an axiom system $T$ if neither $S$ nor $\\neg S$ can be proven from $T$. Independence is a fact about a *system*, not about the truth of $S$.
-
-## The parallel postulate, again
-
-We met the first major independence result in 3.7: Euclid's fifth postulate is independent of the other four. You can adopt it (Euclidean geometry), negate it one way (elliptic geometry), or negate it the other way (hyperbolic geometry), and each choice yields a consistent system. There is no "right answer" inside the axioms.
-
-How was independence proven? By **models**. Exhibit a model of geometry in which the other four postulates hold and the fifth fails. The Poincaré disc model of the hyperbolic plane does exactly this — and its consistency is reduced to the consistency of Euclidean geometry, which is reduced to the consistency of $\\mathbb{R}$, which is reduced to ZFC.
-
-## The Continuum Hypothesis
-
-In 1878 Cantor asked: are there any cardinalities strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$? The **Continuum Hypothesis (CH)** says no:
-
-$$\\text{CH:}\\quad |\\mathbb{R}| = \\aleph_1.$$
-
-Cantor and others tried for decades to prove CH from set theory. The resolution came in two stages:
-
-- **Gödel (1940).** CH is *consistent* with ZFC. If ZFC is consistent, so is ZFC + CH.
-- **Cohen (1963).** $\\neg$CH is also *consistent* with ZFC. If ZFC is consistent, so is ZFC + $\\neg$CH.
-
-Together: CH is **independent** of ZFC. There is no proof in either direction. (Cohen invented the technique of *forcing* to do this, the deepest tool in set theory.)
-
-This is unsettling. CH looks like a definite mathematical question — does some specific cardinality exist or not? — and the axioms we use for all of mathematics cannot answer it. There are at least three reactions:
-
-1. **Platonism.** CH has a definite truth value; our axioms are incomplete. We should look for new, well-motivated axioms that decide it.
-2. **Formalism.** CH has no truth value independent of an axiom system. Math is the study of consequences of axiom systems; pick one and proceed.
-3. **Multiverse view (Hamkins).** There are many "universes of sets," some satisfying CH, some not, all equally legitimate.
-
-## The Axiom of Choice
-
-A similar story: the **Axiom of Choice** (AC) says that, given any family of nonempty sets, you can pick one element from each. Innocuous-sounding, but it implies the **Banach–Tarski paradox**: a solid ball can be decomposed into five pieces and reassembled into two solid balls of the same size. (The pieces are non-measurable.) AC is independent of ZF (ZFC minus choice), and ZFC routinely takes AC on board.
-
-## The deeper point
-
-The discovery of independence results dissolved the dream — already in trouble after Russell's paradox — that mathematics is a single, finished, complete body of truth. It is, instead, the study of *what follows from what*. The axioms are the starting point you chose; the theorems are what you got. Different starting points are different mathematics.`,
-  },
-  {
-    slug: "godel-incompleteness",
-    title: "Gödel's incompleteness theorems",
-    weekNumber: 4,
-    blurb: "Any sufficient axiom system contains true statements it cannot prove.",
-    lectureTitle: "4.6 Gödel's incompleteness theorems",
-    body: `# Gödel's incompleteness theorems
-
-In 1931, Kurt Gödel — age 25 — published two theorems that ended the century-old dream of finding a complete, consistent axiomatization of mathematics.
-
-## What the theorems say
-
-Let $T$ be a formal axiom system rich enough to encode basic arithmetic (Peano arithmetic suffices, as does ZFC). Assume $T$ is **consistent** (proves no contradiction) and *effective* (its axioms can be recognized by an algorithm).
-
-- **First incompleteness theorem.** There is a statement $G$ in the language of $T$ that is *true* (in the standard model) but *not provable* in $T$. Moreover, $\\neg G$ is also not provable. $T$ is **incomplete**.
-- **Second incompleteness theorem.** The statement "$T$ is consistent" is not provable in $T$ itself.
-
-In a sentence: any system strong enough to do arithmetic is either inconsistent or unable to prove its own consistency, and is always missing some truths.
-
-## The construction (sketch)
-
-Gödel's proof works by *self-reference*. He showed how to encode statements about $T$'s proofs as statements about numbers (this is **Gödel numbering**). Inside arithmetic, you can then formulate a sentence $G$ that says, in effect:
-
-> "This sentence is not provable in $T$."
-
-Now: if $T$ proves $G$, then $G$ is false — but $T$ proves only true things (by consistency). Contradiction. So $T$ does not prove $G$. But that is exactly what $G$ asserts. So $G$ is true. And $T$ does not prove it.
-
-The self-reference is the same machinery that powers the liar paradox ("this sentence is false") — but Gödel rebuilt it inside arithmetic, where it cannot be waved away as a quirk of natural language.
-
-## What it does **not** say
-
-The theorems are routinely misquoted. They do not say:
-
-- "Mathematics is inconsistent." (No — they assume consistency.)
-- "Some mathematical questions have no answer." (Only relative to a given axiom system.)
-- "Machines can never match human reasoning." (A philosophical extrapolation, not a theorem.)
-- "Anything goes." (No — proofs from the axioms are still proofs from the axioms.)
-
-What the theorems *do* say is sharp and limited: any single effective axiom system $T$ for arithmetic has true statements outside it. You can always extend $T$ to a larger system $T'$ that proves $G_T$ — but then $T'$ has its own unprovable $G_{T'}$. You never finish.
-
-## The historical impact
-
-Hilbert's program (1920s) was an explicit plan to formalize *all* of mathematics in a single system and prove it complete and consistent from within. The second incompleteness theorem killed the consistency half outright. The first killed the completeness half. The program was over within a year.
-
-What replaced it is the *modern* understanding of mathematics: as a network of axiom systems, each studied for its own consequences, with relationships between systems (relative consistency, conservative extension, mutual interpretability) doing the work that a single foundational system was supposed to do.`,
-  },
-  {
-    slug: "probability-foundations",
-    title: "Probability: measure, frequency, credence",
-    weekNumber: 4,
-    blurb: "What does it *mean* to say a probability is $0.7$?",
-    lectureTitle: "4.7 Probability: measure, frequency, credence",
-    body: `# Probability: measure, frequency, credence
-
-We use the word *probability* for at least three different things. Modern mathematics has a precise definition of one of them and leaves the others to philosophy.
-
-## The mathematical definition (Kolmogorov, 1933)
-
-A **probability space** is a triple $(\\Omega, \\mathcal{F}, P)$ where:
-
-- $\\Omega$ is a set of **outcomes** (the *sample space*).
-- $\\mathcal{F}$ is a collection of subsets of $\\Omega$ called **events**, closed under complement and countable unions (a *$\\sigma$-algebra*).
-- $P : \\mathcal{F} \\to [0, 1]$ is a function satisfying:
-  1. $P(\\Omega) = 1$,
-  2. $P(\\emptyset) = 0$,
-  3. *Countable additivity:* for any disjoint sequence $A_1, A_2, \\ldots \\in \\mathcal{F}$,
-     $$P\\!\\left(\\bigcup_n A_n\\right) = \\sum_n P(A_n).$$
-
-That is *all* probability theory says probability *is*: a normalized measure on a $\\sigma$-algebra. Every theorem (law of large numbers, central limit theorem, Bayes' rule) is a consequence.
-
-This is a beautifully clean foundation. But it leaves an enormous question unanswered: *how do you choose $P$ in a real problem?*
-
-## The three interpretations
-
-- **Frequentist.** $P(A)$ is the long-run relative frequency of $A$ in independent repeated trials. "The probability this coin lands heads is $0.5$" means: if you toss it forever, the fraction of heads tends to $0.5$. Concept of probability for one-off events is undefined.
-- **Bayesian / subjective.** $P(A)$ is your **degree of belief** that $A$ is true, calibrated so that you would accept fair bets at those odds. New evidence updates your beliefs by Bayes' rule. Applies to one-off events ("the probability it rains tomorrow") and to hypotheses ("the probability the coin is fair").
-- **Propensity.** $P(A)$ is a real, physical disposition of the system — a tendency. Useful for talking about quantum mechanics, where the probabilities seem to be features of the world rather than features of our ignorance.
-
-All three interpretations satisfy Kolmogorov's axioms. The math is the same; the *meaning* is contested.
-
-## A scientific example
-
-When a clinical trial reports "the drug reduces mortality by $40\\%$ ($p = 0.03$)," the $p$-value is a frequentist statement: under the null hypothesis (drug has no effect), the probability of seeing data this extreme or more is $0.03$. This is *not* the probability that the null hypothesis is false — that would be a Bayesian statement, requiring a prior. The widespread confusion of these two statements is responsible for a substantial fraction of misreported science. The math doesn't care which interpretation you adopt; the *conclusion you can draw* depends on it absolutely.`,
-  },
-  {
-    slug: "computability-halting",
-    title: "Computability and the halting problem",
-    weekNumber: 4,
-    blurb: "There is no algorithm that decides whether an algorithm halts.",
-    lectureTitle: "4.8 Computability and the halting problem",
-    body: `# Computability and the halting problem
-
-To finish the course, we ask: what can be computed, in principle, by any mechanical procedure?
-
-## Turing machines
-
-Alan Turing (1936) formalized an *idealized computer*: a finite state controller reading and writing symbols on an unbounded tape, according to a finite table of rules. A **Turing machine** is fully specified by that table.
-
-The **Church–Turing thesis** says: every function that is computable, by any mechanical procedure whatsoever — pencil and paper, modern computer, abacus, biological cell — is computable by some Turing machine. This is a thesis, not a theorem, because "mechanical procedure" has no a priori mathematical definition. But every alternative model of computation people have invented (lambda calculus, recursive functions, register machines, modern CPUs) turns out to compute exactly the same class of functions. The Turing-computable functions are, empirically, *the* computable functions.
+Gödel (1931) builds $G$ to say, via arithmetic self-reference, "$G$ is not provable in $T$" — the Liar of 1.2, made rigorous.
 
 ## The halting problem
 
-A natural question: given a Turing machine $M$ and an input $x$, does $M$ eventually halt, or does it run forever?
+Alan Turing (1936) gave the computational twin. The **halting problem** — given a program $M$ and input $x$, decide whether $M$ halts on $x$ — is **undecidable**:
 
-Turing's headline result: **no algorithm can decide this in general.** The **halting problem** is *undecidable*.
+$$\\nexists\\ H\\ \\text{such that for all } M, x: \\; H(M, x) = \\text{halts?}(M, x).$$
 
-## The proof
+The proof is diagonalization: a hypothetical $H$ lets you build a program that halts iff it does not.
 
-Suppose, for contradiction, there is a Turing machine $H$ that, given $\\langle M, x \\rangle$, outputs "yes" if $M(x)$ halts and "no" otherwise. Build a new machine $D$ that, given an input $\\langle M \\rangle$ (the description of a machine), runs $H$ on $\\langle M, M \\rangle$ and then:
+## Example
 
-- if $H$ says "yes" (i.e. $M$ halts on input $M$), $D$ loops forever;
-- if $H$ says "no," $D$ halts.
+These are not three separate facts but one idea — diagonal self-reference (Russell 4.3, Cantor 4.4) — in three costumes: sets, arithmetic, and computation. The reach of formal logic is staggering; its limits are equally sharp and, remarkably, are themselves *theorems of logic*. Logic is the rare discipline that can rigorously prove what it cannot do.`,
+  },
+  {
+    slug: "nonclassical-defeasible",
+    title: "Non-classical and defeasible logics",
+    weekNumber: 4,
+    blurb: "Logics that drop bivalence, explosion, or monotonicity.",
+    lectureTitle: "4.6 Non-classical and defeasible logics",
+    body: `# Non-classical and defeasible logics
 
-Now ask: what does $D$ do on input $\\langle D \\rangle$?
+Classical logic rests on choices — bivalence, the law of excluded middle, explosion, monotonicity — and each can be *rejected* to model reasoning the classical system handles badly. These are the **non-classical** logics.
 
-- If $D$ halts on $\\langle D \\rangle$, then by construction $H$ said "yes" — which means $D$ does not halt on $\\langle D \\rangle$. Contradiction.
-- If $D$ does not halt, then $H$ said "no" — which means $D$ does halt on $\\langle D \\rangle$. Contradiction.
+## Intuitionistic logic
 
-Either way, contradiction. Therefore no such $H$ exists. The halting problem is uncomputable. ∎
+Rejects the law of excluded middle $p \\vee \\neg p$ and double negation $\\neg\\neg p \\to p$ as universal laws. A statement is asserted only when *constructively proved*; "there exists" demands a witness, not a proof-by-contradiction. Brouwer and Heyting's system is the logic of constructive mathematics and, via the Curry–Howard correspondence, of *programs as proofs*.
 
-This argument is the *exact same* diagonal trick that Cantor used to prove $\\mathbb{R}$ uncountable (1.8) and that Gödel used in the incompleteness theorem (4.6). The three results — uncountability, incompleteness, undecidability — are siblings of one self-referential move.
+## Many-valued and fuzzy logic
 
-## What follows
+Reject **bivalence**: admit a third value (Łukasiewicz's $\\tfrac12$ for "indeterminate") or a whole continuum $[0,1]$ of degrees of truth (Zadeh's **fuzzy logic**). Useful for vagueness ("tall," "warm") and control systems.
 
-Once you have one undecidable problem, you get many. By a standard reduction technique, you can show:
+## Paraconsistent logic
 
-- It is undecidable whether two given programs compute the same function.
-- It is undecidable whether a given Diophantine equation $p(x_1, \\ldots, x_n) = 0$ with integer coefficients has an integer solution (**Hilbert's 10th problem**, settled by Matiyasevich, 1970).
-- It is undecidable whether a given mathematical statement in first-order logic over the integers is true.
+Rejects **explosion**, $p \\wedge \\neg p \\to q$ ("from a contradiction, everything follows"). A paraconsistent logic tolerates *local* contradictions without trivializing — valuable for inconsistent databases and legal codes.
 
-There are well-posed yes/no questions about numbers that no algorithm — and, granting the Church–Turing thesis, *no possible procedure* — can answer.
+## Defeasible (non-monotonic) reasoning
+
+Classical entailment is **monotonic**: $\\Gamma \\vdash \\varphi$ implies $\\Gamma, \\psi \\vdash \\varphi$ — more premises never retract a conclusion. **Defeasible** logic drops this, formalizing the inductive reasoning of 1.4.
+
+## Example
+
+"Tweety is a bird, so Tweety flies" — a sensible default. Learn "Tweety is a penguin," and you *retract* the conclusion. Classically impossible; in non-monotonic logic, routine. This is exactly how the law works (rules with exceptions), how doctors reason (diagnoses revised by tests), and how AI systems update. The classical logic of weeks 1–3 is the rigorous core; these non-classical systems extend it to the messy, revisable reasoning of real life — setting up the applied analysis of 4.7.`,
+  },
+  {
+    slug: "applying-argument-analysis",
+    title: "Applying formal logic to argument analysis",
+    weekNumber: 4,
+    blurb: "The full pipeline: from prose to symbols to a verdict.",
+    lectureTitle: "4.7 Applying formal logic to argument analysis",
+    body: `# Applying formal logic to argument analysis
+
+Everything in the course now combines into a single workflow for evaluating real arguments: **identify, translate, test, diagnose.**
+
+## The four-step method
+
+1. **Identify** the argument: find the conclusion, then the premises; discard rhetoric.
+2. **Translate** into the right system — propositional if the structure lives in connectives, predicate if it lives in *all*/*some* and relations.
+3. **Test** validity — a truth table or proof for entailment, a counter-model for refutation.
+4. **Diagnose**: if valid, are the premises true (is it *sound*)? If invalid, name the fallacy or exhibit the counterexample.
+
+## Worked example
+
+> "If the witness is telling the truth, the defendant was in the city. The defendant was not in the city. So the witness is not telling the truth."
+
+Dictionary: $w$ = witness truthful, $c$ = defendant in city.
+
+- $P_1$: $w \\to c$
+- $P_2$: $\\neg c$
+- $C$: $\\neg w$
+
+This is **modus tollens**: $w \\to c,\\ \\neg c \\vdash \\neg w$ — **valid**. The single bad row (premises true, conclusion false) would need $w = \\top$, $c = \\bot$, which makes $P_1$ false. So the inference is airtight; the remaining question is purely *factual* — is the witness really truthful, was the defendant really absent? Logic has cleanly separated the part it settles (the inference) from the part it hands to evidence (the premises).
+
+## A near-miss to contrast
+
+Swap $P_2$ to "the defendant *was* in the city" ($c$) and conclude $w$: now it is *affirming the consequent*, $w \\to c,\\ c \\vdash w$ — **invalid**, with counter-model $w = \\bot$, $c = \\top$. One premise flipped turns a proof into a fallacy. This pipeline — the same one used in law, science, and mathematics — is the practical payoff of the entire course.`,
+  },
+  {
+    slug: "capstone-synthesis",
+    title: "Capstone synthesis",
+    weekNumber: 4,
+    blurb: "The arc from inference to incompleteness, in one picture.",
+    lectureTitle: "4.8 Capstone synthesis",
+    body: `# Capstone synthesis
+
+Stand back and the whole course is a single ascent: from the bare idea of inference to the precise limits of formalization.
 
 ## The arc
 
-We began the course with counting on our fingers. We end it with the discovery that some questions about the integers are mechanically unanswerable. The reach of mathematics is enormous; its limits are sharp; and the proofs that establish those limits use the same handful of conceptual moves — quantification, self-reference, diagonalization — that we have met again and again. *That* is conceptual mathematics.`,
+- **Week 1** asked *what an argument is*: premises, a conclusion, and the relation of **validity** — truth-preservation independent of content — refined into **soundness** when the premises also hold.
+- **Week 2** built the first formal language, **propositional logic**: five truth-functional connectives, the decision procedure of **truth tables**, the classification into tautology/contradiction/contingency, and a proof system, **natural deduction**.
+- **Week 3** cracked the atom into **predicates, terms, and quantifiers**, gaining the power to express generality, multiple quantifiers and scope, identity, and a full semantics of **models and counterexamples**.
+- **Week 4** turned logic on itself — **metalogic**: $\\vdash$ and $\\models$ coincide (**soundness and completeness**), modality and set theory extend the reach, and **Gödel** and **Turing** mark the sharp edge where formalization meets its limits.
+
+## The two turnstiles
+
+The deepest single idea of the course is the relationship between its two turnstiles:
+
+$$\\Gamma \\vdash \\varphi \\quad(\\text{provable}) \\qquad \\Gamma \\models \\varphi \\quad(\\text{true in all models}).$$
+
+For first-order logic they *coincide* (completeness). For arithmetic, truth outruns proof (incompleteness). Logic is the study of that gap.
+
+## The recurring move
+
+One trick appears again and again: **self-reference and diagonalization** — in the Liar (1.2), Russell's set (4.3), Cantor's theorem (4.4), Gödel's $G$ and the halting problem (4.5). Learn to recognize it and the foundations of mathematics stop being a list of theorems and become a single idea.
+
+We began by asking when a conclusion *follows*. We end knowing exactly when it does, exactly how to prove that it does, and — most striking of all — exactly where no proof can reach. *That* is formal logic.`,
   },
 ];
 
@@ -1315,141 +1001,139 @@ const ASSIGNMENTS: SeedAssignment[] = [
   // ───────────── Week 1 ─────────────
   {
     kind: "homework",
-    title: "Homework 1.1 — Numbers and their extensions",
+    title: "Homework 1.1 — Arguments, statements, validity",
     weekNumber: 1,
     isTimed: false,
     timeLimitMinutes: null,
     instructions:
-      "Short-answer problems on counting, rationals, irrationals, and the reals. Use the math keyboard for the blackboard-bold number sets (ℕ, ℤ, ℚ, ℝ, ℂ) and any symbols.",
+      "Short-answer problems on inference, truth-values, and validity. Use the math keyboard (the 'Logic & Sets' tab) for ⊢, ⊨, ∴, ⊤, ⊥, → and the other logical symbols.",
     problems: [
       {
-        topicSlug: "counting-integers-numberline",
+        topicSlug: "what-logic-is",
         prompt:
-          "Using ∈ and ∉, write two true membership statements: one placing −7 in the integers, and one excluding −7 from the natural numbers ℕ = {1, 2, 3, …}.",
-        correctAnswer: "−7 ∈ ℤ and −7 ∉ ℕ",
+          "Using the ∴ symbol, write the general schematic form of an argument with premises P₁, …, Pₙ and conclusion C.",
+        correctAnswer: "P₁, P₂, …, Pₙ ∴ C",
         explanation:
-          "$-7 \\in \\mathbb{Z}$ (it is an integer), and $-7 \\notin \\mathbb{N}$ under the convention $\\mathbb{N} = \\{1, 2, 3, \\ldots\\}$.",
+          "An argument lists premises $P_1, \\ldots, P_n$ in support of a conclusion: $P_1, P_2, \\ldots, P_n \\therefore C$. The turnstile version is $P_1, \\ldots, P_n \\vdash C$.",
       },
       {
-        topicSlug: "rationals-ratios",
+        topicSlug: "statements-truth-values",
         prompt:
-          "Using set-builder notation, write the definition of the rational numbers ℚ as ratios of integers (be sure to exclude the impossible denominator).",
-        correctAnswer: "ℚ = { p/q : p, q ∈ ℤ, q ≠ 0 }",
+          "Using ⊤ and ⊥, write the principle of bivalence for a statement A: that A takes exactly one of the two truth-values.",
+        correctAnswer: "A = ⊤ or A = ⊥, and not both",
         explanation:
-          "$\\mathbb{Q} = \\{\\,p/q : p, q \\in \\mathbb{Z},\\ q \\neq 0\\,\\}$. Excluding $q = 0$ is essential — division by zero is undefined.",
+          "Bivalence: every statement is true or false and not both — $A = \\top$ or $A = \\bot$, exclusively. Classical logic assumes this.",
       },
       {
-        topicSlug: "irrationals-sqrt2",
+        topicSlug: "validity-soundness",
         prompt:
-          "State, in symbols, the membership claim that √2 is real but not rational. Use ∈, ∉, ℝ, ℚ.",
-        correctAnswer: "√2 ∈ ℝ and √2 ∉ ℚ",
+          "Using the semantic turnstile ⊨, write that the premises P₁, …, Pₙ logically entail the conclusion C (i.e. the argument is valid).",
+        correctAnswer: "P₁, …, Pₙ ⊨ C",
         explanation:
-          "$\\sqrt 2 \\in \\mathbb{R}$ but $\\sqrt 2 \\notin \\mathbb{Q}$ — proven by the classical contradiction argument from $\\sqrt 2 = p/q$ in lowest terms.",
+          "$P_1, \\ldots, P_n \\models C$ asserts validity: there is no situation making every premise true and $C$ false.",
       },
       {
-        topicSlug: "reals-completeness",
+        topicSlug: "validity-soundness",
         prompt:
-          "Write the chain of strict subset inclusions from the natural numbers up through the complex numbers (use ⊂ to indicate proper subsets).",
-        correctAnswer: "ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ ⊂ ℂ",
+          "Write the equation that defines soundness in terms of validity and the premises. (Use words joined by ∧ for the two conditions.)",
+        correctAnswer: "sound = valid ∧ all premises true",
         explanation:
-          "$\\mathbb{N} \\subset \\mathbb{Z} \\subset \\mathbb{Q} \\subset \\mathbb{R} \\subset \\mathbb{C}$. Each inclusion is strict — each extension is genuinely larger.",
+          "An argument is sound iff it is valid AND all its premises are true: $\\text{sound} \\equiv \\text{valid} \\wedge (\\text{all premises true})$. Soundness guarantees a true conclusion.",
       },
     ],
   },
   {
     kind: "homework",
-    title: "Homework 1.2 — Complex numbers, representation, infinity",
+    title: "Homework 1.2 — Form, fallacies, and conditions",
     weekNumber: 1,
     isTimed: false,
     timeLimitMinutes: null,
     instructions:
-      "Use the math keyboard for i, π, exponents, and blackboard-bold set symbols.",
+      "Use the math keyboard for →, ↔, ¬, ∧, and ∴.",
     problems: [
       {
-        topicSlug: "complex-rotations",
+        topicSlug: "deductive-inductive",
         prompt:
-          "Write the defining equation of the imaginary unit i, and then write Euler's identity (the special case linking 0, 1, π, e, and i).",
-        correctAnswer: "i² = −1; e^{iπ} + 1 = 0",
+          "Write, in schematic form using ∴, the valid argument form 'modus ponens' (from P and the conditional, conclude Q).",
+        correctAnswer: "P, P → Q ∴ Q",
         explanation:
-          "$i^2 = -1$ defines the imaginary unit. Euler's identity $e^{i\\pi} + 1 = 0$ links five fundamental constants in a single equation.",
+          "Modus ponens: $P,\\ P \\to Q \\therefore Q$ — the paradigm deductive (truth-preserving) inference.",
       },
       {
-        topicSlug: "zero-negatives-leaps",
+        topicSlug: "logical-form-translation",
         prompt:
-          "For each of the equations x + 1 = 0, 2x = 1, x² = 2, x² + 1 = 0, give the smallest standard number system (use ℕ, ℤ, ℚ, ℝ, ℂ) in which the equation has a solution.",
-        correctAnswer:
-          "x + 1 = 0 → ℤ; 2x = 1 → ℚ; x² = 2 → ℝ; x² + 1 = 0 → ℂ",
+          "Write the shared logical form of 'All cats are animals; Felix is a cat; so Felix is an animal' using schematic letters F, G and a constant a.",
+        correctAnswer: "∀x (Fx → Gx), Fa ∴ Ga",
         explanation:
-          "Each enlargement of the number system was driven by an equation the previous system could not solve.",
+          "The form is $\\forall x\\,(Fx \\to Gx),\\ Fa \\therefore Ga$ — validity lives in this skeleton, not in the words 'cat' or 'animal'.",
       },
       {
-        topicSlug: "bases-place-value",
+        topicSlug: "informal-fallacies",
         prompt:
-          "Write the number seventeen (a) in base 10, (b) in base 2, and (c) in base 16.",
-        correctAnswer: "(a) 17, (b) 10001, (c) 11",
+          "Using →, write the invalid form known as 'affirming the consequent' (the fallacy that mimics modus ponens).",
+        correctAnswer: "P → Q, Q ∴ P",
         explanation:
-          "$17_{10} = 10001_2 = 11_{16}$. The number is the same; only the representation changes with the base.",
+          "Affirming the consequent: $P \\to Q,\\ Q \\therefore P$. Invalid — $Q$ may hold for another reason. Contrast the valid modus ponens.",
       },
       {
-        topicSlug: "countable-uncountable",
+        topicSlug: "necessary-sufficient",
         prompt:
-          "Using ∼ for 'has the same cardinality as', write two true statements: (a) that the integers and the rationals are equinumerous, and (b) that the reals are *not* equinumerous with the naturals.",
-        correctAnswer: "ℤ ∼ ℚ and ℝ ≁ ℕ",
+          "Using → in both directions, write what it means for P to be both necessary and sufficient for Q, then give the single biconditional it equals.",
+        correctAnswer: "(P → Q) ∧ (Q → P) ≡ P ↔ Q",
         explanation:
-          "$\\mathbb{Z}$ and $\\mathbb{Q}$ are both countable (cardinality $\\aleph_0$), so $\\mathbb{Z} \\sim \\mathbb{Q}$. By Cantor's diagonal argument, $\\mathbb{R}$ is uncountable, so $\\mathbb{R} \\not\\sim \\mathbb{N}$.",
+          "$P$ sufficient for $Q$ is $P \\to Q$; $P$ necessary for $Q$ is $Q \\to P$. Both together is $(P \\to Q) \\wedge (Q \\to P) \\equiv P \\leftrightarrow Q$.",
       },
     ],
   },
   {
     kind: "test",
-    title: "Week 1 Test — The number systems",
+    title: "Week 1 Test — Reasoning and logical form",
     weekNumber: 1,
     isTimed: true,
     timeLimitMinutes: 30,
     instructions:
-      "Timed. 30 minutes. Math keyboard available; pasting is disabled. Answers should be written in compact symbolic form using the on-screen math keyboard.",
+      "Timed. 30 minutes. Math keyboard available; pasting is disabled. Write answers in compact symbolic form using the on-screen keyboard.",
     problems: [
       {
-        topicSlug: "counting-integers-numberline",
+        topicSlug: "validity-soundness",
         prompt:
-          "Using a single statement, write that the integers are closed under subtraction but the natural numbers are not. (Give a specific counterexample for ℕ.)",
-        correctAnswer: "∀ a, b ∈ ℤ, a − b ∈ ℤ; but 3 − 5 = −2 ∉ ℕ",
-        explanation:
-          "For all $a, b \\in \\mathbb{Z}$, $a - b \\in \\mathbb{Z}$. But $3 - 5 = -2 \\notin \\mathbb{N}$ shows $\\mathbb{N}$ is not closed under subtraction.",
-      },
-      {
-        topicSlug: "irrationals-sqrt2",
-        prompt:
-          "Outline the proof that √2 ∉ ℚ as a contradiction: state the assumption, the algebraic consequence, and the contradiction reached.",
+          "State, using ⊨, the definition of validity as the non-existence of a counterexample situation. (Write it as: P₁,…,Pₙ ⊨ C iff there is no situation where … .)",
         correctAnswer:
-          "Assume √2 = p/q in lowest terms ⇒ p² = 2q² ⇒ p even ⇒ p = 2k ⇒ q² = 2k² ⇒ q even ⇒ p, q share factor 2, contradicting 'lowest terms'.",
+          "P₁,…,Pₙ ⊨ C iff there is no situation in which P₁,…,Pₙ are all true and C is false",
         explanation:
-          "Assume $\\sqrt 2 = p/q$ in lowest terms. Then $p^2 = 2q^2$, so $p$ is even, $p = 2k$, then $q^2 = 2k^2$, so $q$ is even — contradicting 'lowest terms.'",
+          "Validity $P_1, \\ldots, P_n \\models C$ means: no situation makes all premises true while $C$ is false.",
       },
       {
-        topicSlug: "reals-completeness",
+        topicSlug: "what-logic-is",
         prompt:
-          "State the Least Upper Bound (supremum) property of ℝ in symbols.",
-        correctAnswer:
-          "∀ S ⊆ ℝ with S ≠ ∅ and S bounded above, ∃ sup(S) ∈ ℝ",
+          "Using ∀ and a constant s, write the logical form of Aristotle's syllogism 'All humans are mortal; Socrates is human; so Socrates is mortal' (H = human, M = mortal).",
+        correctAnswer: "∀x (Hx → Mx), Hs ∴ Ms",
         explanation:
-          "Every nonempty subset $S \\subseteq \\mathbb{R}$ with an upper bound has a least upper bound $\\sup(S) \\in \\mathbb{R}$. This property fails in $\\mathbb{Q}$.",
+          "$\\forall x\\,(Hx \\to Mx),\\ Hs \\therefore Ms$. The argument is valid in virtue of this form.",
       },
       {
-        topicSlug: "complex-rotations",
+        topicSlug: "necessary-sufficient",
         prompt:
-          "Using i, write the two complex square roots of −9.",
-        correctAnswer: "±3i",
+          "Using →, write the symbolic claim that being divisible by 4 is sufficient (but we are not claiming necessary) for being even. (D = divisible by 4, E = even.)",
+        correctAnswer: "∀n (Dn → En)",
         explanation:
-          "$x^2 = -9 \\Rightarrow x = \\pm 3i$, since $(3i)^2 = 9 \\cdot i^2 = -9$.",
+          "Sufficiency is the forward conditional: $\\forall n\\,(Dn \\to En)$. The converse fails ($6$ is even, not divisible by $4$), so it is not necessary.",
       },
       {
-        topicSlug: "countable-uncountable",
+        topicSlug: "informal-fallacies",
         prompt:
-          "Using ℵ₀, write the cardinality of ℚ and a strict inequality showing |ℝ| is larger.",
-        correctAnswer: "|ℚ| = ℵ₀ and |ℝ| > ℵ₀",
+          "Using → and ¬, write the invalid form 'denying the antecedent'.",
+        correctAnswer: "P → Q, ¬P ∴ ¬Q",
         explanation:
-          "$|\\mathbb{Q}| = \\aleph_0$ (the rationals are countable). $|\\mathbb{R}| > \\aleph_0$ by Cantor's diagonal argument; $|\\mathbb{R}| = 2^{\\aleph_0}$.",
+          "Denying the antecedent: $P \\to Q,\\ \\neg P \\therefore \\neg Q$ — invalid. Contrast the valid modus tollens $P \\to Q,\\ \\neg Q \\therefore \\neg P$.",
+      },
+      {
+        topicSlug: "deductive-inductive",
+        prompt:
+          "Using → and ¬, write the valid form 'modus tollens'.",
+        correctAnswer: "P → Q, ¬Q ∴ ¬P",
+        explanation:
+          "Modus tollens: $P \\to Q,\\ \\neg Q \\therefore \\neg P$ — a valid deductive form, the contrapositive use of a conditional.",
       },
     ],
   },
@@ -1457,90 +1141,88 @@ const ASSIGNMENTS: SeedAssignment[] = [
   // ───────────── Week 2 ─────────────
   {
     kind: "homework",
-    title: "Homework 2.1 — Operations, structural laws, groups",
+    title: "Homework 2.1 — Connectives and truth tables",
     weekNumber: 2,
     isTimed: false,
     timeLimitMinutes: null,
     instructions:
-      "Use the math keyboard for ∀, ∃, ∈, ∘, and any operator symbols.",
+      "Use the math keyboard for ¬, ∧, ∨, →, ↔, ⊤, ⊥, ⊨.",
     problems: [
       {
-        topicSlug: "what-is-operation",
+        topicSlug: "propositional-connectives",
         prompt:
-          "Using the function-arrow notation, write the formal definition of a binary operation ∗ on a set S.",
-        correctAnswer: "∗ : S × S → S",
+          "Write the definition of the material conditional p → q as a disjunction involving a negation.",
+        correctAnswer: "p → q ≡ ¬p ∨ q",
         explanation:
-          "$\\ast : S \\times S \\to S$. The codomain $S$ encodes the closure requirement: combining two elements of $S$ must produce an element of $S$.",
+          "The material conditional is defined as $p \\to q \\equiv \\neg p \\vee q$ — false only when $p$ is true and $q$ false.",
       },
       {
-        topicSlug: "commutative-associative-distributive",
+        topicSlug: "truth-tables",
         prompt:
-          "Using ∀, write the commutative law for an operation ∗ on a set S, and the associative law for the same ∗.",
-        correctAnswer:
-          "∀ a, b ∈ S, a ∗ b = b ∗ a; ∀ a, b, c ∈ S, (a ∗ b) ∗ c = a ∗ (b ∗ c)",
+          "For n distinct atomic letters, write the number of rows in the full truth table.",
+        correctAnswer: "2^n",
         explanation:
-          "Commutativity: $\\forall a, b \\in S,\\ a \\ast b = b \\ast a$. Associativity: $\\forall a, b, c \\in S,\\ (a \\ast b) \\ast c = a \\ast (b \\ast c)$.",
+          "Each letter is independently $\\top$ or $\\bot$, giving $2^n$ assignments — one row each.",
       },
       {
-        topicSlug: "groups-symmetry",
+        topicSlug: "truth-tables",
         prompt:
-          "List the four axioms a set G with operation ∗ must satisfy to be a group. Use compact symbolic notation (closure, associativity, identity, inverses).",
+          "Using ⊨, state the truth-table criterion for an argument with premises P₁,…,Pₙ and conclusion C to be valid (in terms of the rows of the table).",
         correctAnswer:
-          "(1) ∀ a, b ∈ G, a∗b ∈ G; (2) ∀ a, b, c, (a∗b)∗c = a∗(b∗c); (3) ∃ e ∈ G, ∀ a, e∗a = a∗e = a; (4) ∀ a ∈ G, ∃ a⁻¹ ∈ G, a∗a⁻¹ = a⁻¹∗a = e",
+          "P₁,…,Pₙ ⊨ C iff no row has all of P₁,…,Pₙ true and C false",
         explanation:
-          "Closure, associativity, identity element $e$, inverses. An abelian group additionally satisfies $a \\ast b = b \\ast a$.",
+          "Valid iff there is no row of the truth table where every premise is $\\top$ and the conclusion is $\\bot$.",
+      },
+      {
+        topicSlug: "tautology-contradiction-contingency",
+        prompt:
+          "Using ⊨, write that the formula p ∨ ¬p is a tautology (the law of excluded middle).",
+        correctAnswer: "⊨ p ∨ ¬p",
+        explanation:
+          "$\\models p \\vee \\neg p$: the law of excluded middle is true on every row, hence a tautology.",
       },
     ],
   },
   {
     kind: "homework",
-    title: "Homework 2.2 — Rings, fields, vector spaces, functions, modular arithmetic",
+    title: "Homework 2.2 — Equivalence, translation, and deduction",
     weekNumber: 2,
     isTimed: false,
     timeLimitMinutes: null,
     instructions:
-      "Use the math keyboard for blackboard-bold sets, ∀/∃, ≡, ∘, ∈, ∉.",
+      "Use the math keyboard for ≡, ¬, ∧, ∨, →, ⊢.",
     problems: [
       {
-        topicSlug: "rings-fields",
+        topicSlug: "logical-equivalence-demorgan",
         prompt:
-          "Give the precise condition on the positive integer n for the ring ℤ/nℤ to be a field. State it as a single sentence in symbols.",
-        correctAnswer: "ℤ/nℤ is a field ⟺ n is prime",
+          "Write both of De Morgan's laws, using ≡, ¬, ∧, ∨.",
+        correctAnswer: "¬(p ∧ q) ≡ ¬p ∨ ¬q; ¬(p ∨ q) ≡ ¬p ∧ ¬q",
         explanation:
-          "$\\mathbb{Z}/n\\mathbb{Z}$ is a field if and only if $n$ is prime. For composite $n = ab$ with $1 < a, b < n$, the classes $[a]$ and $[b]$ are nonzero zero-divisors and have no multiplicative inverses.",
+          "De Morgan: $\\neg(p \\wedge q) \\equiv \\neg p \\vee \\neg q$ and $\\neg(p \\vee q) \\equiv \\neg p \\wedge \\neg q$.",
       },
       {
-        topicSlug: "vector-spaces",
+        topicSlug: "logical-equivalence-demorgan",
         prompt:
-          "Using Σ notation, write the general form of a linear combination of vectors v₁, …, vₖ with scalars α₁, …, αₖ from a field F.",
-        correctAnswer: "Σ_{i=1}^{k} α_i v_i",
+          "Using ≡, write the contrapositive equivalence for the conditional p → q.",
+        correctAnswer: "p → q ≡ ¬q → ¬p",
         explanation:
-          "A linear combination is $\\sum_{i=1}^{k} \\alpha_i v_i$, with each $\\alpha_i \\in F$ and each $v_i$ a vector. The span of $\\{v_1, \\ldots, v_k\\}$ is the set of all such combinations.",
+          "A conditional is equivalent to its contrapositive: $p \\to q \\equiv \\neg q \\to \\neg p$.",
       },
       {
-        topicSlug: "functions-mappings",
+        topicSlug: "translating-propositional",
         prompt:
-          "Using ∀ and ⇒, write the formal definition that a function f : A → B is injective.",
-        correctAnswer: "∀ a₁, a₂ ∈ A, f(a₁) = f(a₂) ⇒ a₁ = a₂",
+          "Translate 'I will go (g) only if Sam goes (s)' into propositional logic.",
+        correctAnswer: "g → s",
         explanation:
-          "$f$ is injective iff $\\forall a_1, a_2 \\in A,\\ f(a_1) = f(a_2) \\Rightarrow a_1 = a_2$. Equivalently: different inputs give different outputs.",
+          "'$p$ only if $q$' gives the necessary condition: $g \\to s$. (NOT $s \\to g$.)",
       },
       {
-        topicSlug: "relations-equivalence-iso",
+        topicSlug: "natural-deduction-propositional",
         prompt:
-          "List the three properties (in symbols) that a relation ∼ on a set S must satisfy to be an equivalence relation.",
-        correctAnswer:
-          "Reflexive: ∀ a, a ∼ a. Symmetric: ∀ a, b, a ∼ b ⇒ b ∼ a. Transitive: ∀ a, b, c, (a ∼ b ∧ b ∼ c) ⇒ a ∼ c.",
+          "Using ⊢, write the derived rule 'hypothetical syllogism' (chaining two conditionals).",
+        correctAnswer: "p → q, q → r ⊢ p → r",
         explanation:
-          "Reflexivity, symmetry, transitivity. An equivalence relation partitions $S$ into disjoint equivalence classes.",
-      },
-      {
-        topicSlug: "modular-arithmetic",
-        prompt:
-          "Using the ≡ ... (mod n) notation, write Fermat's Little Theorem for a prime p and an integer a not divisible by p.",
-        correctAnswer: "a^{p−1} ≡ 1 (mod p)",
-        explanation:
-          "Fermat's Little Theorem: $a^{p-1} \\equiv 1 \\pmod p$ when $\\gcd(a, p) = 1$. It is the foundation of probabilistic primality testing and RSA encryption.",
+          "Hypothetical syllogism: $p \\to q,\\ q \\to r \\vdash p \\to r$ — transitivity of the conditional.",
       },
     ],
   },
@@ -1551,72 +1233,66 @@ const ASSIGNMENTS: SeedAssignment[] = [
     isTimed: true,
     timeLimitMinutes: 60,
     instructions:
-      "Cumulative midterm on the number systems and on algebraic structures. 60 minutes. Math keyboard available; pasting disabled.",
+      "Cumulative midterm on reasoning, logical form, and propositional logic. 60 minutes. Math keyboard available; pasting disabled.",
     problems: [
       {
-        topicSlug: "rationals-ratios",
+        topicSlug: "validity-soundness",
         prompt:
-          "Using set-builder notation, write the definition of ℚ as ratios of integers.",
-        correctAnswer: "ℚ = { p/q : p, q ∈ ℤ, q ≠ 0 }",
-        explanation:
-          "$\\mathbb{Q} = \\{\\,p/q : p, q \\in \\mathbb{Z},\\ q \\neq 0\\,\\}$.",
+          "Using ⊨, write that premises P₁, P₂ entail conclusion C.",
+        correctAnswer: "P₁, P₂ ⊨ C",
+        explanation: "$P_1, P_2 \\models C$ — semantic entailment / validity.",
       },
       {
-        topicSlug: "irrationals-sqrt2",
+        topicSlug: "necessary-sufficient",
         prompt:
-          "Write the membership claim that √2 is real but not rational.",
-        correctAnswer: "√2 ∈ ℝ and √2 ∉ ℚ",
+          "Using ↔, write that P is necessary and sufficient for Q as a single biconditional.",
+        correctAnswer: "P ↔ Q",
         explanation:
-          "$\\sqrt 2 \\in \\mathbb{R}$ and $\\sqrt 2 \\notin \\mathbb{Q}$.",
+          "Necessary and sufficient combine into the biconditional $P \\leftrightarrow Q$.",
       },
       {
-        topicSlug: "complex-rotations",
+        topicSlug: "propositional-connectives",
         prompt:
-          "State the defining equation of the imaginary unit i and write Euler's identity.",
-        correctAnswer: "i² = −1; e^{iπ} + 1 = 0",
-        explanation:
-          "$i^2 = -1$ and $e^{i\\pi} + 1 = 0$.",
+          "Write the material conditional p → q as an equivalent disjunction.",
+        correctAnswer: "¬p ∨ q",
+        explanation: "$p \\to q \\equiv \\neg p \\vee q$.",
       },
       {
-        topicSlug: "countable-uncountable",
-        prompt:
-          "Using ℵ₀, write the cardinality of ℕ. Then write a strict inequality comparing |ℕ| and |ℝ|.",
-        correctAnswer: "|ℕ| = ℵ₀ and |ℕ| < |ℝ|",
-        explanation:
-          "$|\\mathbb{N}| = \\aleph_0$ and $|\\mathbb{N}| < |\\mathbb{R}|$ (Cantor).",
+        topicSlug: "logical-equivalence-demorgan",
+        prompt: "Write the first De Morgan law for ¬(p ∧ q).",
+        correctAnswer: "¬(p ∧ q) ≡ ¬p ∨ ¬q",
+        explanation: "$\\neg(p \\wedge q) \\equiv \\neg p \\vee \\neg q$.",
       },
       {
-        topicSlug: "groups-symmetry",
+        topicSlug: "tautology-contradiction-contingency",
         prompt:
-          "Using ∃ and ∀, state the identity-element axiom and the inverses axiom for a group (G, ∗).",
+          "Using ⊨, write the link between validity of P₁,…,Pₙ ∴ C and the tautologyhood of a single conditional.",
         correctAnswer:
-          "∃ e ∈ G, ∀ a ∈ G, e ∗ a = a ∗ e = a; and ∀ a ∈ G, ∃ a⁻¹ ∈ G, a ∗ a⁻¹ = a⁻¹ ∗ a = e",
+          "P₁,…,Pₙ ⊨ C iff ⊨ (P₁ ∧ … ∧ Pₙ) → C",
         explanation:
-          "Identity: $\\exists e,\\ \\forall a,\\ e \\ast a = a \\ast e = a$. Inverses: $\\forall a,\\ \\exists a^{-1},\\ a \\ast a^{-1} = a^{-1} \\ast a = e$.",
+          "An argument is valid iff the conditional $(P_1 \\wedge \\cdots \\wedge P_n) \\to C$ is a tautology.",
       },
       {
-        topicSlug: "rings-fields",
+        topicSlug: "truth-tables",
         prompt:
-          "State the condition on n for ℤ/nℤ to be a field.",
-        correctAnswer: "ℤ/nℤ is a field ⟺ n is prime",
-        explanation:
-          "$\\mathbb{Z}/n\\mathbb{Z}$ is a field iff $n$ is prime.",
+          "Write the number of rows in the truth table of a formula with 3 distinct atomic letters.",
+        correctAnswer: "2^3 = 8",
+        explanation: "$2^3 = 8$ rows.",
       },
       {
-        topicSlug: "vector-spaces",
+        topicSlug: "natural-deduction-propositional",
         prompt:
-          "Using Σ, write the linear combination of v₁, v₂, v₃ with scalars α₁, α₂, α₃.",
-        correctAnswer: "Σ_{i=1}^{3} α_i v_i = α₁v₁ + α₂v₂ + α₃v₃",
-        explanation:
-          "$\\sum_{i=1}^{3} \\alpha_i v_i$.",
+          "Using ⊢, write modus ponens as a provability claim.",
+        correctAnswer: "p, p → q ⊢ q",
+        explanation: "$p,\\ p \\to q \\vdash q$ — the $\\to$-elimination rule.",
       },
       {
-        topicSlug: "modular-arithmetic",
+        topicSlug: "translating-propositional",
         prompt:
-          "Using the ≡ ... (mod n) notation, write Fermat's Little Theorem.",
-        correctAnswer: "a^{p−1} ≡ 1 (mod p) when gcd(a, p) = 1",
+          "Translate 'I will go (g) unless Maria goes (m)' into propositional logic, as a disjunction.",
+        correctAnswer: "g ∨ m",
         explanation:
-          "$a^{p-1} \\equiv 1 \\pmod p$ for prime $p$ and $\\gcd(a, p) = 1$.",
+          "'$p$ unless $q$' is $\\neg q \\to p$, equivalently $g \\vee m$.",
       },
     ],
   },
@@ -1624,138 +1300,136 @@ const ASSIGNMENTS: SeedAssignment[] = [
   // ───────────── Week 3 ─────────────
   {
     kind: "homework",
-    title: "Homework 3.1 — Limits, continuity, derivatives, integrals",
+    title: "Homework 3.1 — Predicates and quantifiers",
     weekNumber: 3,
     isTimed: false,
     timeLimitMinutes: null,
     instructions:
-      "Use the math keyboard for limits, derivatives, integrals, and quantifiers.",
+      "Use the math keyboard for ∀, ∃, →, ∧, ¬, and predicate letters.",
     problems: [
       {
-        topicSlug: "limits-taming-infinity",
+        topicSlug: "predicates-singular-terms",
         prompt:
-          "Write the ε–δ definition of lim_{x → a} f(x) = L using ∀, ∃, and |·|.",
-        correctAnswer:
-          "∀ ε > 0, ∃ δ > 0 : 0 < |x − a| < δ ⇒ |f(x) − L| < ε",
+          "Using a constant s (Socrates) and a predicate M (mortal), write the atomic formula 'Socrates is mortal'.",
+        correctAnswer: "Ms",
         explanation:
-          "$\\forall \\varepsilon > 0,\\ \\exists \\delta > 0$ such that $0 < |x - a| < \\delta \\Rightarrow |f(x) - L| < \\varepsilon$.",
+          "An atomic formula fills a predicate's slot with a term: $Ms$ (Socrates is mortal).",
       },
       {
-        topicSlug: "continuity",
+        topicSlug: "quantifiers",
         prompt:
-          "State, as a single equation, the definition that a function f is continuous at the point a.",
-        correctAnswer: "lim_{x → a} f(x) = f(a)",
+          "Write the standard form of 'All F are G' using ∀ and →.",
+        correctAnswer: "∀x (Fx → Gx)",
         explanation:
-          "$f$ is continuous at $a$ iff $\\lim_{x \\to a} f(x) = f(a)$ — meaning the limit exists, $f(a)$ exists, and the two are equal.",
+          "'All $F$ are $G$' is $\\forall x\\,(Fx \\to Gx)$ — universal goes with the conditional.",
       },
       {
-        topicSlug: "derivatives-instantaneous-rate",
+        topicSlug: "quantifiers",
         prompt:
-          "Using a limit, write the definition of the derivative f'(a).",
-        correctAnswer: "f'(a) = lim_{h → 0} (f(a + h) − f(a)) / h",
+          "Write the standard form of 'Some F is G' using ∃ and ∧.",
+        correctAnswer: "∃x (Fx ∧ Gx)",
         explanation:
-          "$f'(a) = \\lim_{h \\to 0} \\dfrac{f(a+h) - f(a)}{h}$, when the limit exists.",
+          "'Some $F$ is $G$' is $\\exists x\\,(Fx \\wedge Gx)$ — existential goes with conjunction.",
       },
       {
-        topicSlug: "integrals-accumulation",
+        topicSlug: "translating-predicate",
         prompt:
-          "Using ∫, write the definite integral of f from a to b. Include the dx.",
-        correctAnswer: "∫_a^b f(x) dx",
+          "Using ∀, ¬, write 'No F is G' as a universal conditional.",
+        correctAnswer: "∀x (Fx → ¬Gx)",
         explanation:
-          "$\\int_a^b f(x)\\,\\mathrm{d}x$. The $\\mathrm{d}x$ is the limit of the rectangle widths in the Riemann sum.",
+          "'No $F$ is $G$' is $\\forall x\\,(Fx \\to \\neg Gx)$, equivalently $\\neg\\exists x\\,(Fx \\wedge Gx)$.",
       },
     ],
   },
   {
     kind: "homework",
-    title: "Homework 3.2 — FTC, series, geometry, topology",
+    title: "Homework 3.2 — Scope, identity, deduction, and models",
     weekNumber: 3,
     isTimed: false,
     timeLimitMinutes: null,
-    instructions: "Use the math keyboard freely.",
+    instructions:
+      "Use the math keyboard for ∀, ∃, =, ≠, ⊢, ⊨.",
     problems: [
       {
-        topicSlug: "ftc",
+        topicSlug: "quantifiers",
         prompt:
-          "State Part 2 of the Fundamental Theorem of Calculus: if F' = f on [a, b], express ∫_a^b f(x) dx in terms of F.",
-        correctAnswer: "∫_a^b f(x) dx = F(b) − F(a)",
+          "Using ¬, ∀, ∃, write the quantifier-duality equivalence for the negation of a universal statement.",
+        correctAnswer: "¬∀x P(x) ≡ ∃x ¬P(x)",
         explanation:
-          "$\\int_a^b f(x)\\,\\mathrm{d}x = F(b) - F(a)$ for any antiderivative $F$ of $f$.",
+          "$\\neg\\forall x\\, P(x) \\equiv \\exists x\\, \\neg P(x)$ — to deny 'all', assert 'some not'.",
       },
       {
-        topicSlug: "sequences-series-zeno",
+        topicSlug: "multiple-quantifiers-scope",
         prompt:
-          "Using Σ, write the closed-form sum of the infinite geometric series 1 + r + r² + r³ + ⋯ when |r| < 1.",
-        correctAnswer: "Σ_{n=0}^{∞} r^n = 1 / (1 − r), valid for |r| < 1",
+          "Using L for the loving relation, write the two mixed-quantifier statements 'everyone loves someone' and 'someone is loved by everyone', and indicate which entails the other with →.",
+        correctAnswer:
+          "∀x ∃y Lxy and ∃y ∀x Lxy; ∃y ∀x Lxy → ∀x ∃y Lxy",
         explanation:
-          "$\\sum_{n=0}^{\\infty} r^n = \\dfrac{1}{1 - r}$ when $|r| < 1$. This is the resolution of Zeno's paradox: infinitely many shrinking steps sum to a finite total.",
+          "Order matters: $\\exists y\\, \\forall x\\, Lxy \\to \\forall x\\, \\exists y\\, Lxy$, but not conversely.",
       },
       {
-        topicSlug: "euclidean-non-euclidean",
+        topicSlug: "identity-definite-descriptions",
         prompt:
-          "For a triangle on a sphere of constant positive curvature, write an inequality comparing the sum of its interior angles to π.",
-        correctAnswer: "α + β + γ > π",
+          "Using ∃, ∀, =, write 'there is exactly one F' (the uniqueness statement).",
+        correctAnswer: "∃x (Fx ∧ ∀y (Fy → y = x))",
         explanation:
-          "On a sphere (positive curvature), the angle sum of any triangle exceeds $\\pi$. On a hyperbolic surface (negative curvature), the sum is less than $\\pi$. Only in Euclidean geometry is the sum exactly $\\pi$.",
+          "Exactly one $F$: $\\exists x\\,(Fx \\wedge \\forall y\\,(Fy \\to y = x))$ — existence plus uniqueness.",
       },
       {
-        topicSlug: "topology-dimension-curvature",
+        topicSlug: "natural-deduction-predicate",
         prompt:
-          "Using V, E, F, write the Euler characteristic χ of a polyhedron, and give its value for any triangulation of the sphere.",
-        correctAnswer: "χ = V − E + F; for the sphere, χ = 2",
+          "Using ⊢, write the entailment proved with the quantifier rules: from 'all F are G' and 'some F exists', conclude 'some G exists'.",
+        correctAnswer: "∀x (Fx → Gx), ∃x Fx ⊢ ∃x Gx",
         explanation:
-          "$\\chi = V - E + F$. For any triangulation of the sphere, $\\chi = 2$ (Euler, 1758). For the torus, $\\chi = 0$.",
+          "$\\forall x\\,(Fx \\to Gx),\\ \\exists x\\, Fx \\vdash \\exists x\\, Gx$ — via ∃-elim, ∀-elim, modus ponens, ∃-intro.",
       },
     ],
   },
   {
     kind: "test",
-    title: "Week 3 Test — Calculus, geometry, topology",
+    title: "Week 3 Test — Predicate logic",
     weekNumber: 3,
     isTimed: true,
     timeLimitMinutes: 40,
     instructions: "Timed. 40 minutes. Math keyboard available; pasting disabled.",
     problems: [
       {
-        topicSlug: "limits-taming-infinity",
-        prompt:
-          "Write the ε–δ definition of lim_{x → a} f(x) = L.",
-        correctAnswer:
-          "∀ ε > 0, ∃ δ > 0 : 0 < |x − a| < δ ⇒ |f(x) − L| < ε",
-        explanation:
-          "$\\forall \\varepsilon > 0,\\ \\exists \\delta > 0 : 0 < |x - a| < \\delta \\Rightarrow |f(x) - L| < \\varepsilon$.",
+        topicSlug: "quantifiers",
+        prompt: "Write 'All F are G' in symbols.",
+        correctAnswer: "∀x (Fx → Gx)",
+        explanation: "$\\forall x\\,(Fx \\to Gx)$.",
       },
       {
-        topicSlug: "derivatives-instantaneous-rate",
+        topicSlug: "quantifiers",
         prompt:
-          "Using a limit, write the definition of f'(a).",
-        correctAnswer: "f'(a) = lim_{h → 0} (f(a + h) − f(a)) / h",
+          "Using ¬, ∃, ∀, write the negation of 'all humans are mortal' (H, M) as an existential statement.",
+        correctAnswer: "∃x (Hx ∧ ¬Mx)",
         explanation:
-          "$f'(a) = \\lim_{h \\to 0} \\dfrac{f(a+h) - f(a)}{h}$.",
+          "$\\neg\\forall x\\,(Hx \\to Mx) \\equiv \\exists x\\,(Hx \\wedge \\neg Mx)$ — some human is not mortal.",
       },
       {
-        topicSlug: "ftc",
+        topicSlug: "multiple-quantifiers-scope",
         prompt:
-          "State the Fundamental Theorem of Calculus Part 2 in symbols.",
-        correctAnswer: "If F' = f on [a, b], then ∫_a^b f(x) dx = F(b) − F(a)",
+          "Using the relation L, write 'someone is loved by everyone'.",
+        correctAnswer: "∃y ∀x Lxy",
         explanation:
-          "$\\int_a^b f(x)\\,\\mathrm{d}x = F(b) - F(a)$.",
+          "$\\exists y\\, \\forall x\\, Lxy$ — one fixed person whom all love. Order of quantifiers is essential.",
       },
       {
-        topicSlug: "sequences-series-zeno",
+        topicSlug: "identity-definite-descriptions",
         prompt:
-          "Sum the geometric series Σ_{n=0}^{∞} (1/2)^n.",
-        correctAnswer: "Σ_{n=0}^{∞} (1/2)^n = 1/(1 − 1/2) = 2",
+          "Using ∃, ∀, =, write Russell's analysis of 'the F is G' (existence, uniqueness, predication).",
+        correctAnswer: "∃x (Fx ∧ ∀y (Fy → y = x) ∧ Gx)",
         explanation:
-          "$\\sum_{n=0}^{\\infty} (1/2)^n = \\dfrac{1}{1 - 1/2} = 2$.",
+          "$\\exists x\\,(Fx \\wedge \\forall y\\,(Fy \\to y = x) \\wedge Gx)$ — Russell's theory of definite descriptions.",
       },
       {
-        topicSlug: "topology-dimension-curvature",
+        topicSlug: "models-interpretations-counterexamples",
         prompt:
-          "Give the Euler characteristic of (a) a sphere and (b) a torus.",
-        correctAnswer: "(a) χ = 2; (b) χ = 0",
+          "Using ⊨, define semantic entailment Γ ⊨ φ in terms of models.",
+        correctAnswer: "Γ ⊨ φ iff every model of Γ is a model of φ",
         explanation:
-          "Sphere: $\\chi = 2$. Torus: $\\chi = 0$. Each is a topological invariant.",
+          "$\\Gamma \\models \\varphi$ iff every interpretation making all of $\\Gamma$ true also makes $\\varphi$ true.",
       },
     ],
   },
@@ -1763,98 +1437,96 @@ const ASSIGNMENTS: SeedAssignment[] = [
   // ───────────── Week 4 ─────────────
   {
     kind: "homework",
-    title: "Homework 4.1 — Logic, proof, induction, sets",
+    title: "Homework 4.1 — Metalogic, modality, and sets",
     weekNumber: 4,
     isTimed: false,
     timeLimitMinutes: null,
     instructions:
-      "Use the math keyboard for ∀, ∃, ∧, ∨, ¬, →, ↔, ∈, ∉.",
+      "Use the math keyboard for ⊢, ⊨, □, ◇, ∈, ⊆, ∪, ∩, and quantifiers.",
     problems: [
       {
-        topicSlug: "propositional-predicate-logic",
+        topicSlug: "soundness-completeness",
         prompt:
-          "Using ¬, ∀, and ∃, write the equivalences that negate a universal and an existential statement.",
+          "Using ⊢ and ⊨, write the two implications that together state soundness and completeness for a logic.",
         correctAnswer:
-          "¬(∀ x, P(x)) ≡ ∃ x, ¬P(x); ¬(∃ x, P(x)) ≡ ∀ x, ¬P(x)",
+          "Soundness: Γ ⊢ φ → Γ ⊨ φ. Completeness: Γ ⊨ φ → Γ ⊢ φ.",
         explanation:
-          "$\\neg(\\forall x\\, P(x)) \\equiv \\exists x\\, \\neg P(x)$; $\\neg(\\exists x\\, P(x)) \\equiv \\forall x\\, \\neg P(x)$. The negation of 'every swan is white' is 'some swan is not white'.",
+          "Soundness $\\Gamma \\vdash \\varphi \\Rightarrow \\Gamma \\models \\varphi$; completeness $\\Gamma \\models \\varphi \\Rightarrow \\Gamma \\vdash \\varphi$. Together: $\\Gamma \\vdash \\varphi \\Leftrightarrow \\Gamma \\models \\varphi$.",
       },
       {
-        topicSlug: "what-is-proof",
+        topicSlug: "modal-logic",
         prompt:
-          "State, in symbols, the inference rule modus ponens (from P and P → Q, conclude Q) and the rule modus tollens.",
-        correctAnswer:
-          "Modus ponens: P, P → Q ⊢ Q. Modus tollens: P → Q, ¬Q ⊢ ¬P.",
+          "Using □, ◇, ¬, write the modal duality defining possibility in terms of necessity.",
+        correctAnswer: "◇p ≡ ¬□¬p",
         explanation:
-          "Modus ponens: $P,\\ P \\to Q \\vdash Q$. Modus tollens: $P \\to Q,\\ \\neg Q \\vdash \\neg P$. Both are fundamental inference rules.",
+          "$\\Diamond p \\equiv \\neg\\Box\\neg p$ — 'possibly $p$' is 'not necessarily not-$p$'.",
       },
       {
-        topicSlug: "mathematical-induction",
-        prompt:
-          "Using Σ, write the closed-form formula for the sum of the first n positive integers, which is the classical example proven by induction.",
-        correctAnswer: "Σ_{k=1}^{n} k = n(n + 1) / 2",
-        explanation:
-          "$\\sum_{k=1}^{n} k = \\dfrac{n(n+1)}{2}$. Proven by induction: base $n = 1$ gives $1 = 1$; step uses $\\frac{k(k+1)}{2} + (k+1) = \\frac{(k+1)(k+2)}{2}$.",
-      },
-      {
-        topicSlug: "sets-russell-paradox",
+        topicSlug: "set-theory-logicians",
         prompt:
           "Using set-builder notation, write Russell's set R — the set of all sets that are not members of themselves.",
         correctAnswer: "R = { x : x ∉ x }",
         explanation:
-          "$R = \\{\\,x : x \\notin x\\,\\}$. The question 'is $R \\in R$?' yields a contradiction either way, which is why naive (unrestricted-comprehension) set theory is inconsistent.",
+          "$R = \\{\\,x : x \\notin x\\,\\}$. Asking whether $R \\in R$ yields a contradiction either way, so naive comprehension is inconsistent.",
+      },
+      {
+        topicSlug: "relations-functions",
+        prompt:
+          "Using ∀, list the three defining properties of an equivalence relation ∼ on a set S (reflexive, symmetric, transitive).",
+        correctAnswer:
+          "Reflexive: ∀x (x ∼ x). Symmetric: ∀x ∀y (x ∼ y → y ∼ x). Transitive: ∀x ∀y ∀z ((x ∼ y ∧ y ∼ z) → x ∼ z).",
+        explanation:
+          "An equivalence relation is reflexive, symmetric, and transitive — it partitions $S$ into disjoint equivalence classes.",
       },
     ],
   },
   {
     kind: "homework",
-    title: "Homework 4.2 — Independence, Gödel, probability, computability",
+    title: "Homework 4.2 — Decidability, non-classical logic, and application",
     weekNumber: 4,
     isTimed: false,
     timeLimitMinutes: null,
-    instructions: "Use the math keyboard for ℵ, ∈, ∪, Σ, ≥.",
+    instructions: "Use the math keyboard for ⊢, ¬, ∨, →, □.",
     problems: [
       {
-        topicSlug: "axioms-independence",
+        topicSlug: "decidability-limits",
         prompt:
-          "Using ℵ-notation, write the Continuum Hypothesis as an equation, and state in words what its independence from ZFC means.",
+          "State Gödel's First Incompleteness Theorem in one sentence: for a suitable consistent system T, what sentence G must exist?",
         correctAnswer:
-          "CH: |ℝ| = ℵ₁. Independence: neither CH nor ¬CH is provable from ZFC (Gödel 1940, Cohen 1963).",
+          "There is a sentence G such that T ⊬ G and T ⊬ ¬G, yet G is true.",
         explanation:
-          "$|\\mathbb{R}| = \\aleph_1$ is the CH. Gödel showed ZFC + CH is consistent (1940); Cohen showed ZFC + ¬CH is also consistent (1963). So CH is independent of ZFC.",
+          "For any consistent, effectively axiomatized $T$ expressing arithmetic, there is a sentence $G$ with $T \\nvdash G$ and $T \\nvdash \\neg G$ — true but unprovable.",
       },
       {
-        topicSlug: "godel-incompleteness",
+        topicSlug: "decidability-limits",
         prompt:
-          "State Gödel's First Incompleteness Theorem in one sentence: for any sufficiently strong consistent effective system T, what must exist?",
+          "Using set-builder notation, write the halting set H (with M(x)↓ meaning 'M halts on x'), then state Turing's result symbolically: that no total computable decider for it exists.",
         correctAnswer:
-          "There exists a statement G in the language of T such that G is true but T does not prove G and T does not prove ¬G.",
+          "H = {⟨M, x⟩ : M(x)↓}; ¬∃ computable f ∀M ∀x (f(⟨M, x⟩) = 1 ↔ M(x)↓)",
         explanation:
-          "Any sufficiently strong consistent effective axiom system $T$ contains a sentence $G$ that is true (in the standard model) but neither $G$ nor $\\neg G$ is provable in $T$.",
+          "The halting set is $H = \\{\\langle M, x\\rangle : M(x){\\downarrow}\\}$, and Turing's theorem is $\\neg\\exists$ computable $f\\,\\forall M\\,\\forall x\\,(f(\\langle M,x\\rangle) = 1 \\leftrightarrow M(x){\\downarrow})$ — $H$ is undecidable, proved by diagonalization.",
       },
       {
-        topicSlug: "probability-foundations",
+        topicSlug: "nonclassical-defeasible",
         prompt:
-          "State Kolmogorov's three axioms of probability for a probability measure P on a sample space Ω with σ-algebra ℱ.",
-        correctAnswer:
-          "(1) P(Ω) = 1; (2) P(A) ≥ 0 for all A ∈ ℱ; (3) for disjoint A₁, A₂, … ∈ ℱ, P(⋃_n A_n) = Σ_n P(A_n).",
+          "Write the law of excluded middle that intuitionistic logic rejects as a universal law.",
+        correctAnswer: "p ∨ ¬p",
         explanation:
-          "Normalization $P(\\Omega) = 1$, non-negativity $P(A) \\ge 0$, and countable additivity $P(\\bigcup_n A_n) = \\sum_n P(A_n)$ for disjoint events.",
+          "Intuitionistic logic does not accept $p \\vee \\neg p$ (nor $\\neg\\neg p \\to p$) as a general law — assertion requires a constructive proof.",
       },
       {
-        topicSlug: "computability-halting",
+        topicSlug: "applying-argument-analysis",
         prompt:
-          "State the halting problem and Turing's headline result about it (in one sentence each).",
-        correctAnswer:
-          "Halting problem: given a Turing machine M and input x, does M halt on x? Turing's theorem: no algorithm decides the halting problem — it is undecidable.",
+          "Translate and identify the form: 'If the witness is truthful (w), the defendant was in the city (c); the defendant was not in the city; so the witness is not truthful.' Give the symbolic argument.",
+        correctAnswer: "w → c, ¬c ∴ ¬w (modus tollens — valid)",
         explanation:
-          "The halting problem is undecidable: there is no Turing machine $H$ that, given $\\langle M, x \\rangle$, always correctly outputs whether $M$ halts on $x$. Proved by diagonalization.",
+          "$w \\to c,\\ \\neg c \\therefore \\neg w$ is modus tollens, a valid form.",
       },
     ],
   },
   {
     kind: "final",
-    title: "Final Exam — Conceptual mathematics",
+    title: "Final Exam — Formal logic",
     weekNumber: 4,
     isTimed: true,
     timeLimitMinutes: 90,
@@ -1862,86 +1534,75 @@ const ASSIGNMENTS: SeedAssignment[] = [
       "Cumulative final covering all four weeks. 90 minutes. Math keyboard available; pasting disabled.",
     problems: [
       {
-        topicSlug: "rationals-ratios",
+        topicSlug: "validity-soundness",
         prompt:
-          "Using set-builder notation, write the definition of ℚ.",
-        correctAnswer: "ℚ = { p/q : p, q ∈ ℤ, q ≠ 0 }",
-        explanation:
-          "$\\mathbb{Q} = \\{\\,p/q : p, q \\in \\mathbb{Z},\\ q \\neq 0\\,\\}$.",
+          "Using ⊨, write that premises P₁, …, Pₙ entail conclusion C.",
+        correctAnswer: "P₁, …, Pₙ ⊨ C",
+        explanation: "$P_1, \\ldots, P_n \\models C$ — validity.",
       },
       {
-        topicSlug: "countable-uncountable",
+        topicSlug: "necessary-sufficient",
         prompt:
-          "Using ℵ₀, compare the cardinalities of ℚ and ℝ with a strict inequality.",
-        correctAnswer: "|ℚ| = ℵ₀ < |ℝ|",
-        explanation:
-          "$|\\mathbb{Q}| = \\aleph_0 < |\\mathbb{R}|$. The rationals are countable, the reals are not.",
+          "Using ↔, write that P is necessary and sufficient for Q.",
+        correctAnswer: "P ↔ Q",
+        explanation: "$P \\leftrightarrow Q$.",
       },
       {
-        topicSlug: "groups-symmetry",
-        prompt:
-          "Using ∃ and ∀, state the identity-element axiom for a group (G, ∗).",
-        correctAnswer: "∃ e ∈ G, ∀ a ∈ G, e ∗ a = a ∗ e = a",
+        topicSlug: "logical-equivalence-demorgan",
+        prompt: "Write both De Morgan laws using ≡.",
+        correctAnswer: "¬(p ∧ q) ≡ ¬p ∨ ¬q; ¬(p ∨ q) ≡ ¬p ∧ ¬q",
         explanation:
-          "$\\exists e \\in G,\\ \\forall a \\in G,\\ e \\ast a = a \\ast e = a$.",
+          "$\\neg(p \\wedge q) \\equiv \\neg p \\vee \\neg q$ and $\\neg(p \\vee q) \\equiv \\neg p \\wedge \\neg q$.",
       },
       {
-        topicSlug: "modular-arithmetic",
-        prompt:
-          "Using ≡ … (mod n), write Fermat's Little Theorem.",
-        correctAnswer: "a^{p−1} ≡ 1 (mod p), for prime p and gcd(a, p) = 1",
-        explanation:
-          "$a^{p-1} \\equiv 1 \\pmod p$ for prime $p$ and $\\gcd(a, p) = 1$.",
+        topicSlug: "natural-deduction-propositional",
+        prompt: "Using ⊢, write modus tollens as a provability claim.",
+        correctAnswer: "p → q, ¬q ⊢ ¬p",
+        explanation: "$p \\to q,\\ \\neg q \\vdash \\neg p$.",
       },
       {
-        topicSlug: "limits-taming-infinity",
-        prompt:
-          "Write the ε–δ definition of lim_{x → a} f(x) = L.",
-        correctAnswer:
-          "∀ ε > 0, ∃ δ > 0 : 0 < |x − a| < δ ⇒ |f(x) − L| < ε",
-        explanation:
-          "$\\forall \\varepsilon > 0,\\ \\exists \\delta > 0 : 0 < |x - a| < \\delta \\Rightarrow |f(x) - L| < \\varepsilon$.",
+        topicSlug: "quantifiers",
+        prompt: "Write 'Some F is G' in symbols.",
+        correctAnswer: "∃x (Fx ∧ Gx)",
+        explanation: "$\\exists x\\,(Fx \\wedge Gx)$.",
       },
       {
-        topicSlug: "ftc",
+        topicSlug: "quantifiers",
         prompt:
-          "State Part 2 of the Fundamental Theorem of Calculus in symbols.",
-        correctAnswer: "If F' = f on [a, b], then ∫_a^b f(x) dx = F(b) − F(a)",
-        explanation:
-          "$\\int_a^b f(x)\\,\\mathrm{d}x = F(b) - F(a)$ for any antiderivative $F$ of $f$.",
+          "Using ¬, ∃, ∀, write the quantifier-duality equivalence for ¬∃x P(x).",
+        correctAnswer: "¬∃x P(x) ≡ ∀x ¬P(x)",
+        explanation: "$\\neg\\exists x\\, P(x) \\equiv \\forall x\\, \\neg P(x)$.",
       },
       {
-        topicSlug: "sequences-series-zeno",
+        topicSlug: "identity-definite-descriptions",
         prompt:
-          "Using Σ, write the closed form of the geometric series Σ_{n=0}^{∞} r^n for |r| < 1.",
-        correctAnswer: "Σ_{n=0}^{∞} r^n = 1 / (1 − r)",
+          "Using ∃, ∀, =, write 'there is exactly one F'.",
+        correctAnswer: "∃x (Fx ∧ ∀y (Fy → y = x))",
         explanation:
-          "$\\sum_{n=0}^{\\infty} r^n = \\dfrac{1}{1 - r}$ for $|r| < 1$.",
+          "$\\exists x\\,(Fx \\wedge \\forall y\\,(Fy \\to y = x))$.",
       },
       {
-        topicSlug: "mathematical-induction",
+        topicSlug: "soundness-completeness",
         prompt:
-          "Using Σ, write the closed-form formula proved by the classical induction example: the sum of 1 through n.",
-        correctAnswer: "Σ_{k=1}^{n} k = n(n + 1) / 2",
+          "Using ⊢ and ⊨, write the biconditional that soundness and completeness together establish.",
+        correctAnswer: "Γ ⊢ φ ⟺ Γ ⊨ φ",
         explanation:
-          "$\\sum_{k=1}^{n} k = \\dfrac{n(n+1)}{2}$.",
+          "$\\Gamma \\vdash \\varphi \\Leftrightarrow \\Gamma \\models \\varphi$ — provability and validity coincide for first-order logic.",
       },
       {
-        topicSlug: "sets-russell-paradox",
-        prompt:
-          "Using set-builder notation, write Russell's set R that produces the paradox.",
-        correctAnswer: "R = { x : x ∉ x }",
-        explanation:
-          "$R = \\{\\,x : x \\notin x\\,\\}$. Asking whether $R \\in R$ yields a contradiction either way.",
+        topicSlug: "modal-logic",
+        prompt: "Using □, ◇, ¬, write the modal duality for ◇p.",
+        correctAnswer: "◇p ≡ ¬□¬p",
+        explanation: "$\\Diamond p \\equiv \\neg\\Box\\neg p$.",
       },
       {
-        topicSlug: "godel-incompleteness",
+        topicSlug: "decidability-limits",
         prompt:
           "State Gödel's First Incompleteness Theorem in one sentence.",
         correctAnswer:
-          "Any sufficiently strong consistent effective formal system T contains a true statement G such that T proves neither G nor ¬G.",
+          "Any consistent, effectively axiomatized system expressing arithmetic contains a true sentence G that it can neither prove nor refute (T ⊬ G and T ⊬ ¬G).",
         explanation:
-          "Any consistent effective axiom system capable of encoding arithmetic is incomplete: there is a true statement $G$ that is not provable in the system.",
+          "Such a system is incomplete: a true sentence $G$ exists with $T \\nvdash G$ and $T \\nvdash \\neg G$.",
       },
     ],
   },
@@ -1955,13 +1616,13 @@ const EXPECTED_TOPIC_SLUGS = TOPICS.map((t) => t.slug).sort().join(",");
 // Bump this whenever lecture bodies, assignment problems, or correct answers
 // change in a way that should propagate to the database on the next boot.
 // The value is stored alongside topics and compared in seedIfEmpty.
-const CONTENT_REVISION = "2026-05-27.conceptual-math.r1";
+const CONTENT_REVISION = "2026-06-05.formal-logic.r2";
 
 // A sentinel phrase present in exactly one lecture body — used to detect that
 // the database holds the *current* revision of the content (not just a set of
 // matching slugs). Bump whenever the seed content is overhauled.
-const REVISION_SENTINEL_SLUG = "counting-integers-numberline";
-const REVISION_SENTINEL_PHRASE = "John Wallis popularized the picture of integers";
+const REVISION_SENTINEL_SLUG = "what-logic-is";
+const REVISION_SENTINEL_PHRASE = "the first formal theory of valid inference";
 
 export async function seedIfEmpty(): Promise<void> {
   const existing = await db.execute(sql`select count(*)::int as n from topics`);

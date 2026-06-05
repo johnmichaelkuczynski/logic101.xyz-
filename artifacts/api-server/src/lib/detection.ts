@@ -117,7 +117,7 @@ export async function llmAiScore(text: string): Promise<number | null> {
   if (t.length < 40) return null;
   try {
     const out = await chatJson<{ probability: number }>(
-      "You are a forensic text classifier. Given a short student response, estimate the probability (0-1) that it was produced by a large language model and not handwritten by a college freshman. Respond with strict JSON: {\"probability\": number}. Keep the number between 0 and 1.",
+      "You are a forensic text classifier. Given a short student response, estimate the probability (0-1) that it was produced by a large language model and not handwritten by a college logic student. Respond with strict JSON: {\"probability\": number}. Keep the number between 0 and 1.",
       t,
     );
     if (typeof out.probability === "number") {

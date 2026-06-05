@@ -57,11 +57,11 @@ export function Scene3({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
     >
       {/* Left Pane (Static from previous) */}
       <div className="w-1/2 h-full border-r border-border p-12 overflow-hidden flex flex-col relative opacity-50">
-        <div className="text-xs font-bold tracking-widest text-muted-foreground mb-4">WEEK 1 — THE NUMBER SYSTEMS</div>
-        <h1 className="text-3xl font-serif text-primary mb-8">1.1 Counting, the integers, and the number line</h1>
+        <div className="text-xs font-bold tracking-widest text-muted-foreground mb-4">WEEK 1 — REASONING, ARGUMENTS, AND LOGICAL FORM</div>
+        <h1 className="text-3xl font-serif text-primary mb-8">1.1 What logic is: arguments and inference</h1>
         <div className="prose prose-sm max-w-none text-foreground/80 space-y-6">
-          <h2 className="font-serif text-2xl text-primary">What is a number?</h2>
-          <p>Conceptual mathematics asks the question math classes usually skip: what are these things, really? What is a number, an operation, a proof, an axiom? This course teaches the ideas behind the symbols, from the integers to Gödel and the halting problem.</p>
+          <h2 className="font-serif text-2xl text-primary">What is an argument?</h2>
+          <p>Formal logic asks the question reasoning classes usually skip: what is it for a conclusion to <em>follow</em> from premises? What is a statement, a connective, a quantifier, a proof? This course teaches the ideas behind the symbols, from validity to Gödel and the halting problem.</p>
         </div>
       </div>
 
@@ -79,7 +79,7 @@ export function Scene3({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
               <motion.div exit={{ opacity: 0, y: -20 }} className="mt-auto">
                 <div className="mb-4 text-xs font-semibold text-muted-foreground uppercase tracking-widest">Starter questions for this section</div>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">Why are the rationals countable but the reals are not?</div>
+                  <div className="px-3 py-1.5 rounded-full border border-border text-sm text-primary bg-muted/30">Can a valid argument have a false conclusion?</div>
                 </div>
               </motion.div>
             )}
@@ -90,7 +90,7 @@ export function Scene3({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                 animate={{ opacity: 1, y: 0, scale: 1 }} 
                 className="self-end max-w-[85%] bg-primary text-white p-4 rounded-2xl rounded-tr-sm shadow-sm mt-auto"
               >
-                Why are the rationals countable but the reals are not?
+                Can a valid argument have a false conclusion?
               </motion.div>
             )}
 
@@ -110,7 +110,7 @@ export function Scene3({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
                 animate={{ opacity: 1, y: 0 }} 
                 className="self-start w-[85%] bg-muted/30 border border-border p-5 rounded-2xl rounded-tl-sm text-[15px] leading-relaxed shadow-sm"
               >
-                <StreamingText text="Great question. The rationals ℚ can be listed in a single infinite sequence — Cantor's diagonal enumeration walks the grid of (numerator, denominator) pairs. The reals ℝ can't: Cantor's diagonal argument constructs a real not in any proposed list. So |ℕ| = |ℚ| &lt; |ℝ| — two different sizes of infinity." delay={0} />
+                <StreamingText text="Yes — validity only forbids true premises with a false conclusion. If a premise is false, a valid argument can still deliver a false conclusion: 'All birds can fly; a penguin is a bird; so a penguin can fly' is valid in form but unsound. Validity is about form (P ⊢ C with no counter-model); soundness adds that every premise is actually true." delay={0} />
               </motion.div>
             )}
           </div>
@@ -118,9 +118,9 @@ export function Scene3({ setCursorPos, setIsClicking }: { setCursorPos: (pos: {x
           <div className="mt-6 w-full min-h-24 border border-border rounded-xl bg-background p-3 flex items-end shadow-inner relative z-10">
             <div className="w-full flex justify-between items-center pr-2">
               <div className="text-foreground text-[15px] font-medium pl-2 relative w-full h-full flex items-center">
-                {phase === 1 && <TypewriterText text="Why are the rationals countable but the reals are not?" speed={25} />}
-                {phase >= 2 && phase < 4 && <span className="text-muted-foreground font-normal">Ask a question about counting and the number line...</span>}
-                {phase >= 4 && <TypewriterText text="So how big is |ℝ|?" speed={20} />}
+                {phase === 1 && <TypewriterText text="Can a valid argument have a false conclusion?" speed={25} />}
+                {phase >= 2 && phase < 4 && <span className="text-muted-foreground font-normal">Ask a question about arguments and inference...</span>}
+                {phase >= 4 && <TypewriterText text="So what makes an argument sound?" speed={20} />}
                 {((phase >= 1 && phase < 2) || phase >= 4) && (
                   <motion.div className="w-0.5 h-5 bg-primary ml-1" animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, duration: 0.8 }} />
                 )}

@@ -49,7 +49,7 @@ export async function gradeAnswer(opts: {
 
   try {
     const out = await chatJson<{ correct: boolean; explanation: string }>(
-      "You grade short quantitative-reasoning answers. Decide if the student's answer is mathematically equivalent to the correct answer (accept equivalent forms like 1/2 and 0.5, simplified fractions, equivalent algebraic expressions, units treated reasonably). Output strict JSON {\"correct\": boolean, \"explanation\": string} where explanation is 1-3 short sentences and includes the correct answer.",
+      "You grade short formal-logic answers written in symbolic notation. Decide if the student's answer is LOGICALLY EQUIVALENT to the correct answer, accepting any equivalent symbolic form. Accept: LaTeX vs unicode (\\forall vs ∀, \\to vs →, \\neg vs ¬, \\wedge vs ∧, \\vee vs ∨, \\vdash vs ⊢, \\models vs ⊨, \\Box vs □, \\Diamond vs ◇, etc.); ASCII renderings (-> for →, ~ or ! for ¬, & for ∧, | for ∨, A for ∀, E for ∃); bound-variable renaming (∀x P(x) = ∀y P(y)); commuted conjuncts/disjuncts; logically equivalent rewrites (p→q vs ¬p∨q vs ¬q→¬p; De Morgan'd forms; double negation); equivalent quantifier-duality forms; and harmless differences in spacing, parentheses, or brackets. Mark WRONG only if the student's statement is not logically equivalent (wrong connective, wrong quantifier order when order matters, wrong arrow direction, missing a conjunct, etc.). Output strict JSON {\"correct\": boolean, \"explanation\": string} where explanation is 1-3 short sentences and includes the correct answer.",
       JSON.stringify({
         prompt: opts.prompt,
         correct_answer: correct,
