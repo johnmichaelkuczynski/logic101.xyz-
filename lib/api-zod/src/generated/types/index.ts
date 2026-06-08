@@ -27,6 +27,8 @@ export * from './courseOverviewTotals';
 export * from './detectionResult';
 export * from './detectionScanInput';
 export * from './dialogueInput';
+export * from './expandLectureRequest';
+export * from './expandLectureRequestLevel';
 export * from './feedbackMessage';
 export * from './feedbackMessageRole';
 export * from './focusPointer';

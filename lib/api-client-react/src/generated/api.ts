@@ -34,6 +34,7 @@ import type {
   DetectionResult,
   DetectionScanInput,
   DialogueInput,
+  ExpandLectureRequest,
   FeedbackMessage,
   HealthStatus,
   Lecture,
@@ -374,6 +375,80 @@ export function useGetLecture<TData = Awaited<ReturnType<typeof getLecture>>, TE
 
 
 
+
+export const getExpandLectureUrl = (lectureId: number,) => {
+
+
+
+
+  return `/api/course/lectures/${lectureId}/expand`
+}
+
+/**
+ * Generates (and persists) the requested depth for THIS lecture only. If the level already exists it is returned as-is unless regenerate is true. Returns the full updated lecture so the client can switch to the new depth immediately.
+
+ * @summary Generate the medium or long version of a single lecture on demand
+ */
+export const expandLecture = async (lectureId: number,
+    expandLectureRequest: ExpandLectureRequest, options?: RequestInit): Promise<Lecture> => {
+
+  return customFetch<Lecture>(getExpandLectureUrl(lectureId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      expandLectureRequest,)
+  }
+);}
+
+
+
+
+export const getExpandLectureMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof expandLecture>>, TError,{lectureId: number;data: BodyType<ExpandLectureRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof expandLecture>>, TError,{lectureId: number;data: BodyType<ExpandLectureRequest>}, TContext> => {
+
+const mutationKey = ['expandLecture'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof expandLecture>>, {lectureId: number;data: BodyType<ExpandLectureRequest>}> = (props) => {
+          const {lectureId,data} = props ?? {};
+
+          return  expandLecture(lectureId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ExpandLectureMutationResult = NonNullable<Awaited<ReturnType<typeof expandLecture>>>
+    export type ExpandLectureMutationBody = BodyType<ExpandLectureRequest>
+    export type ExpandLectureMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Generate the medium or long version of a single lecture on demand
+ */
+export const useExpandLecture = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof expandLecture>>, TError,{lectureId: number;data: BodyType<ExpandLectureRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof expandLecture>>,
+        TError,
+        {lectureId: number;data: BodyType<ExpandLectureRequest>},
+        TContext
+      > => {
+      return useMutation(getExpandLectureMutationOptions(options));
+    }
 
 export const getListTopicsUrl = () => {
 

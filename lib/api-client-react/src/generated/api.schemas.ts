@@ -18,6 +18,20 @@ export interface Topic {
   blurb?: string | null;
 }
 
+export type ExpandLectureRequestLevel = typeof ExpandLectureRequestLevel[keyof typeof ExpandLectureRequestLevel];
+
+
+export const ExpandLectureRequestLevel = {
+  medium: 'medium',
+  long: 'long',
+} as const;
+
+export interface ExpandLectureRequest {
+  level: ExpandLectureRequestLevel;
+  /** If true, regenerate even when the level already exists. */
+  regenerate?: boolean;
+}
+
 export interface Lecture {
   id: number;
   topicId: number;

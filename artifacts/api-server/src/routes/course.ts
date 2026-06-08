@@ -12,7 +12,9 @@ import {
   GetWeekResponse,
   GetLectureResponse,
   ListTopicsResponse,
+  ExpandLectureBody,
 } from "@workspace/api-zod";
+import { expandLectureBody } from "../lib/ai";
 
 const router: IRouter = Router();
 
@@ -162,6 +164,52 @@ router.get("/course/lectures/:lectureId", async (req, res): Promise<void> => {
     return;
   }
   res.json(GetLectureResponse.parse(lecture));
+});
+
+router.post("/course/lectures/:lectureId/expand", async (req, res): Promise<void> => {
+  const raw = Array.isArray(req.params.lectureId)
+    ? req.params.lectureId[0]
+    : req.params.lectureId;
+  const lectureId = parseInt(raw ?? "", 10);
+  if (!Number.isFinite(lectureId)) {
+    res.status(400).json({ error: "invalid lectureId" });
+    return;
+  }
+  const parsed = ExpandLectureBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.message });
+    return;
+  }
+  const { level, regenerate } = parsed.data;
+
+  const [lecture] = await db
+    .select()
+    .from(lecturesTable)
+    .where(eq(lecturesTable.id, lectureId));
+  if (!lecture) {
+    res.status(404).json({ error: "lecture not found" });
+    return;
+  }
+
+  const existing = level === "long" ? lecture.bodyLong : lecture.bodyMedium;
+  if (existing && !regenerate) {
+    res.json(GetLectureResponse.parse(lecture));
+    return;
+  }
+
+  try {
+    const expanded = await expandLectureBody(level, lecture.title, lecture.body);
+    const patch = level === "long" ? { bodyLong: expanded } : { bodyMedium: expanded };
+    const [updated] = await db
+      .update(lecturesTable)
+      .set(patch)
+      .where(eq(lecturesTable.id, lectureId))
+      .returning();
+    res.json(GetLectureResponse.parse(updated));
+  } catch (err) {
+    req.log.error({ err, lectureId, level }, "lecture expansion failed");
+    res.status(502).json({ error: "lecture expansion failed; please try again" });
+  }
 });
 
 router.get("/course/topics", async (_req, res) => {

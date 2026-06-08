@@ -1,14 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   useGetLecture,
+  useExpandLecture,
   useAskTutor,
   useStartPracticeSession,
   useNextPracticeProblem,
   useGradePracticeAnswer,
+  getGetLectureQueryKey,
   type PracticeProblem,
   type PracticeGrade,
   type KeystrokeTrace,
 } from "@workspace/api-client-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Layout } from "@/components/layout/Layout";
 import { useParams, Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -53,12 +56,39 @@ export default function LectureView() {
   const [tab, setTab] = useState<"tutor" | "practice">("tutor");
   const [level, setLevel] = useState<"short" | "medium" | "long">("short");
 
+  const queryClient = useQueryClient();
+  const expand = useExpandLecture();
+  const [expandError, setExpandError] = useState<string | null>(null);
+
   const availableLevels = useMemo(() => {
     const out: Array<"short" | "medium" | "long"> = ["short"];
     if (lecture?.bodyMedium) out.push("medium");
     if (lecture?.bodyLong) out.push("long");
     return out;
   }, [lecture?.bodyMedium, lecture?.bodyLong]);
+
+  function selectLevel(lvl: "short" | "medium" | "long") {
+    setExpandError(null);
+    if (lvl === "short" || availableLevels.includes(lvl)) {
+      setLevel(lvl);
+      return;
+    }
+    if (!lecture || expand.isPending) return;
+    // Generate this depth on the spot — for THIS lecture only.
+    expand.mutate(
+      { lectureId: lecture.id, data: { level: lvl } },
+      {
+        onSuccess: (updated) => {
+          queryClient.setQueryData(getGetLectureQueryKey(lecture.id), updated);
+          setLevel(lvl);
+        },
+        onError: (e) =>
+          setExpandError(
+            `Couldn't generate the ${lvl} version: ${(e as Error).message}. Try again.`,
+          ),
+      },
+    );
+  }
 
   const activeBody =
     level === "long" && lecture?.bodyLong
@@ -101,34 +131,43 @@ export default function LectureView() {
                   </div>
                   <div className="inline-flex rounded-md border border-border overflow-hidden text-xs">
                     {(["short", "medium", "long"] as const).map((lvl) => {
-                      const enabled = availableLevels.includes(lvl);
+                      const ready = availableLevels.includes(lvl);
                       const active = level === lvl;
+                      const generating =
+                        expand.isPending && expand.variables?.data.level === lvl;
                       return (
                         <button
                           key={lvl}
-                          onClick={() => enabled && setLevel(lvl)}
-                          disabled={!enabled}
+                          onClick={() => selectLevel(lvl)}
+                          disabled={expand.isPending}
                           title={
-                            enabled
+                            ready
                               ? `${lvl[0].toUpperCase() + lvl.slice(1)} version`
-                              : `${lvl[0].toUpperCase() + lvl.slice(1)} version not generated yet — click "Generate medium + long lectures" in the top bar`
+                              : `Generate the ${lvl} version of this lecture on the spot`
                           }
-                          className={`px-3 py-1.5 font-medium uppercase tracking-wider transition-colors ${
+                          className={`px-3 py-1.5 font-medium uppercase tracking-wider transition-colors inline-flex items-center gap-1 ${
                             active
                               ? "bg-primary text-primary-foreground"
-                              : enabled
-                                ? "bg-background hover:bg-secondary text-foreground"
-                                : "bg-background/50 text-muted-foreground/50 cursor-not-allowed"
-                          }`}
+                              : "bg-background hover:bg-secondary text-foreground"
+                          } ${expand.isPending ? "opacity-70 cursor-wait" : ""}`}
                           data-testid={`button-level-${lvl}`}
                         >
-                          {lvl}
+                          {generating && <RefreshCw className="w-3 h-3 animate-spin" />}
+                          {generating ? "generating…" : lvl}
+                          {!ready && !generating && lvl !== "short" && (
+                            <Sparkles className="w-3 h-3 opacity-60" />
+                          )}
                         </button>
                       );
                     })}
                   </div>
                 </div>
               </header>
+              {expandError && (
+                <div className="mb-4 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800">
+                  {expandError}
+                </div>
+              )}
               <div className="bg-card border shadow-sm rounded-lg p-6 md:p-8" ref={articleRef}>
                 <MarkdownRenderer content={activeBody} />
                 <div className="mt-6 pt-4 border-t border-dashed border-border text-xs text-muted-foreground italic">

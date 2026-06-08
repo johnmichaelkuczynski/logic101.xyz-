@@ -87,6 +87,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/Lecture"
 
+  /course/lectures/{lectureId}/expand:
+    post:
+      operationId: expandLecture
+      tags: [course]
+      summary: Generate the medium or long version of a single lecture on demand
+      description: >
+        Generates (and persists) the requested depth for THIS lecture only.
+        If the level already exists it is returned as-is unless regenerate is true.
+        Returns the full updated lecture so the client can switch to the new depth immediately.
+      parameters:
+        - name: lectureId
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExpandLectureRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lecture"
+
   /course/topics:
     get:
       operationId: listTopics
@@ -550,6 +578,17 @@ components:
         title: { type: string }
         weekNumber: { type: integer }
         blurb: { type: ["string", "null"] }
+
+    ExpandLectureRequest:
+      type: object
+      required: [level]
+      properties:
+        level:
+          type: string
+          enum: [medium, long]
+        regenerate:
+          type: boolean
+          description: If true, regenerate even when the level already exists.
 
     Lecture:
       type: object

@@ -105,6 +105,31 @@ export const GetLectureResponse = zod.object({
 
 
 /**
+ * Generates (and persists) the requested depth for THIS lecture only. If the level already exists it is returned as-is unless regenerate is true. Returns the full updated lecture so the client can switch to the new depth immediately.
+
+ * @summary Generate the medium or long version of a single lecture on demand
+ */
+export const ExpandLectureParams = zod.object({
+  "lectureId": zod.coerce.number()
+})
+
+export const ExpandLectureBody = zod.object({
+  "level": zod.enum(['medium', 'long']),
+  "regenerate": zod.boolean().optional().describe('If true, regenerate even when the level already exists.')
+})
+
+export const ExpandLectureResponse = zod.object({
+  "id": zod.number(),
+  "topicId": zod.number(),
+  "title": zod.string(),
+  "weekNumber": zod.number(),
+  "body": zod.string().describe('Short Markdown lecture text (the baseline \/ minimum-detail version). The frontend lets users select passages and send them to the tutor.'),
+  "bodyMedium": zod.string().nullish().describe('Medium-length version with more explanation and more examples. Null if not yet generated.'),
+  "bodyLong": zod.string().nullish().describe('Long version with the most explanation and the most examples. Null if not yet generated.')
+})
+
+
+/**
  * @summary List all course topics (used for analytics + tutor scoping)
  */
 export const ListTopicsResponseItem = zod.object({
