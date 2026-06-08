@@ -168,6 +168,7 @@ export function MathKeyboard({ onInsert, onBackspace, onClear }: MathKeyboardPro
                     <button
                       key={`${tab}-${i}-${label}`}
                       type="button"
+                      onMouseDown={(e) => e.preventDefault()}
                       onClick={() => handleKey(key)}
                       className={`min-w-9 h-10 px-2 rounded border shadow-sm flex items-center justify-center font-mono text-sm hover:bg-muted hover:border-primary/50 transition-all active:scale-95 ${
                         muted ? "bg-muted/40 text-muted-foreground" : "bg-background"
