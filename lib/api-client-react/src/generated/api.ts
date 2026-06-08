@@ -1782,6 +1782,83 @@ export function useListPracticeAssignments<TData = Awaited<ReturnType<typeof lis
 
 
 
+export const getListAllPracticeAssignmentsUrl = () => {
+
+
+
+
+  return `/api/practice-assignments/mine`
+}
+
+/**
+ * @summary List every practice run the user has generated, across all assignments
+ */
+export const listAllPracticeAssignments = async ( options?: RequestInit): Promise<PracticeAssignmentSummary[]> => {
+
+  return customFetch<PracticeAssignmentSummary[]>(getListAllPracticeAssignmentsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListAllPracticeAssignmentsQueryKey = () => {
+    return [
+    `/api/practice-assignments/mine`
+    ] as const;
+    }
+
+
+export const getListAllPracticeAssignmentsQueryOptions = <TData = Awaited<ReturnType<typeof listAllPracticeAssignments>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listAllPracticeAssignments>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListAllPracticeAssignmentsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listAllPracticeAssignments>>> = ({ signal }) => listAllPracticeAssignments({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listAllPracticeAssignments>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListAllPracticeAssignmentsQueryResult = NonNullable<Awaited<ReturnType<typeof listAllPracticeAssignments>>>
+export type ListAllPracticeAssignmentsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List every practice run the user has generated, across all assignments
+ */
+
+export function useListAllPracticeAssignments<TData = Awaited<ReturnType<typeof listAllPracticeAssignments>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listAllPracticeAssignments>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListAllPracticeAssignmentsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
 export const getCreatePracticeAssignmentUrl = () => {
 
 

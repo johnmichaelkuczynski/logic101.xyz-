@@ -13,6 +13,7 @@ import {
 } from "@workspace/db";
 import {
   ListPracticeAssignmentsResponse,
+  ListAllPracticeAssignmentsResponse,
   CreatePracticeAssignmentBody,
   CreatePracticeAssignmentResponse,
   GetPracticeAssignmentResponse,
@@ -282,6 +283,42 @@ router.post("/practice-assignments", async (req, res): Promise<void> => {
 
   const detail = await buildDetail(created.id, userId);
   res.json(CreatePracticeAssignmentResponse.parse(detail));
+});
+
+// GET /practice-assignments/mine — every practice run by this user.
+// MUST be registered before "/practice-assignments/:id" or ":id" captures "mine".
+router.get("/practice-assignments/mine", async (req, res): Promise<void> => {
+  const userId = getUserId(req);
+  const rows = await db
+    .select()
+    .from(practiceAssignmentsTable)
+    .where(
+      userId
+        ? eq(practiceAssignmentsTable.userId, userId)
+        : sql`${practiceAssignmentsTable.userId} is null`,
+    )
+    .orderBy(desc(practiceAssignmentsTable.id));
+
+  const result = await Promise.all(
+    rows.map(async (pa) => {
+      const counts = await db.execute(
+        sql`select count(*)::int as n from practice_assignment_problems where practice_assignment_id = ${pa.id}`,
+      );
+      const n = (counts.rows[0] as { n?: number } | undefined)?.n ?? 0;
+      return {
+        id: pa.id,
+        sourceAssignmentId: pa.sourceAssignmentId,
+        kind: pa.kind as Kind,
+        title: pa.title,
+        weekNumber: pa.weekNumber,
+        status: pa.status as "in_progress" | "submitted",
+        scorePercent: pa.scorePercent ?? null,
+        problemCount: n,
+        createdAt: pa.createdAt.toISOString(),
+      };
+    }),
+  );
+  res.json(ListAllPracticeAssignmentsResponse.parse(result));
 });
 
 // GET /practice-assignments/:id

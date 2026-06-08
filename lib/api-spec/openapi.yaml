@@ -440,6 +440,21 @@ paths:
                 items:
                   $ref: "#/components/schemas/PracticeAssignmentSummary"
 
+  /practice-assignments/mine:
+    get:
+      operationId: listAllPracticeAssignments
+      tags: [practice-assignments]
+      summary: List every practice run the user has generated, across all assignments
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PracticeAssignmentSummary"
+
   /practice-assignments:
     post:
       operationId: createPracticeAssignment

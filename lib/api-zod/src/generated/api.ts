@@ -515,6 +515,23 @@ export const ListPracticeAssignmentsResponse = zod.array(ListPracticeAssignments
 
 
 /**
+ * @summary List every practice run the user has generated, across all assignments
+ */
+export const ListAllPracticeAssignmentsResponseItem = zod.object({
+  "id": zod.number(),
+  "sourceAssignmentId": zod.number(),
+  "kind": zod.enum(['homework', 'test', 'midterm', 'final']),
+  "title": zod.string(),
+  "weekNumber": zod.number(),
+  "status": zod.enum(['in_progress', 'submitted']),
+  "scorePercent": zod.number().nullish(),
+  "problemCount": zod.number(),
+  "createdAt": zod.coerce.date()
+})
+export const ListAllPracticeAssignmentsResponse = zod.array(ListAllPracticeAssignmentsResponseItem)
+
+
+/**
  * @summary Generate a fresh practice version of a graded assignment (never repeats)
  */
 export const CreatePracticeAssignmentBody = zod.object({

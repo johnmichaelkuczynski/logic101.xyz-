@@ -31,6 +31,7 @@ import AssignmentRunner from "@/pages/AssignmentRunner";
 import Diagnostics from "@/pages/Diagnostics";
 import TopicPractice from "@/pages/TopicPractice";
 import PracticeAssignmentRunner from "@/pages/PracticeAssignmentRunner";
+import PracticeAssignments from "@/pages/PracticeAssignments";
 
 const queryClient = new QueryClient();
 
@@ -250,6 +251,11 @@ function ClerkProviderWithRoutes() {
             <Route path="/practice/topic/:topicId">
               <Protected>
                 <TopicPractice />
+              </Protected>
+            </Route>
+            <Route path="/practice-assignments">
+              <Protected>
+                <PracticeAssignments />
               </Protected>
             </Route>
             <Route path="/practice-assignments/:id">
