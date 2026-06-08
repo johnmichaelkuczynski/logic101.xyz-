@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⊢ Teach Yourself Formal Logic
+# ⊢ Formal Logic
 
 ### Learn to reason like a logician — in four focused weeks.
 
@@ -16,7 +16,7 @@
 
 <br/>
 
-<img src="docs/assets/course-home.jpg" alt="Teach Yourself Formal Logic — course dashboard" width="820"/>
+<img src="docs/assets/course-home.jpg" alt="Formal Logic — course dashboard" width="820"/>
 
 </div>
 
@@ -24,7 +24,7 @@
 
 ## Why this course
 
-Most of us were never taught **how reasoning actually works** — only handed a few rules and told to trust them. Teach Yourself Formal Logic fixes that. It's a self-paced course that reveals the hidden *form* underneath every good argument, and teaches you to write that form down in symbols of your own.
+Most of us were never taught **how reasoning actually works** — only handed a few rules and told to trust them. Formal Logic fixes that. It's a self-paced course that reveals the hidden *form* underneath every good argument, and teaches you to write that form down in symbols of your own.
 
 By the end, you won't just recognize a valid argument — you'll be able to **prove** one, spot the flaw in a bad one, and understand exactly what a proof can and cannot guarantee.
 
@@ -85,6 +85,6 @@ Learn at the depth you want — a quick pass, a deeper read, or the full treatme
 
 ### Read the idea · Ground the idea · Write the idea
 
-**⊢ Teach Yourself Formal Logic**
+**⊢ Formal Logic**
 
 </div>

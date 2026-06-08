@@ -57,7 +57,7 @@ export default function Landing() {
             A four-week, self-paced course
           </span>
           <h1 className="text-4xl md:text-6xl font-serif font-bold text-primary max-w-3xl leading-tight">
-            Teach Yourself Formal Logic
+            Formal Logic
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
             From "what makes an argument good?" to soundness, completeness, and
@@ -103,7 +103,7 @@ export default function Landing() {
 
       <footer className="border-t border-border">
         <div className="max-w-6xl mx-auto w-full px-6 py-6 text-sm text-muted-foreground flex items-center justify-between">
-          <span>Teach Yourself Formal Logic</span>
+          <span>Formal Logic</span>
           <a href={`${base}/sign-in`} className="hover:text-foreground">
             Sign in
           </a>

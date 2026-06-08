@@ -1,4 +1,4 @@
-# ⊢ Teach Yourself Formal Logic
+# ⊢ Formal Logic
 
 **A Four-Week Course on Reasoning, Arguments, and Proof — From Informal Argument Analysis to Soundness, Completeness, and the Limits of Decidability**
 
@@ -6,7 +6,7 @@
 
 ## 🧩 Overview
 
-Teach Yourself Formal Logic is a self-paced, single-user web course that takes you from "what makes an argument good?" to the machinery of formal proof and the metatheorems that describe its limits. It teaches the *form* of valid reasoning: how to strip an argument down to its logical skeleton, write it in symbols, and test it.
+Formal Logic is a self-paced, single-user web course that takes you from "what makes an argument good?" to the machinery of formal proof and the metatheorems that describe its limits. It teaches the *form* of valid reasoning: how to strip an argument down to its logical skeleton, write it in symbols, and test it.
 
 The course is a content reskin of the **QuantReason** Quantitative Reasoning app. The full QuantReason runtime — lectures with short / medium / long depth, section-scoped AI tutor, adaptive practice, AI-graded homework / tests / midterm / final, two-layer AI-authorship detection, and one-click diagnostics — is preserved unchanged. The **purpose** of this build is to teach formal logic — the same backbone every philosophy, mathematics, and computer-science student eventually meets — presented in one connected arc.
 
@@ -65,7 +65,7 @@ Most logic is learned as a pile of rules — modus ponens here, De Morgan there.
 
 Read the idea, see it grounded in a real argument, then write the defining statement in symbols of your own.
 
-**Teach Yourself Formal Logic — read the idea, ground the idea, write the idea.**
+**Formal Logic — read the idea, ground the idea, write the idea.**
 
 ---
 

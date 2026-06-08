@@ -124,7 +124,7 @@ router.get("/course/overview", async (_req, res) => {
 
   res.json(
     GetCourseOverviewResponse.parse({
-      title: "Teach Yourself Formal Logic",
+      title: "Formal Logic",
       weeks,
       totals: { assignmentsCompleted, assignmentsTotal, practiceCount },
     }),
