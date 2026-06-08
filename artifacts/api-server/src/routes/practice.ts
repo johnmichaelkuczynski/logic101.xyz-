@@ -17,6 +17,8 @@ import {
 } from "@workspace/api-zod";
 import { chatJson } from "../lib/ai";
 import { gradeAnswer } from "../lib/grading";
+import { getUserId } from "../lib/auth";
+import { recordTopicResult } from "../lib/profile";
 
 const router: IRouter = Router();
 
@@ -242,6 +244,13 @@ router.post("/practice/sessions/:sessionId/grade", async (req, res): Promise<voi
     correct: graded.correct,
     difficulty: problem.difficulty,
     trace,
+  });
+
+  await recordTopicResult({
+    userId: getUserId(req),
+    topicId: problem.topicId,
+    correct: graded.correct,
+    difficulty: problem.difficulty,
   });
 
   const delta = graded.correct ? 0.4 : -0.5;

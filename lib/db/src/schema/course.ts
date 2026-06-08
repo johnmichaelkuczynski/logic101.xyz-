@@ -58,6 +58,7 @@ export const problemsTable = pgTable("problems", {
 
 export const attemptsTable = pgTable("attempts", {
   id: serial("id").primaryKey(),
+  userId: text("user_id"),
   assignmentId: integer("assignment_id")
     .notNull()
     .references(() => assignmentsTable.id, { onDelete: "cascade" }),
@@ -94,6 +95,7 @@ export const answersTable = pgTable("answers", {
 
 export const practiceSessionsTable = pgTable("practice_sessions", {
   id: serial("id").primaryKey(),
+  userId: text("user_id"),
   weekNumber: integer("week_number"),
   topicId: integer("topic_id"),
   tutorEnabled: boolean("tutor_enabled").notNull().default(false),
@@ -129,4 +131,97 @@ export const practiceAttemptsTable = pgTable("practice_attempts", {
   difficulty: doublePrecision("difficulty").notNull(),
   trace: jsonb("trace"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+// A generated, ungraded practice instance that mirrors a graded assignment.
+export const practiceAssignmentsTable = pgTable("practice_assignments", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id"),
+  sourceAssignmentId: integer("source_assignment_id")
+    .notNull()
+    .references(() => assignmentsTable.id, { onDelete: "cascade" }),
+  kind: text("kind").notNull(), // mirrors source: homework | test | midterm | final
+  title: text("title").notNull(),
+  weekNumber: integer("week_number").notNull(),
+  status: text("status").notNull().default("in_progress"), // in_progress | submitted
+  scorePercent: doublePrecision("score_percent"),
+  overallFeedback: text("overall_feedback"),
+  focusPointers: jsonb("focus_pointers"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  submittedAt: timestamp("submitted_at", { withTimezone: true }),
+});
+
+export const practiceAssignmentProblemsTable = pgTable(
+  "practice_assignment_problems",
+  {
+    id: serial("id").primaryKey(),
+    practiceAssignmentId: integer("practice_assignment_id")
+      .notNull()
+      .references(() => practiceAssignmentsTable.id, { onDelete: "cascade" }),
+    topicId: integer("topic_id").notNull(),
+    position: integer("position").notNull(),
+    prompt: text("prompt").notNull(),
+    correctAnswer: text("correct_answer").notNull(),
+    explanation: text("explanation").notNull(),
+    hint: text("hint"),
+  },
+);
+
+export const practiceAssignmentAnswersTable = pgTable(
+  "practice_assignment_answers",
+  {
+    id: serial("id").primaryKey(),
+    practiceAssignmentId: integer("practice_assignment_id")
+      .notNull()
+      .references(() => practiceAssignmentsTable.id, { onDelete: "cascade" }),
+    problemId: integer("problem_id")
+      .notNull()
+      .references(() => practiceAssignmentProblemsTable.id, {
+        onDelete: "cascade",
+      }),
+    answer: text("answer").notNull().default(""),
+    correct: boolean("correct"),
+    feedback: text("feedback"),
+    keystrokeCount: integer("keystroke_count").notNull().default(0),
+    eraseCount: integer("erase_count").notNull().default(0),
+    bulkInsertCount: integer("bulk_insert_count").notNull().default(0),
+    longestBulkInsertChars: integer("longest_bulk_insert_chars")
+      .notNull()
+      .default(0),
+    rewriteSegments: integer("rewrite_segments").notNull().default(0),
+    durationMs: integer("duration_ms").notNull().default(0),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+);
+
+// Conversation thread where the student dialogues about practice feedback.
+export const feedbackMessagesTable = pgTable("feedback_messages", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id"),
+  practiceAssignmentId: integer("practice_assignment_id").references(
+    () => practiceAssignmentsTable.id,
+    { onDelete: "cascade" },
+  ),
+  role: text("role").notNull(), // user | assistant
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+// Evolving per-user, per-topic mastery profile, updated after every activity.
+export const userTopicProfileTable = pgTable("user_topic_profile", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  topicId: integer("topic_id").notNull(),
+  attempts: integer("attempts").notNull().default(0),
+  correctCount: integer("correct_count").notNull().default(0),
+  accuracy: doublePrecision("accuracy").notNull().default(0),
+  lastDifficulty: doublePrecision("last_difficulty"),
+  masteryLabel: text("mastery_label"),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
 });

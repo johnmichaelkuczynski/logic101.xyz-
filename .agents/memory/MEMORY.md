@@ -1,2 +1,1 @@
-- [Course seed auto-reseed sentinel](seed-reseed-sentinel.md) — api-server reseed triggers only on topic-slug-set or sentinel-phrase mismatch; assignment-only edits need a sentinel bump to propagate; push DB schema before first boot.
-- [Clerk auth on wouter base-path artifacts](clerk-wouter-basepath.md) — canonical Clerk wiring for qr-course/QuantReason clones; public /sign-in/*? wildcards, useParams gotcha, dev-keys are expected.
+- [Per-user scoping](user-scoping.md) — course rows have nullable userId; every read/write must guard ownership (null===null in dev), 403 on mismatch; submit only when in_progress.

@@ -1,19 +1,25 @@
 import { Router, type IRouter } from "express";
-import { asc, desc, eq, sql } from "drizzle-orm";
+import { and, asc, desc, eq, sql } from "drizzle-orm";
 import {
   db,
   topicsTable,
   attemptsTable,
   practiceAttemptsTable,
   assignmentsTable,
+  problemsTable,
+  practiceAssignmentsTable,
+  practiceAssignmentProblemsTable,
+  practiceAssignmentAnswersTable,
 } from "@workspace/db";
 import {
   GetAnalyticsSummaryResponse,
   GetTopicAnalyticsResponse,
   GetRecentActivityResponse,
   GenerateReportResponse,
+  GetAssignmentReadinessResponse,
 } from "@workspace/api-zod";
 import { chatJson } from "../lib/ai";
+import { getUserId } from "../lib/auth";
 
 const router: IRouter = Router();
 
@@ -212,6 +218,159 @@ router.post("/analytics/report", async (_req, res) => {
       strengths: strongest,
       weaknesses: weakest,
       recommendations,
+    }),
+  );
+});
+
+// GET /analytics/readiness/:assignmentId — surgical readiness for one assignment,
+// computed from the evolving per-topic practice profile for this assignment's topics.
+router.get("/analytics/readiness/:assignmentId", async (req, res): Promise<void> => {
+  const assignmentId = parseInt(
+    Array.isArray(req.params.assignmentId)
+      ? req.params.assignmentId[0]!
+      : req.params.assignmentId,
+    10,
+  );
+  if (!Number.isFinite(assignmentId)) {
+    res.status(400).json({ error: "invalid id" });
+    return;
+  }
+  const userId = getUserId(req);
+
+  // Topics this assignment actually tests.
+  const topicRows = await db
+    .selectDistinct({
+      topicId: problemsTable.topicId,
+      topicTitle: topicsTable.title,
+    })
+    .from(problemsTable)
+    .leftJoin(topicsTable, eq(problemsTable.topicId, topicsTable.id))
+    .where(eq(problemsTable.assignmentId, assignmentId));
+
+  if (topicRows.length === 0) {
+    res.json(
+      GetAssignmentReadinessResponse.parse({
+        assignmentId,
+        readinessPercent: 0,
+        readyLabel: "untested",
+        summary: "This assignment has no problems yet.",
+        recommendedPracticeRuns: 0,
+        perTopic: [],
+      }),
+    );
+    return;
+  }
+
+  // Per-topic stats from this assignment's own practice runs (most precise),
+  // scoped to the current user when available.
+  const stats = await db
+    .select({
+      topicId: practiceAssignmentProblemsTable.topicId,
+      correct: practiceAssignmentAnswersTable.correct,
+    })
+    .from(practiceAssignmentAnswersTable)
+    .innerJoin(
+      practiceAssignmentProblemsTable,
+      eq(
+        practiceAssignmentAnswersTable.problemId,
+        practiceAssignmentProblemsTable.id,
+      ),
+    )
+    .innerJoin(
+      practiceAssignmentsTable,
+      eq(
+        practiceAssignmentProblemsTable.practiceAssignmentId,
+        practiceAssignmentsTable.id,
+      ),
+    )
+    .where(
+      userId
+        ? and(
+            eq(practiceAssignmentsTable.sourceAssignmentId, assignmentId),
+            eq(practiceAssignmentsTable.userId, userId),
+          )
+        : and(
+            eq(practiceAssignmentsTable.sourceAssignmentId, assignmentId),
+            sql`${practiceAssignmentsTable.userId} is null`,
+          ),
+    );
+
+  const agg = new Map<number, { correct: number; total: number }>();
+  for (const s of stats) {
+    if (s.correct == null) continue;
+    const a = agg.get(s.topicId) ?? { correct: 0, total: 0 };
+    a.total += 1;
+    if (s.correct) a.correct += 1;
+    agg.set(s.topicId, a);
+  }
+
+  const perTopic = topicRows.map((t) => {
+    const a = agg.get(t.topicId);
+    const attempts = a?.total ?? 0;
+    const accuracy = attempts === 0 ? 0 : a!.correct / attempts;
+    const label = labelFor(accuracy, attempts);
+    let pointer: string;
+    if (attempts === 0) {
+      pointer = `No practice yet on ${t.topicTitle ?? "this topic"} — run a practice version to gauge where you stand.`;
+    } else if (accuracy >= 0.9) {
+      pointer = `${t.topicTitle ?? "This topic"} is solid (${a!.correct}/${attempts}). Keep it warm with an occasional rep.`;
+    } else if (accuracy >= 0.5) {
+      pointer = `${t.topicTitle ?? "This topic"} is developing (${a!.correct}/${attempts}). A couple more practice runs should lock it in.`;
+    } else {
+      pointer = `${t.topicTitle ?? "This topic"} needs work (${a!.correct}/${attempts}). Drill it before the graded version.`;
+    }
+    return {
+      topicId: t.topicId,
+      topicTitle: t.topicTitle ?? "Topic",
+      attempts,
+      accuracy: Number(accuracy.toFixed(3)),
+      masteryLabel: label,
+      pointer,
+    };
+  });
+
+  const testedTopics = perTopic.filter((t) => t.attempts > 0);
+  const readinessPercent =
+    testedTopics.length === 0
+      ? 0
+      : Number(
+          (
+            (testedTopics.reduce((s, t) => s + t.accuracy, 0) /
+              perTopic.length) *
+            100
+          ).toFixed(1),
+        );
+  const untestedCount = perTopic.length - testedTopics.length;
+
+  let readyLabel: "ready" | "almost" | "not_ready" | "untested";
+  if (testedTopics.length === 0) readyLabel = "untested";
+  else if (readinessPercent >= 85 && untestedCount === 0) readyLabel = "ready";
+  else if (readinessPercent >= 60) readyLabel = "almost";
+  else readyLabel = "not_ready";
+
+  const weakCount = perTopic.filter(
+    (t) => t.attempts === 0 || t.accuracy < 0.75,
+  ).length;
+  const recommendedPracticeRuns =
+    readyLabel === "ready" ? 0 : Math.max(1, Math.min(5, weakCount));
+
+  const summary =
+    readyLabel === "untested"
+      ? "You haven't practiced this assignment yet. Generate a practice version to see exactly where you stand."
+      : readyLabel === "ready"
+      ? `You're ready: ${readinessPercent}% across the topics this assignment tests. Go take it.`
+      : readyLabel === "almost"
+      ? `Almost there at ${readinessPercent}%. Close the gaps below with ${recommendedPracticeRuns} more practice run(s).`
+      : `Not ready yet (${readinessPercent}%). Focus on the weak topics below before attempting the graded version.`;
+
+  res.json(
+    GetAssignmentReadinessResponse.parse({
+      assignmentId,
+      readinessPercent,
+      readyLabel,
+      summary,
+      recommendedPracticeRuns,
+      perTopic,
     }),
   );
 });

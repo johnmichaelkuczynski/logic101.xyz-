@@ -18,6 +18,8 @@ import {
 } from "@workspace/api-zod";
 import { gradeAnswer } from "../lib/grading";
 import { detect } from "../lib/detection";
+import { getUserId } from "../lib/auth";
+import { recordTopicResult } from "../lib/profile";
 
 const router: IRouter = Router();
 
@@ -26,7 +28,23 @@ function parseIdParam(raw: unknown): number {
   return parseInt(s ?? "", 10);
 }
 
-router.get("/assignments", async (_req, res) => {
+/** Drizzle predicate matching attempts owned by the requesting user (null in dev). */
+function attemptUserMatch(userId: string | null) {
+  return userId
+    ? eq(attemptsTable.userId, userId)
+    : sql`${attemptsTable.userId} is null`;
+}
+
+/** True when an attempt belongs to the requesting user (null === null in dev). */
+function ownsAttempt(
+  attempt: { userId: string | null },
+  userId: string | null,
+): boolean {
+  return (attempt.userId ?? null) === (userId ?? null);
+}
+
+router.get("/assignments", async (req, res) => {
+  const userId = getUserId(req);
   const rows = await db
     .select()
     .from(assignmentsTable)
@@ -40,7 +58,7 @@ router.get("/assignments", async (_req, res) => {
       const attempts = await db
         .select()
         .from(attemptsTable)
-        .where(eq(attemptsTable.assignmentId, a.id))
+        .where(and(eq(attemptsTable.assignmentId, a.id), attemptUserMatch(userId)))
         .orderBy(asc(attemptsTable.id));
       const submitted = attempts.filter((x) => x.status === "submitted");
       const inProgress = attempts.find((x) => x.status === "in_progress");
@@ -147,11 +165,18 @@ router.post("/assignments/:assignmentId/start", async (req, res): Promise<void> 
     return;
   }
 
-  // Resume any in-progress attempt
+  // Resume any in-progress attempt owned by this user
+  const userId = getUserId(req);
   const [existing] = await db
     .select()
     .from(attemptsTable)
-    .where(and(eq(attemptsTable.assignmentId, id), eq(attemptsTable.status, "in_progress")));
+    .where(
+      and(
+        eq(attemptsTable.assignmentId, id),
+        eq(attemptsTable.status, "in_progress"),
+        attemptUserMatch(userId),
+      ),
+    );
   if (existing) {
     const state = await loadAttempt(existing.id);
     res.json(StartAssignmentAttemptResponse.parse(state));
@@ -164,7 +189,12 @@ router.post("/assignments/:assignmentId/start", async (req, res): Promise<void> 
       : null;
   const [created] = await db
     .insert(attemptsTable)
-    .values({ assignmentId: id, status: "in_progress", deadlineAt })
+    .values({
+      assignmentId: id,
+      userId: getUserId(req),
+      status: "in_progress",
+      deadlineAt,
+    })
     .returning();
   if (!created) {
     res.status(500).json({ error: "failed to create" });
@@ -178,6 +208,18 @@ router.get("/assignments/attempts/:attemptId", async (req, res): Promise<void> =
   const id = parseIdParam(req.params.attemptId);
   if (!Number.isFinite(id)) {
     res.status(400).json({ error: "invalid id" });
+    return;
+  }
+  const [attempt] = await db
+    .select()
+    .from(attemptsTable)
+    .where(eq(attemptsTable.id, id));
+  if (!attempt) {
+    res.status(404).json({ error: "attempt not found" });
+    return;
+  }
+  if (!ownsAttempt(attempt, getUserId(req))) {
+    res.status(403).json({ error: "forbidden" });
     return;
   }
   const state = await loadAttempt(id);
@@ -207,6 +249,10 @@ router.put("/assignments/attempts/:attemptId/answer", async (req, res): Promise<
     .where(eq(attemptsTable.id, id));
   if (!attempt) {
     res.status(404).json({ error: "attempt not found" });
+    return;
+  }
+  if (!ownsAttempt(attempt, getUserId(req))) {
+    res.status(403).json({ error: "forbidden" });
     return;
   }
   if (attempt.status !== "in_progress") {
@@ -249,12 +295,21 @@ router.post("/assignments/attempts/:attemptId/submit", async (req, res): Promise
     res.status(400).json({ error: "invalid id" });
     return;
   }
+  const userId = getUserId(req);
   const [attempt] = await db
     .select()
     .from(attemptsTable)
     .where(eq(attemptsTable.id, id));
   if (!attempt) {
     res.status(404).json({ error: "attempt not found" });
+    return;
+  }
+  if (!ownsAttempt(attempt, userId)) {
+    res.status(403).json({ error: "forbidden" });
+    return;
+  }
+  if (attempt.status !== "in_progress") {
+    res.status(400).json({ error: "attempt already submitted" });
     return;
   }
   const problems = await db
@@ -280,6 +335,7 @@ router.post("/assignments/attempts/:attemptId/submit", async (req, res): Promise
       userAnswer,
     });
     if (graded.correct) score += 1;
+    await recordTopicResult({ userId, topicId: p.topicId, correct: graded.correct });
     perProblem.push({
       problemId: p.id,
       correct: graded.correct,

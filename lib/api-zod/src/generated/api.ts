@@ -444,3 +444,207 @@ export const GenerateReportResponse = zod.object({
 })
 
 
+/**
+ * @summary Surgically precise readiness pointers for a specific graded assignment
+ */
+export const GetAssignmentReadinessParams = zod.object({
+  "assignmentId": zod.coerce.number()
+})
+
+export const GetAssignmentReadinessResponse = zod.object({
+  "assignmentId": zod.number(),
+  "readinessPercent": zod.number(),
+  "readyLabel": zod.enum(['ready', 'almost', 'not_ready', 'untested']),
+  "summary": zod.string(),
+  "recommendedPracticeRuns": zod.number(),
+  "perTopic": zod.array(zod.object({
+  "topicId": zod.number(),
+  "topicTitle": zod.string(),
+  "attempts": zod.number(),
+  "accuracy": zod.number(),
+  "masteryLabel": zod.string().nullish(),
+  "pointer": zod.string()
+}))
+})
+
+
+/**
+ * @summary List the user's practice runs generated for a graded assignment
+ */
+export const ListPracticeAssignmentsParams = zod.object({
+  "assignmentId": zod.coerce.number()
+})
+
+export const ListPracticeAssignmentsResponseItem = zod.object({
+  "id": zod.number(),
+  "sourceAssignmentId": zod.number(),
+  "kind": zod.enum(['homework', 'test', 'midterm', 'final']),
+  "title": zod.string(),
+  "weekNumber": zod.number(),
+  "status": zod.enum(['in_progress', 'submitted']),
+  "scorePercent": zod.number().nullish(),
+  "problemCount": zod.number(),
+  "createdAt": zod.coerce.date()
+})
+export const ListPracticeAssignmentsResponse = zod.array(ListPracticeAssignmentsResponseItem)
+
+
+/**
+ * @summary Generate a fresh practice version of a graded assignment (never repeats)
+ */
+export const CreatePracticeAssignmentBody = zod.object({
+  "sourceAssignmentId": zod.number()
+})
+
+export const CreatePracticeAssignmentResponse = zod.object({
+  "id": zod.number(),
+  "sourceAssignmentId": zod.number(),
+  "kind": zod.enum(['homework', 'test', 'midterm', 'final']),
+  "title": zod.string(),
+  "weekNumber": zod.number(),
+  "instructions": zod.string().nullish(),
+  "status": zod.enum(['in_progress', 'submitted']),
+  "scorePercent": zod.number().nullish(),
+  "problems": zod.array(zod.object({
+  "id": zod.number(),
+  "position": zod.number(),
+  "prompt": zod.string(),
+  "topicId": zod.number(),
+  "topicTitle": zod.string().nullish(),
+  "hint": zod.string().nullish()
+})),
+  "answers": zod.array(zod.object({
+  "problemId": zod.number(),
+  "answer": zod.string(),
+  "keystrokeCount": zod.number().nullish(),
+  "eraseCount": zod.number().nullish()
+}))
+})
+
+
+/**
+ * @summary Get a practice assignment with its problems and saved answers
+ */
+export const GetPracticeAssignmentParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetPracticeAssignmentResponse = zod.object({
+  "id": zod.number(),
+  "sourceAssignmentId": zod.number(),
+  "kind": zod.enum(['homework', 'test', 'midterm', 'final']),
+  "title": zod.string(),
+  "weekNumber": zod.number(),
+  "instructions": zod.string().nullish(),
+  "status": zod.enum(['in_progress', 'submitted']),
+  "scorePercent": zod.number().nullish(),
+  "problems": zod.array(zod.object({
+  "id": zod.number(),
+  "position": zod.number(),
+  "prompt": zod.string(),
+  "topicId": zod.number(),
+  "topicTitle": zod.string().nullish(),
+  "hint": zod.string().nullish()
+})),
+  "answers": zod.array(zod.object({
+  "problemId": zod.number(),
+  "answer": zod.string(),
+  "keystrokeCount": zod.number().nullish(),
+  "eraseCount": zod.number().nullish()
+}))
+})
+
+
+/**
+ * @summary Save (or update) a single practice answer with keystroke trace
+ */
+export const SavePracticeAssignmentAnswerParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const savePracticeAssignmentAnswerBodyTraceBulkInsertCountDefault = 0;
+export const savePracticeAssignmentAnswerBodyTraceLongestBulkInsertCharsDefault = 0;
+export const savePracticeAssignmentAnswerBodyTraceRewriteSegmentsDefault = 0;
+
+export const SavePracticeAssignmentAnswerBody = zod.object({
+  "problemId": zod.number(),
+  "answer": zod.string(),
+  "trace": zod.object({
+  "keystrokeCount": zod.number(),
+  "eraseCount": zod.number(),
+  "bulkInsertCount": zod.number().default(savePracticeAssignmentAnswerBodyTraceBulkInsertCountDefault),
+  "longestBulkInsertChars": zod.number().default(savePracticeAssignmentAnswerBodyTraceLongestBulkInsertCharsDefault),
+  "rewriteSegments": zod.number().default(savePracticeAssignmentAnswerBodyTraceRewriteSegmentsDefault),
+  "durationMs": zod.number()
+})
+})
+
+export const SavePracticeAssignmentAnswerResponse = zod.object({
+  "ok": zod.boolean()
+})
+
+
+/**
+ * @summary Submit a practice run; returns rich per-problem feedback and focus pointers
+ */
+export const SubmitPracticeAssignmentParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const SubmitPracticeAssignmentResponse = zod.object({
+  "id": zod.number(),
+  "score": zod.number(),
+  "total": zod.number(),
+  "percent": zod.number(),
+  "perProblem": zod.array(zod.object({
+  "problemId": zod.number(),
+  "correct": zod.boolean(),
+  "userAnswer": zod.string().optional(),
+  "correctAnswer": zod.string().optional(),
+  "explanation": zod.string(),
+  "feedback": zod.string()
+})),
+  "overallFeedback": zod.string(),
+  "focusPointers": zod.array(zod.object({
+  "topicId": zod.number().nullish(),
+  "topicTitle": zod.string().nullish(),
+  "pointer": zod.string()
+}))
+})
+
+
+/**
+ * @summary Get the dialogue thread about this practice run's feedback
+ */
+export const GetPracticeDialogueParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetPracticeDialogueResponseItem = zod.object({
+  "id": zod.number(),
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string(),
+  "createdAt": zod.coerce.date()
+})
+export const GetPracticeDialogueResponse = zod.array(GetPracticeDialogueResponseItem)
+
+
+/**
+ * @summary Send a message in the feedback dialogue and get the tutor's grounded reply
+ */
+export const PostPracticeDialogueParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const PostPracticeDialogueBody = zod.object({
+  "message": zod.string()
+})
+
+export const PostPracticeDialogueResponse = zod.object({
+  "id": zod.number(),
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string(),
+  "createdAt": zod.coerce.date()
+})
+
+

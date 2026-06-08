@@ -30,6 +30,7 @@ import LectureView from "@/pages/LectureView";
 import AssignmentRunner from "@/pages/AssignmentRunner";
 import Diagnostics from "@/pages/Diagnostics";
 import TopicPractice from "@/pages/TopicPractice";
+import PracticeAssignmentRunner from "@/pages/PracticeAssignmentRunner";
 
 const queryClient = new QueryClient();
 
@@ -249,6 +250,11 @@ function ClerkProviderWithRoutes() {
             <Route path="/practice/topic/:topicId">
               <Protected>
                 <TopicPractice />
+              </Protected>
+            </Route>
+            <Route path="/practice-assignments/:id">
+              <Protected>
+                <PracticeAssignmentRunner />
               </Protected>
             </Route>
             <Route component={NotFound} />
