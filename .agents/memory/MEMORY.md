@@ -1,2 +1,3 @@
 - [Per-user scoping](user-scoping.md) — course rows have nullable userId; every read/write must guard ownership (null===null in dev), 403 on mismatch; submit only when in_progress.
 - [Codegen vite reload errors](codegen-vite-reload.md) — "Failed to load .../generated/api.ts" right after api-spec codegen is transient HMR noise; verify with typecheck + workflow restart, don't chase it.
+- [connect-pg-simple bundling](session-store-bundling.md) — bundled server needs table.sql copied into dist; app uses user's verbatim Google OAuth auth.ts, never Clerk/Replit Auth.

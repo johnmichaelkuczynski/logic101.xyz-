@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { GOOGLE_LOGIN_URL, GoogleLoginButton } from "@/lib/auth";
 
 const weeks = [
   {
@@ -24,8 +24,6 @@ const weeks = [
 ];
 
 export default function Landing() {
-  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
       <header className="flex items-center justify-between px-6 py-4 max-w-6xl mx-auto w-full">
@@ -38,16 +36,11 @@ export default function Landing() {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/sign-in">
-            <button className="px-4 py-2 rounded-md text-sm font-medium border border-border hover:bg-secondary transition-colors">
-              Sign in
-            </button>
-          </Link>
-          <Link href="/sign-up">
+          <a href={GOOGLE_LOGIN_URL}>
             <button className="px-4 py-2 rounded-md text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity">
-              Get started
+              Sign in with Google
             </button>
-          </Link>
+          </a>
         </div>
       </header>
 
@@ -65,16 +58,7 @@ export default function Landing() {
             argument, then write it in symbols of your own.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
-            <Link href="/sign-up">
-              <button className="px-6 py-3 rounded-md text-base font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity">
-                Create your account
-              </button>
-            </Link>
-            <Link href="/sign-in">
-              <button className="px-6 py-3 rounded-md text-base font-medium border border-border hover:bg-secondary transition-colors">
-                Continue with Google
-              </button>
-            </Link>
+            <GoogleLoginButton label="Continue with Google" />
           </div>
           <p className="font-mono text-sm text-muted-foreground mt-4">
             ∀x (Reasons(x) → Better(x)) &nbsp;·&nbsp; P, P → Q ⊢ Q
@@ -104,7 +88,7 @@ export default function Landing() {
       <footer className="border-t border-border">
         <div className="max-w-6xl mx-auto w-full px-6 py-6 text-sm text-muted-foreground flex items-center justify-between">
           <span>Formal Logic</span>
-          <a href={`${base}/sign-in`} className="hover:text-foreground">
+          <a href={GOOGLE_LOGIN_URL} className="hover:text-foreground">
             Sign in
           </a>
         </div>

@@ -2,38 +2,31 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { LayoutDashboard, PenTool, BarChart3, Activity, RotateCcw, Sparkles, LogOut, Dumbbell } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useUser, useClerk } from "@clerk/react";
+import { useAuth, logout } from "@/lib/auth";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 function UserMenu() {
-  const { user, isLoaded } = useUser();
-  const { signOut } = useClerk();
+  const { data } = useAuth();
 
-  if (!isLoaded || !user) return null;
+  if (!data?.authenticated || !data.user) return null;
 
-  const name =
-    user.fullName ||
-    user.primaryEmailAddress?.emailAddress ||
-    user.username ||
-    "Account";
-  const email = user.primaryEmailAddress?.emailAddress;
+  const user = data.user;
+  const name = user.displayName || user.email || user.username || "Account";
+  const email = user.email;
   const initial = (name || "?").charAt(0).toUpperCase();
+
+  const handleSignOut = async () => {
+    await logout();
+    window.location.href = basePath || "/";
+  };
 
   return (
     <div className="p-3 border-t border-border flex flex-col gap-2">
       <div className="flex items-center gap-3 px-1">
-        {user.imageUrl ? (
-          <img
-            src={user.imageUrl}
-            alt=""
-            className="w-8 h-8 rounded-full object-cover"
-          />
-        ) : (
-          <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
-            {initial}
-          </div>
-        )}
+        <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+          {initial}
+        </div>
         <div className="min-w-0">
           <div className="text-sm font-medium truncate">{name}</div>
           {email && name !== email && (
@@ -42,7 +35,7 @@ function UserMenu() {
         </div>
       </div>
       <button
-        onClick={() => signOut({ redirectUrl: basePath || "/" })}
+        onClick={handleSignOut}
         className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
         data-testid="button-signout"
       >
