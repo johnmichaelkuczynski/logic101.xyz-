@@ -18,7 +18,7 @@ import {
 } from "@workspace/api-zod";
 import { gradeAnswer } from "../lib/grading";
 import { detect } from "../lib/detection";
-import { getUserId } from "../lib/auth";
+import { getUserId } from "../auth";
 import { recordTopicResult } from "../lib/profile";
 
 const router: IRouter = Router();

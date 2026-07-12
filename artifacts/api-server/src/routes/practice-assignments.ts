@@ -26,7 +26,7 @@ import {
 } from "@workspace/api-zod";
 import { chatJson, chatText } from "../lib/ai";
 import { gradeAnswer } from "../lib/grading";
-import { getUserId } from "../lib/auth";
+import { getUserId } from "../auth";
 import { recordTopicResult } from "../lib/profile";
 
 const router: IRouter = Router();

@@ -2,9 +2,11 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
-import type { Express, RequestHandler } from "express";
-import { storage } from "./storage";
+import type { Express, Request, RequestHandler } from "express";
 import pg from "pg";
+import { db, usersTable, visitsTable } from "@workspace/db";
+import type { User, Visit } from "@workspace/db";
+import { eq, desc, gte } from "drizzle-orm";
 
 declare global {
   namespace Express {
@@ -15,6 +17,103 @@ declare global {
       email?: string | null;
       displayName?: string | null;
     }
+  }
+}
+
+/**
+ * Persistence layer backing the Google OAuth login flow below.
+ * Users are created/linked on first Google sign-in; visits records a
+ * login event per successful sign-in for the admin analytics endpoint.
+ */
+const storage = {
+  async getUserById(id: number): Promise<User | undefined> {
+    const [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, id))
+      .limit(1);
+    return user;
+  },
+
+  async getUserByGoogleId(googleId: string): Promise<User | undefined> {
+    const [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.googleId, googleId))
+      .limit(1);
+    return user;
+  },
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.email, email))
+      .limit(1);
+    return user;
+  },
+
+  async createUserWithGoogle(data: {
+    username: string;
+    googleId: string;
+    email: string | null;
+    displayName: string | null;
+  }): Promise<User> {
+    const [user] = await db.insert(usersTable).values(data).returning();
+    if (!user) throw new Error("Failed to create user");
+    return user;
+  },
+
+  async updateUserGoogle(
+    id: number,
+    data: { googleId?: string; displayName?: string | null },
+  ): Promise<User> {
+    const [user] = await db
+      .update(usersTable)
+      .set(data)
+      .where(eq(usersTable.id, id))
+      .returning();
+    if (!user) throw new Error(`User ${id} not found`);
+    return user;
+  },
+
+  async recordVisit(userId: number, email: string | null): Promise<void> {
+    await db.insert(visitsTable).values({ userId, email });
+  },
+
+  async getVisits(limit: number): Promise<Visit[]> {
+    return db
+      .select()
+      .from(visitsTable)
+      .orderBy(desc(visitsTable.visitedAt))
+      .limit(limit);
+  },
+
+  async getVisitTimestampsSince(since: Date | null): Promise<Date[]> {
+    const rows = since
+      ? await db
+          .select({ visitedAt: visitsTable.visitedAt })
+          .from(visitsTable)
+          .where(gte(visitsTable.visitedAt, since))
+      : await db.select({ visitedAt: visitsTable.visitedAt }).from(visitsTable);
+    return rows.map((r) => r.visitedAt);
+  },
+};
+
+/**
+ * Resolve the current user id from the passport session (Google OAuth), or
+ * null when no authenticated session is present. Used to scope activity +
+ * the evolving per-user profile. Returned as a string because the activity
+ * tables store user ids in text columns.
+ */
+export function getUserId(req: Request): string | null {
+  try {
+    if (req.isAuthenticated?.() && req.user) {
+      return String(req.user.id);
+    }
+    return null;
+  } catch {
+    return null;
   }
 }
 

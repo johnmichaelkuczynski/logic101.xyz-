@@ -19,7 +19,7 @@ import {
   GetAssignmentReadinessResponse,
 } from "@workspace/api-zod";
 import { chatJson } from "../lib/ai";
-import { getUserId } from "../lib/auth";
+import { getUserId } from "../auth";
 
 const router: IRouter = Router();
 
