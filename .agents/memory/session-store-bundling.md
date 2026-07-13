@@ -12,3 +12,5 @@ description: Why the session store fails with ENOENT table.sql when the server i
 **How to apply:** `build.mjs` copies `require.resolve("connect-pg-simple/table.sql")` into `dist/` after the esbuild step. The `user_sessions` table was also created directly in the DB, so the file is only needed on a fresh database.
 
 Also: the app uses passport-google-oauth20 Google login (user's canonical auth.ts, treated as verbatim — do not rewrite it), NOT Clerk or Replit Auth. Auth routes live at root `/api/auth/*`, mounted before the /api router.
+
+**Custom domain:** production runs on `formallogic.ink` (plus formal-logic-1.replit.app). Any new domain must be (1) added to `trustedHosts` in auth.ts and (2) registered as `https://<domain>/api/auth/google/callback` in the user's Google Cloud Console, or Google throws `redirect_uri_mismatch`. Stale Clerk keys visible in the deployment-secrets pane are inert leftovers, not a cause of login failures.
