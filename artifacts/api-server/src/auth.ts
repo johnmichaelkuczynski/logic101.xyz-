@@ -221,7 +221,7 @@ export function setupAuth(app: Express) {
         const prodDomain = (process.env.REPLIT_DOMAINS || "")
           .split(",")[0]
           ?.trim();
-        return `https://${prodDomain || "formal-logic-1.replit.app"}${CALLBACK_PATH}`;
+        return `https://${prodDomain || "formallogic.ink"}${CALLBACK_PATH}`;
       }
       if (process.env.REPLIT_DEV_DOMAIN) {
         return `https://${process.env.REPLIT_DEV_DOMAIN}${CALLBACK_PATH}`;
@@ -238,6 +238,8 @@ export function setupAuth(app: Express) {
       [
         ...(process.env.REPLIT_DOMAINS || "").split(",").map((d) => d.trim()),
         process.env.REPLIT_DEV_DOMAIN || "",
+        "formallogic.ink",
+        "www.formallogic.ink",
         "formal-logic-1.replit.app",
         "www.formal-logic-1.replit.app",
         "localhost:80",
